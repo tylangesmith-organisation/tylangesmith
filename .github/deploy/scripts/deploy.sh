@@ -2,14 +2,12 @@
 
 set -euo pipefail
 
-# Unzip the build artifact
-echo "--- 🚀 Unzipping the build..."
-unzip build.zip
-
-ls -al
-
 # Ok lets's jump into our CDK directory
 cd .github/deploy
+
+# Unzip the build artifact
+echo "--- 🚀 Unzipping the build..."
+unzip -q build.zip
 
 # Install our npm dependencies
 echo "--- 🚀 Installing npm dependencies..."
