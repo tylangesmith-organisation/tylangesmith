@@ -23,7 +23,7 @@ export const createCDN = (props: Props): CreateCDNResults => {
   const hostedZone = HostedZone.fromLookup(scope, 'hostedZone', { domainName })
 
   // Next let's create the certificate for our endpoint
-  new DnsValidatedCertificate(scope, 'certificate', {
+  const certificate = new DnsValidatedCertificate(scope, 'certificate', {
     domainName: `${subDomainName}.${domainName}`,
     hostedZone,
     region: 'ap-southeast-2'
@@ -36,13 +36,19 @@ export const createCDN = (props: Props): CreateCDNResults => {
         s3OriginSource: { s3BucketSource: websiteBucket },
         behaviors: [{ isDefaultBehavior: true }]
       }
-    ]
+    ],
+    viewerCertificate: {
+      aliases: [`${subDomainName}.${domainName}`],
+      props: {
+        acmCertificateArn: certificate.certificateArn,
+      }
+    }
   })
 
   // Finally let's create an A Record that points to the cloudfron distribution
   new ARecord(scope, 'aRecord', {
     target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
-    zone: hostedZone
+    zone: hostedZone,
   })
 
   return {
