@@ -14,5 +14,5 @@ jobs:
       - run: .github/deploy/scripts/lint_test_build.sh
       - uses: actions/upload-artifact@v2
         with:
-          name: build
+          name: build.zip
           path: build.zip

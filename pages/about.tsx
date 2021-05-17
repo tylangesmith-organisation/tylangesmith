@@ -1,16 +1,15 @@
 import Link from 'next/link'
-import Layout from '../components/Layout'
 
-const AboutPage = () => (
-  <Layout title="About | Next.js + TypeScript Example">
-    <h1>About</h1>
-    <p>This is the about page</p>
+const Component = () => (
+  <div>
+    <h1>Hello Next.js 👋</h1>
+    <h2>ABOUT</h2>
     <p>
       <Link href="/">
-        <a>Go home</a>
+        <a>Index</a>
       </Link>
     </p>
-  </Layout>
+  </div>
 )
 
-export default AboutPage
+export default Component

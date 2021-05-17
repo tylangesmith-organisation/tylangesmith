@@ -8,4 +8,6 @@ npm i
 
 echo "--- 🚀 Run next build..."
 npm run build
-zip -r build.zip .next
+
+# For now we only want the static bundle
+zip -r build.zip .out
