@@ -15,4 +15,8 @@ new Stack(app, {
   stackName: `tylangesmith-${process.env.BRANCH_NAME}`,
   domainName,
   subDomainName,
+  env: {
+    account: process.env.CDK_DEFAULT_ACCOUNT,
+    region: process.env.CDK_DEFAULT_REGION
+  }
 })
