@@ -2,6 +2,10 @@
 
 set -euo pipefail
 
+# Unzip the build artifact
+echo "--- 🚀 Unzipping the build..."
+unzip build.zip
+
 ls -al
 
 # Ok lets's jump into our CDK directory
@@ -21,6 +25,3 @@ npx cdk \
   --toolkit-stack-name "cdk-toolkit-master-${ACCOUNT_ID}" \
   --app "ts-node ./src/index.ts" \
   deploy
-
-# Make sure we reset the directory
-cd ../../
