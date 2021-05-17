@@ -41,6 +41,8 @@ export const createCDN = (props: Props): CreateCDNResults => {
       aliases: [`${subDomainName}.${domainName}`],
       props: {
         acmCertificateArn: certificate.certificateArn,
+        sslSupportMethod: 'sni-only',
+        minimumProtocolVersion: 'TLSv1'
       }
     }
   })
