@@ -49,6 +49,7 @@ export const createCDN = (props: Props): CreateCDNResults => {
   new ARecord(scope, 'aRecord', {
     target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
     zone: hostedZone,
+    recordName: subDomainName
   })
 
   return {
