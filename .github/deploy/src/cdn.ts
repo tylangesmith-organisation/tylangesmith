@@ -1,4 +1,4 @@
-import { App, Stack, StackProps, RemovalPolicy } from '@aws-cdk/core';
+import { Stack } from '@aws-cdk/core';
 import { IBucket } from '@aws-cdk/aws-s3';
 import { CloudFrontWebDistribution, IDistribution } from '@aws-cdk/aws-cloudfront';
 import { HostedZone, ARecord, RecordTarget } from '@aws-cdk/aws-route53';
