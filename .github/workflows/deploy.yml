@@ -11,8 +11,8 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: '14'
-      - run: ./deploy/scripts/lint_test_build.sh
+      - run: .github/deploy/scripts/lint_test_build.sh
       - uses: actions/upload-artifact@v2
         with:
           name: build
-          path: .next/
+          path: build.zip

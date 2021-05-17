@@ -8,3 +8,4 @@ npm i
 
 echo "--- 🚀 Run next build..."
 npm run build
+zip -r build.zip .next
