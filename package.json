@@ -1,11 +1,10 @@
 {
-  "name": "with-typescript",
+  "name": "tylangesmith",
   "version": "1.0.0",
   "scripts": {
     "dev": "next",
     "build": "next build",
-    "start": "next start",
-    "type-check": "tsc"
+    "start": "next start"
   },
   "dependencies": {
     "next": "latest",
