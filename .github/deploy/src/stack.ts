@@ -1,15 +1,19 @@
 import { App, Stack, StackProps, RemovalPolicy } from '@aws-cdk/core';
 import { Bucket } from '@aws-cdk/aws-s3';
-import { CloudFrontWebDistribution } from '@aws-cdk/aws-cloudfront';
 import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
+import { createCDN } from './cdn';
 
-export interface Props extends StackProps { }
+export interface Props extends StackProps {
+  domainName: string;
+  subDomainName: string;
+}
 
 export default class Website extends Stack {
   constructor(scope: App, props: Props) {
     super(scope, 'tylangesmith', props);
+    const { domainName, subDomainName } = props;
 
-    // First we need to create the bucket
+    // Create the bucket to store the static files
     const websiteBucket = new Bucket(this, 'websiteBucket', {
       bucketName: `tylangesmith-${process.env.BRANCH_NAME}`,
       publicReadAccess: true,
@@ -18,27 +22,22 @@ export default class Website extends Stack {
       removalPolicy: RemovalPolicy.DESTROY
     })
 
-    const websiteDistribution = new CloudFrontWebDistribution(this, 'websiteDistribution', {
-      originConfigs: [
-        {
-          s3OriginSource: {
-            s3BucketSource: websiteBucket,
-          },
-          behaviors: [
-            {
-              isDefaultBehavior: true
-            }
-          ]
-        }
-      ]
+    // Create the CDN resources
+    const cdn = createCDN({
+      scope: this,
+      domainName: domainName,
+      subDomainName: subDomainName,
+      websiteBucket
     })
 
     // Ok deploy the files to the bucket
     new BucketDeployment(this, 'websiteBucketDeployment', {
       destinationBucket: websiteBucket,
       sources: [Source.asset('./out')],
-      distribution: websiteDistribution,
+      distribution: cdn.distribution,
     })
-
   }
 }
+
+
+

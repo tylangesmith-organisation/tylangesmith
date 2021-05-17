@@ -7,6 +7,9 @@
     "start": "next start"
   },
   "dependencies": {
+    "@aws-cdk/aws-certificatemanager": "^1.104.0",
+    "@aws-cdk/aws-route53": "^1.104.0",
+    "@aws-cdk/aws-route53-targets": "^1.104.0",
     "next": "latest",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
