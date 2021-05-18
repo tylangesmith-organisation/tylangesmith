@@ -1,43 +1,59 @@
-import { App, Stack, StackProps, RemovalPolicy } from '@aws-cdk/core';
-import { Bucket } from '@aws-cdk/aws-s3';
-import { BucketDeployment, Source } from '@aws-cdk/aws-s3-deployment';
-import { createCDN } from './cdn';
+import { App, Stack, StackProps } from '@aws-cdk/core';
+import { createStaticWebsiteBucket, createStaticWebsiteBucketDeployment } from './helpers/bucket';
+import { getHostedZone, createARecordForDistribution } from './helpers/route53';
+import { createCertificate } from './helpers/certificate';
+import { createDistribution } from './helpers/cloudfront';
 
 export interface Props extends StackProps {
   domainName: string;
   subDomainName: string;
+  branchName: string;
 }
 
 export default class Website extends Stack {
   constructor(scope: App, props: Props) {
     super(scope, 'tylangesmith', props);
-    const { domainName, subDomainName } = props;
+    const { domainName, subDomainName, branchName } = props;
 
     // Create the bucket to store the static files
-    const websiteBucket = new Bucket(this, 'websiteBucket', {
-      bucketName: `tylangesmith-${process.env.BRANCH_NAME}`,
-      publicReadAccess: true,
-      websiteIndexDocument: 'index.html',
-      websiteErrorDocument: '404.html',
-      removalPolicy: RemovalPolicy.DESTROY
-    })
-
-    // Create the CDN resources
-    const cdn = createCDN({
+    const staticWebsiteBucket = createStaticWebsiteBucket({
       scope: this,
-      domainName: domainName,
-      subDomainName: subDomainName,
-      websiteBucket
+      branchName 
     })
 
-    // Ok deploy the files to the bucket
-    new BucketDeployment(this, 'websiteBucketDeployment', {
-      destinationBucket: websiteBucket,
-      sources: [Source.asset('./out')],
-      distribution: cdn.distribution,
+    // Create the CDN
+    const hostedZone = getHostedZone({
+      scope: this,
+      domainName
+    })
+
+    const certificate = createCertificate({
+      scope: this,
+      hostedZone,
+      domainName,
+      subDomainName
+    })
+
+    const distribution = createDistribution({
+      scope: this,
+      staticWebsiteBucket,
+      certificate,
+      domainName,
+      subDomainName
+    })
+
+    createARecordForDistribution({
+      scope: this,
+      hostedZone,
+      subDomainName,
+      distribution
+    })
+
+    // Deploy the static files to the bucket
+    createStaticWebsiteBucketDeployment({
+      scope: this,
+      staticWebsiteBucket,
+      distribution
     })
   }
 }
-
-
-
