@@ -25,7 +25,8 @@ export const createCDN = (props: Props): CreateCDNResults => {
   // Next let's create the certificate for our endpoint
   const certificate = new DnsValidatedCertificate(scope, 'certificate', {
     domainName: `${subDomainName}.${domainName}`,
-    hostedZone
+    hostedZone,
+    region: 'us-east-1'
   })
 
   // Ok setup a cloudfront distribution for the bucket
