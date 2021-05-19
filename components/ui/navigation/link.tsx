@@ -11,7 +11,7 @@ const Component = (props: Props) => {
 
   return (
     <Link href={href}>
-      <a className="ml-8 text-lg font-light text-gray-500">{children}</a>
+      <a className="ml-4 md:ml-6 lg:ml-8 text-lg text-gray-900">{children}</a>
     </Link>
   );
 };

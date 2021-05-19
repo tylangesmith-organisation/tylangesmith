@@ -6,7 +6,7 @@ import Link from "./link";
 const Component = () => (
   <div className="h-16 shadow flex items-center">
     <Container>
-      <div className="mx-2 flex justify-between">
+      <div className="mx-4 flex justify-between">
         <div>
           <Title href="/">Ty Lange-Smith</Title>
         </div>

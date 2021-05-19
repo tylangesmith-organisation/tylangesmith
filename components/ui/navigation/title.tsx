@@ -11,7 +11,7 @@ const Component = (props: Props) => {
 
   return (
     <Link href={href}>
-      <a className="text-lg font-medium text-gray-900">{children}</a>
+      <a className="text-lg font-bold text-gray-900">{children}</a>
     </Link>
   );
 };
