@@ -3,9 +3,7 @@ import Container from "../container/container";
 import Title from "./title";
 import Link from "./link";
 
-export interface Props {}
-
-const Component = (props: Props) => (
+const Component = () => (
   <div className="h-16 shadow flex items-center">
     <Container>
       <div className="mx-2 flex justify-between">
