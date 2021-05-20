@@ -8,7 +8,7 @@ const Component = () => (
     <Container>
       <div className="flex justify-between">
         <div>
-          <Title href="/">Ty Lange-Smith 🙋‍♂️</Title>
+          <Title href="/">Ty Lange-Smith</Title>
         </div>
         <div>
           <Link href="/blog">Blog 💭</Link>
