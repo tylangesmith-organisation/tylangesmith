@@ -56,6 +56,11 @@ const Component = (): JSX.Element => (
           tooling or be the first to market delivering value with velocity and
           confidence.
         </Paragraph>
+        <Paragraph>
+          This website aims to cover a wide range of topics from computer
+          science and engineering to business and entrepreneurship with hopes of
+          delivering top-quality content consumable by a wide audience.
+        </Paragraph>
       </div>
     </Container>
   </StandardLayout>
