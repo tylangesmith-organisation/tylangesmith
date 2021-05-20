@@ -35,7 +35,7 @@ const Component = (): JSX.Element => (
           alt="Crescent Head Beach"
         />
         <Label>
-          A rare site of me doing something other than software stuff
+          A rare sight of me doing something other than software stuff
         </Label>
       </div>
     </Container>
