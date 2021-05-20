@@ -12,7 +12,7 @@ const Component = (props: Props) => {
   return (
     <div>
       <Navigation />
-      <div className="mt-4">{children}</div>
+      <div>{children}</div>
       <Footer />
     </div>
   );

@@ -61,10 +61,8 @@ const Component = (): JSX.Element => (
         engineering, business, and entrepreneurship.
       </Paragraph>
 
-      <Paragraph>
-        <div className="flex items-center justify-center">
-          <Emoji symbol="✌️" label="peace" />
-        </div>
+      <Paragraph className="text-center">
+        <Emoji symbol="✌️" label="peace" />
       </Paragraph>
     </Section>
   </StandardLayout>

@@ -1,13 +1,46 @@
 import React from "react";
 import StandardLayout from "../../layout/standardLayout";
-import Container from "../../ui/container/container";
 import Image from "../../ui/image/image";
 import Label from "../../ui/image/label";
+import Section from "../../ui/section/section";
+import Link from "./link";
+import WorkExperienceTitle from "./workExperienceTitle";
 
 const Component = (): JSX.Element => (
   <StandardLayout>
-    <Container padding={false}>
-      <div className="my-8 md:my-28 mx-auto w-96">
+    <Section>
+      {/* Contact Info */}
+      <div className="flex flex-col items-start mb-2">
+        <h1 className="font-extrabold text-2xl md:text-4xl my-2">
+          Ty Lange-Smith
+        </h1>
+        <Link href="mailto:tylangesmith@gmail.com">tylangesmith@gmail.com</Link>
+        <Link href="https://www.linkedin.com/in/tylangesmith/" newTab>
+          LinkedIn
+        </Link>
+      </div>
+      <div className="max-w-prose">
+        <p className="text-lg">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+        </p>
+      </div>
+    </Section>
+
+    {/* Work Experience */}
+    <Section>
+      <h2 className="text-lg font-extrabold">Work Experience</h2>
+      <WorkExperienceTitle
+        company="nib Group"
+        title="DevOps Engineer"
+        date="2019 - now"
+      />
+    </Section>
+
+    <Section>
+      <div className="w-96 mx-auto">
         <Image
           className="sm:rounded shadow-md"
           lowQualitySource="/hireMe/hire-me-hero-low-res.jpg"
@@ -16,7 +49,7 @@ const Component = (): JSX.Element => (
         />
         <Label>Somewhere in Bali 💭</Label>
       </div>
-    </Container>
+    </Section>
   </StandardLayout>
 );
 
