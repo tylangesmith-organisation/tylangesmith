@@ -11,7 +11,7 @@ const Component = (props: Props) => {
   return (
     <div className="">
       <Navigation />
-      <div className="">{children}</div>
+      <div className="mt-4">{children}</div>
     </div>
   );
 };

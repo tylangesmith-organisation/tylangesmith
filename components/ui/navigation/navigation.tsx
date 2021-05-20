@@ -4,9 +4,9 @@ import Title from "./title";
 import Link from "./link";
 
 const Component = () => (
-  <div className="h-16 shadow flex items-center">
+  <div className="h-16 shadow-md flex items-center">
     <Container>
-      <div className="mx-4 flex justify-between">
+      <div className="flex justify-between">
         <div>
           <Title href="/">Ty Lange-Smith</Title>
         </div>

@@ -1,10 +1,7 @@
 import React from "react";
-import StandardLayout from "../components/layout/standardLayout";
 
-const Page = () => (
-  <StandardLayout>
-    <p>HOME</p>
-  </StandardLayout>
-);
+import Home from "../components/pages/home/controller";
+
+const Page = (): JSX.Element => <Home />;
 
 export default Page;
