@@ -1,10 +1,10 @@
 import React from "react";
-import Image from "next/image";
 import StandardLayout from "../../layout/standardLayout";
 import Container from "../../ui/container/container";
 import Emoji from "../../ui/emoji/emoji";
 import Heading from "./heading";
 import SubHeading from "./subHeading";
+import Image from "../../ui/image/image";
 
 const Component = (): JSX.Element => (
   <StandardLayout>
@@ -29,10 +29,8 @@ const Component = (): JSX.Element => (
       <div className="my-10 md:my-28">
         <Image
           className="sm:rounded"
-          src="/hero.png"
-          layout="responsive"
-          width={16}
-          height={9}
+          lowQualitySource="/hero-low-res.png"
+          highQualitySource="/hero-high-res.png"
           alt="Crescent Head Beach"
         />
       </div>
