@@ -26,7 +26,7 @@ const Component = (): JSX.Element => (
 
     {/* Image Container */}
     <Container padding={false}>
-      <div className="my-10 md:my-28">
+      <div className="my-8 md:my-28">
         <Image
           className="sm:rounded"
           lowQualitySource="/hero-low-res.png"
