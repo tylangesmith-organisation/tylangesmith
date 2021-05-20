@@ -3,7 +3,7 @@ import StandardLayout from "../components/layout/standardLayout";
 
 const Page = () => (
   <StandardLayout>
-    <p>CV</p>
+    <p>hire-me</p>
   </StandardLayout>
 );
 

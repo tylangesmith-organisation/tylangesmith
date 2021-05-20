@@ -12,7 +12,7 @@ const Component = () => (
         </div>
         <div>
           <Link href="/blog">Blog 💭</Link>
-          <Link href="/cv">Hire Me 👨‍💻</Link>
+          <Link href="/hire-me">Hire Me 👨‍💻</Link>
         </div>
       </div>
     </Container>
