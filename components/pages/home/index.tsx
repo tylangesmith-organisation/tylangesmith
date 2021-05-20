@@ -34,6 +34,7 @@ const Component = (): JSX.Element => (
           width={16}
           height={9}
           alt="Crescent Head Beach"
+          unoptimized
         />
       </div>
     </Container>
