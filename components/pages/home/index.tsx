@@ -1,6 +1,5 @@
 import React from "react";
 import StandardLayout from "../../layout/standardLayout";
-import Container from "../../ui/container/container";
 import Emoji from "../../ui/emoji/emoji";
 import Heading from "./heading";
 import SubHeading from "./subHeading";

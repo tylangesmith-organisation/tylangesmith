@@ -14,17 +14,21 @@ const Component = (): JSX.Element => (
         <h1 className="font-extrabold text-2xl md:text-4xl my-2">
           Ty Lange-Smith
         </h1>
-        <Link href="mailto:tylangesmith@gmail.com">tylangesmith@gmail.com</Link>
+        <Link href="mailto:tylangesmith@gmail.com">Email</Link>
+        <Link href="https://github.com/tylangesmith-organisation" newTab>
+          GitHub
+        </Link>
         <Link href="https://www.linkedin.com/in/tylangesmith/" newTab>
           LinkedIn
         </Link>
       </div>
       <div className="max-w-prose">
         <p className="text-lg">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
-          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-          aliquip ex ea commodo consequat.
+          An enthusiastic software engineer with a passion for DevOps, AWS,
+          Data, Machine Learning and Entrepreneurship. Through applying a
+          diverse well-rounded skill set I'm able to solve challenging problems
+          at scale. I'm an advocate for DevOps and have a proven history in
+          enabling companies drive this paradigm shift.
         </p>
       </div>
     </Section>
