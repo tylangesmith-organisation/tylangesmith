@@ -10,7 +10,6 @@ import Label from "../../ui/image/label";
 
 const Component = (): JSX.Element => (
   <StandardLayout>
-    {/* Headings Container */}
     <Container>
       <div className="mt-10 md:mt-28 max-w-prose">
         <Heading>
@@ -26,7 +25,6 @@ const Component = (): JSX.Element => (
       </div>
     </Container>
 
-    {/* Image Container */}
     <Container padding={false}>
       <div className="my-8 md:my-28">
         <Image
