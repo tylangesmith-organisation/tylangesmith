@@ -31,8 +31,8 @@ const Component = (): JSX.Element => (
       <div className="my-8 md:my-28">
         <Image
           className="sm:rounded shadow-md"
-          lowQualitySource="/hero-low-res.png"
-          highQualitySource="/hero-high-res.png"
+          lowQualitySource="/home/home-hero-low-res.png"
+          highQualitySource="/home/home-hero-high-res.png"
           alt="Crescent Head Beach"
         />
         <Label>
@@ -44,22 +44,33 @@ const Component = (): JSX.Element => (
     <Container>
       <div className="my-10 md:my-28">
         <Paragraph>
-          Coming from a strong DevOps background I understand the importance of
-          cultural DevOps adoption. I have a proven history of helping companies
-          drive DevOps culture, engaging with various technical and
-          non-technical stakeholders across a range of different team
-          topologies.
+          Once you spend a few years within this industry it becomes apparent
+          how quickly the landscape changes. Naturally, as a young ambitious
+          engineer, I've always strived to continually learn and keep up with
+          industry trends.
         </Paragraph>
+
         <Paragraph>
-          I have seen firsthand the benefits companies gain from this adoption.
-          Whether it be the ability to pivot and experiment with best in class
-          tooling or be the first to market delivering value with velocity and
-          confidence.
+          However, doing this for a while it becomes apparent that there is{" "}
+          <span className="italic">a lot</span> of content out there. Sometimes
+          the content is delivered well by industry experts and other times it
+          fails to meet the standard you were hoping for.
         </Paragraph>
+
         <Paragraph>
-          This website aims to cover a wide range of topics from computer
-          science and engineering to business and entrepreneurship with hopes of
-          delivering top-quality content consumable by a wide audience.
+          This website is my attempt at delivering high-quality content on a
+          wide range of topics relating to the best industry in the world.
+        </Paragraph>
+
+        <Paragraph>
+          So join me on my journey as I explore all things computer science,
+          engineering, business, and entrepreneurship.
+        </Paragraph>
+
+        <Paragraph>
+          <div className="flex items-center justify-center">
+            <Emoji symbol="✌️" label="peace" />
+          </div>
         </Paragraph>
       </div>
     </Container>

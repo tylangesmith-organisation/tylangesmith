@@ -1,10 +1,7 @@
 import React from "react";
-import StandardLayout from "../components/layout/standardLayout";
 
-const Page = () => (
-  <StandardLayout>
-    <p>hire-me</p>
-  </StandardLayout>
-);
+import HireMe from "../components/pages/hireMe/controller";
+
+const Page = (): JSX.Element => <HireMe />;
 
 export default Page;
