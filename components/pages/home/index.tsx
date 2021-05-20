@@ -5,6 +5,7 @@ import Emoji from "../../ui/emoji/emoji";
 import Heading from "./heading";
 import SubHeading from "./subHeading";
 import Image from "../../ui/image/image";
+import Label from "../../ui/image/label";
 
 const Component = (): JSX.Element => (
   <StandardLayout>
@@ -33,6 +34,9 @@ const Component = (): JSX.Element => (
           highQualitySource="/hero-high-res.png"
           alt="Crescent Head Beach"
         />
+        <Label>
+          A rare site of me doing something other than software stuff
+        </Label>
       </div>
     </Container>
   </StandardLayout>
