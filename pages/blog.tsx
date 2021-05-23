@@ -1,10 +1,7 @@
 import React from "react";
-import StandardLayout from "../components/layout/standardLayout";
 
-const Page = () => (
-  <StandardLayout>
-    <p>BLOG</p>
-  </StandardLayout>
-);
+import Blog from "../components/pages/blog/controller";
+
+const Page = (): JSX.Element => <Blog />;
 
 export default Page;

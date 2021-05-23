@@ -4,16 +4,17 @@ import Footer from "../ui/footer/footer";
 
 export interface Props {
   children: JSX.Element | JSX.Element[] | string;
+  footer?: boolean;
 }
 
 const Component = (props: Props) => {
-  const { children } = props;
+  const { children, footer = true } = props;
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Navigation />
-      <div>{children}</div>
-      <Footer />
+      <div className="flex-grow">{children}</div>
+      {footer && <Footer />}
     </div>
   );
 };
