@@ -1,15 +1,7 @@
-import Link from 'next/link'
+import React from "react";
 
-const Component = () => (
-  <div>
-    <h1>Hello Next.js 👋</h1>
-    <h2>INDEX</h2>
-    <p>
-      <Link href="/about">
-        <a>About</a>
-      </Link>
-    </p>
-  </div>
-)
+import Home from "../components/pages/home/controller";
 
-export default Component
+const Page = (): JSX.Element => <Home />;
+
+export default Page;
