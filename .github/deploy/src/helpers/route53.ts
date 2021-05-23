@@ -1,7 +1,12 @@
-import { Stack } from '@aws-cdk/core';
-import { IDistribution } from '@aws-cdk/aws-cloudfront';
-import { IHostedZone, HostedZone, ARecord, RecordTarget } from '@aws-cdk/aws-route53';
-import { CloudFrontTarget } from '@aws-cdk/aws-route53-targets';
+import { Stack } from "@aws-cdk/core";
+import { IDistribution } from "@aws-cdk/aws-cloudfront";
+import {
+  IHostedZone,
+  HostedZone,
+  ARecord,
+  RecordTarget,
+} from "@aws-cdk/aws-route53";
+import { CloudFrontTarget } from "@aws-cdk/aws-route53-targets";
 
 export interface GetHostedZoneProps {
   scope: Stack;
@@ -11,10 +16,10 @@ export interface GetHostedZoneProps {
 export const getHostedZone = (props: GetHostedZoneProps) => {
   const { scope, domainName } = props;
 
-  return HostedZone.fromLookup(scope, 'hostedZone', {
-    domainName: domainName
-  })
-}
+  return HostedZone.fromLookup(scope, "hostedZone", {
+    domainName: domainName,
+  });
+};
 
 export interface CreateARecordForDistributionProps {
   scope: Stack;
@@ -23,12 +28,14 @@ export interface CreateARecordForDistributionProps {
   distribution: IDistribution;
 }
 
-export const createARecordForDistribution = (props: CreateARecordForDistributionProps) => {
+export const createARecordForDistribution = (
+  props: CreateARecordForDistributionProps
+) => {
   const { scope, hostedZone, subDomainName, distribution } = props;
 
-  new ARecord(scope, 'aRecord', {
+  new ARecord(scope, "aRecord", {
     target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
     zone: hostedZone,
-    recordName: subDomainName
-  })
-}
+    recordName: subDomainName ? subDomainName : "",
+  });
+};
