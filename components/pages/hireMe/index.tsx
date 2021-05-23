@@ -65,8 +65,8 @@ const Component = (): JSX.Element => (
         date="2018 - 2019"
         highlights={[
           "Designed and implemented a wide range of software products within the commodity logistics domain.",
-          "Worked with a variety of full stack technologies within a fast paced agile team environment.",
-          "Introduced numerous interal development tools and processes to increase developer productivity and confidence.",
+          "Worked with a variety of full-stack technologies within a fast-paced agile team environment.",
+          "Introduced numerous internal development tools and processes to increase developer productivity and confidence.",
         ]}
         skills={[
           "software engineering",
@@ -83,8 +83,8 @@ const Component = (): JSX.Element => (
         title="Full Stack Software Engineer"
         date="2017 - 2018"
         highlights={[
-          "One of two engineers working on a large scale web application delivering value to thousands of daily users.",
-          "Worked within a fast paced startup environment, hands on experience with the entire software development lifecycle.",
+          "One of two engineers working on a large-scale web application delivering value to thousands of daily users.",
+          "Worked within a fast-paced startup environment, hands-on experience with the entire software development lifecycle.",
         ]}
         skills={[
           "software engineering",
@@ -100,7 +100,7 @@ const Component = (): JSX.Element => (
         date="2015 - 2017"
         highlights={[
           "The only chosen candidate out of the entire Software Engineering, Computer Science and IT cohort to be awarded this industry scholarship.",
-          "Provided invaluable hands on industry experience early within my software career where I was able to work with numerous experience mentors.",
+          "Provided invaluable hands-on industry experience early within my software career where I was able to work with numerous experienced mentors.",
         ]}
         skills={[
           "software engineering",
