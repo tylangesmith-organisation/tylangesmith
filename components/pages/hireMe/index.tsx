@@ -7,16 +7,22 @@ import Link from "./link";
 import CopyToClipboard from "./copyToClipboard";
 import WorkExperience from "./workExperience";
 import Education from "./education";
+import Emoji from "../../ui/emoji/emoji";
 
 const Component = (): JSX.Element => (
   <StandardLayout>
     {/* Contact Info */}
     <Section>
+      <div className="text-right">
+        <Link href="/hireMe/cv.pdf" newTab>
+          <Emoji label="Download CV" symbol="👉" /> Download CV
+        </Link>
+      </div>
+
       <div className="flex flex-col items-start mb-2">
         <h1 className="font-extrabold text-2xl md:text-4xl my-2">
           Ty Lange-Smith
         </h1>
-
         <CopyToClipboard>tylangesmith@gmail.com</CopyToClipboard>
         <Link href="https://github.com/tylangesmith-organisation" newTab>
           GitHub
@@ -48,7 +54,7 @@ const Component = (): JSX.Element => (
           "Designed, developed, and maintained business-critical infrastructure leveraging best-in-class tooling and modern cloud approaches.",
           "Continually championed DevOps best practices bringing subject matter expertise to both technical and non-technical forums.",
           "Drive the development of internal platform tooling to increase the velocity and confidence when delivering business initiatives while ensuring best practice guard rails.",
-          "Key technical resource in delivering major business projects e.g. on-premise data center to cloud migrations., call center migrations leveraging AWS Connect, and building out data and machine learning capabilities.",
+          "Key technical resource in delivering major business projects e.g. on-premise data center to cloud migrations, call center migrations leveraging AWS Connect, and building out data and machine learning capabilities.",
           "On-call engineer supporting business-critical workloads across a wide array of infrastructure.",
         ]}
         skills={[
@@ -118,7 +124,7 @@ const Component = (): JSX.Element => (
       <Education
         name="The University of Newcastle"
         location="Callaghan, NSW"
-        date="2015 - 2017"
+        date="2014 - 2017"
         highlights={[
           "Bachelor of Engineering (Honours) (Software) with Honours Class I",
         ]}

@@ -2,7 +2,7 @@ import React from "react";
 import Link from "next/link";
 
 export interface Props {
-  children: string;
+  children: JSX.Element | JSX.Element[] | string | any;
   href: string;
   newTab?: boolean;
 }
