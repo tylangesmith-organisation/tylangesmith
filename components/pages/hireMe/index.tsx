@@ -4,6 +4,7 @@ import Image from "../../ui/image/image";
 import Label from "../../ui/image/label";
 import Section from "../../ui/section/section";
 import Link from "./link";
+import CopyToClipboard from "./copyToClipboard";
 import WorkExperience from "./workExperience";
 import Education from "./education";
 
@@ -15,7 +16,8 @@ const Component = (): JSX.Element => (
         <h1 className="font-extrabold text-2xl md:text-4xl my-2">
           Ty Lange-Smith
         </h1>
-        <Link href="mailto:tylangesmith@gmail.com">Email</Link>
+
+        <CopyToClipboard>tylangesmith@gmail.com</CopyToClipboard>
         <Link href="https://github.com/tylangesmith-organisation" newTab>
           GitHub
         </Link>
@@ -123,15 +125,16 @@ const Component = (): JSX.Element => (
       />
     </Section>
 
+    {/* Bottom Image */}
     <Section>
       <div className="w-96 mx-auto">
         <Image
           className="sm:rounded shadow-md"
           lowQualitySource="/hireMe/hire-me-hero-low-res.jpg"
           highQualitySource="/hireMe/hire-me-hero-high-res.jpg"
-          alt="Somewhere in Bali"
+          alt="🏝🏝🏝🏝"
         />
-        <Label>Somewhere in Bali 💭</Label>
+        <Label>🏝🏝🏝🏝</Label>
       </div>
     </Section>
   </StandardLayout>
