@@ -5,19 +5,13 @@ import { createCertificate } from './helpers/certificate'
 import { createDistribution } from './helpers/cloudfront'
 
 export interface Props extends StackProps {
-  domainName: string;
-  subDomainName: string;
+  url: string;
 }
 
 export default class Website extends Stack {
   constructor(scope: App, props: Props) {
     super(scope, 'tylangesmith', props)
-    const { domainName, subDomainName } = props
-    
-    const url = getUrl({
-      domainName,
-      subDomainName
-    })
+    const { url } = props
     
     // Create the bucket to store the static files
     const staticWebsiteBucket = createStaticWebsiteBucket({

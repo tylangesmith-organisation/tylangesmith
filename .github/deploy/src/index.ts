@@ -1,5 +1,5 @@
 import { App } from '@aws-cdk/core'
-import { getSubDomainName } from './helpers/helper'
+import { getSubDomainName, getUrl } from './helpers/helper'
 import Stack from './stack'
 
 if (!process.env.BRANCH_NAME) throw Error('A BRANCH_NAME must be provided...')
@@ -12,14 +12,16 @@ const domainName = process.env.DOMAIN_NAME
 const subDomainName = getSubDomainName({
   branchName
 })
+const url = getUrl({
+  domainName,
+  subDomainName
+})
 
 const app = new App()
 
 new Stack(app, {
   stackName: `tylangesmith-${branchName}`,
-  domainName,
-  subDomainName,
-  branchName,
+  url,
   env: {
     // Need to pass these in to lookup the route53 hostedZone
     account: process.env.CDK_DEFAULT_ACCOUNT,
