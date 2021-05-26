@@ -18,7 +18,9 @@ export const createDistribution = (props: CreateDistributionProps) => {
   return new CloudFrontWebDistribution(scope, "distribution", {
     originConfigs: [
       {
-        s3OriginSource: { s3BucketSource: staticWebsiteBucket },
+        customOriginSource: {
+          domainName: staticWebsiteBucket.bucketWebsiteDomainName
+        },
         behaviors: [{ isDefaultBehavior: true }],
       },
     ],
