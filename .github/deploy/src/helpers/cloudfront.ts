@@ -1,6 +1,6 @@
 import { Stack } from "@aws-cdk/core";
 import { IBucket } from "@aws-cdk/aws-s3";
-import { CloudFrontWebDistribution } from "@aws-cdk/aws-cloudfront";
+import { CloudFrontWebDistribution, OriginProtocolPolicy } from "@aws-cdk/aws-cloudfront";
 import { ICertificate } from "@aws-cdk/aws-certificatemanager";
 
 export interface CreateDistributionProps {
@@ -18,8 +18,9 @@ export const createDistribution = (props: CreateDistributionProps) => {
   return new CloudFrontWebDistribution(scope, "distribution", {
     originConfigs: [
       {
-        s3OriginSource: {
-          s3BucketSource: staticWebsiteBucket
+        customOriginSource: {
+          domainName: staticWebsiteBucket.bucketWebsiteDomainName,
+          originProtocolPolicy: OriginProtocolPolicy.HTTP_ONLY
         },
         behaviors: [{ isDefaultBehavior: true }],
       },
