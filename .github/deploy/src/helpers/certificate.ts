@@ -5,15 +5,14 @@ import { DnsValidatedCertificate } from '@aws-cdk/aws-certificatemanager'
 export interface CreateCertificateProps {
   scope: Stack;
   hostedZone: IHostedZone;
-  domainName: string;
-  subDomainName: string;
+  url: string;
 }
 
 export const createCertificate = (props: CreateCertificateProps): DnsValidatedCertificate => {
-  const { scope, hostedZone, domainName, subDomainName } = props
+  const { scope, hostedZone, url } = props
 
   return new DnsValidatedCertificate(scope, 'certificate', {
-    domainName: subDomainName ? `${subDomainName}.${domainName}` : domainName,
+    domainName: url,
     hostedZone,
     region: 'us-east-1'
   })

@@ -29,6 +29,16 @@ export const createARecordForDistribution = (props: CreateARecordForDistribution
   return new ARecord(scope, 'aRecord', {
     target: RecordTarget.fromAlias(new CloudFrontTarget(distribution)),
     zone: hostedZone,
-    recordName: subDomainName ? subDomainName : ''
+    recordName: subDomainName
   })
+}
+
+export interface GetUrlProps {
+  domainName: string;
+  subDomainName: string;
+}
+
+export const getUrl = (props: GetUrlProps): string => {
+  const { domainName, subDomainName } = props
+  return subDomainName === '' ? `${subDomainName}.${domainName}` : domainName
 }

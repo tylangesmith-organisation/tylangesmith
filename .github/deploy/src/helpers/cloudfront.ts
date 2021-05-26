@@ -7,12 +7,11 @@ export interface CreateDistributionProps {
   scope: Stack;
   staticWebsiteBucket: IBucket;
   certificate: ICertificate;
-  domainName: string;
-  subDomainName: string;
+  url: string;
 }
 
 export const createDistribution = (props: CreateDistributionProps): CloudFrontWebDistribution => {
-  const { scope, staticWebsiteBucket, subDomainName, domainName, certificate } = props
+  const { scope, staticWebsiteBucket, url, certificate } = props
 
   return new CloudFrontWebDistribution(scope, 'distribution', {
     originConfigs: [
@@ -25,7 +24,7 @@ export const createDistribution = (props: CreateDistributionProps): CloudFrontWe
       }
     ],
     viewerCertificate: {
-      aliases: [subDomainName ? `${subDomainName}.${domainName}` : domainName],
+      aliases: [url],
       props: {
         acmCertificateArn: certificate.certificateArn,
         sslSupportMethod: 'sni-only',

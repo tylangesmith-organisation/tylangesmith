@@ -5,14 +5,14 @@ import { IDistribution } from '@aws-cdk/aws-cloudfront'
 
 export interface CreateStaticWebsiteBucketProps {
   scope: Stack;
-  branchName: string;
+  bucketName: string;
 }
 
 export const createStaticWebsiteBucket = (props: CreateStaticWebsiteBucketProps): Bucket => {
-  const { scope, branchName } = props
+  const { scope, bucketName } = props
 
   return new Bucket(scope, 'staticWebsiteBucket', {
-    bucketName: `tylangesmith-${branchName}`,
+    bucketName,
     publicReadAccess: true,
     websiteIndexDocument: 'index.html',
     websiteErrorDocument: '404.html',
