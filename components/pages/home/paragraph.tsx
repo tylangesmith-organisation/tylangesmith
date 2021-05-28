@@ -1,4 +1,3 @@
-import React from "react";
 
 export interface Props {
   children: JSX.Element | JSX.Element[] | string | any;
@@ -6,14 +5,14 @@ export interface Props {
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { children, className } = props;
+  const { children, className } = props
   return (
     <p
       className={`font-medium text-md sm:text-xl md:text-2xl my-3 text-gray-600 ${className}`}
     >
       {children}
     </p>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

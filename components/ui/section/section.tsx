@@ -1,5 +1,4 @@
-import React from "react";
-import Container from "../../ui/container/container";
+import Container from '../../ui/container/container'
 
 export interface Props {
   children: any;
@@ -8,14 +7,14 @@ export interface Props {
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { children, pose = false, padding = true } = props;
+  const { children, pose = false, padding = true } = props
   return (
     <Container padding={padding}>
-      <div className={`my-8 md:my-28 ${pose ? "max-w-prose" : ""}`}>
+      <div className={`my-8 md:my-28 ${pose ? 'max-w-prose' : ''}`}>
         {children}
       </div>
     </Container>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

@@ -1,18 +1,20 @@
 import { App, Stack, StackProps } from '@aws-cdk/core'
-import {createStaticWebsiteBucket, createStaticWebsiteBucketDeployment } from './helpers/bucket'
-import { getHostedZone, createARecordForDistribution, getUrl } from './helpers/route53'
+import { createStaticWebsiteBucket, createStaticWebsiteBucketDeployment } from './helpers/bucket'
+import { getHostedZone, createARecordForDistribution } from './helpers/route53'
 import { createCertificate } from './helpers/certificate'
 import { createDistribution } from './helpers/cloudfront'
 
 export interface Props extends StackProps {
   url: string;
+  domainName: string;
+  subDomainName: string;
 }
 
 export default class Website extends Stack {
-  constructor(scope: App, props: Props) {
+  constructor (scope: App, props: Props) {
     super(scope, 'tylangesmith', props)
-    const { url } = props
-    
+    const { url, domainName, subDomainName } = props
+
     // Create the bucket to store the static files
     const staticWebsiteBucket = createStaticWebsiteBucket({
       scope: this,

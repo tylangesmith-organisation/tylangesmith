@@ -1,6 +1,5 @@
-import React from "react";
-import Navigation from "../ui/navigation/navigation";
-import Footer from "../ui/footer/footer";
+import Navigation from '../ui/navigation/navigation'
+import Footer from '../ui/footer/footer'
 
 export interface Props {
   children: JSX.Element | JSX.Element[] | string;
@@ -8,7 +7,7 @@ export interface Props {
 }
 
 const Component = (props: Props) => {
-  const { children, footer = true } = props;
+  const { children, footer = true } = props
 
   return (
     <div className="flex flex-col h-screen">
@@ -16,7 +15,7 @@ const Component = (props: Props) => {
       <div className="flex-grow">{children}</div>
       {footer && <Footer />}
     </div>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

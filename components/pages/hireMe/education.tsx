@@ -1,5 +1,4 @@
-import React from "react";
-import EducationTitle from "./educationTitle";
+import EducationTitle from './educationTitle'
 
 export interface Props {
   name: string;
@@ -9,7 +8,7 @@ export interface Props {
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { name, location, date, highlights } = props;
+  const { name, location, date, highlights } = props
   return (
     <div className="mb-8 md:mb-14">
       <EducationTitle name={name} location={location} date={date} />
@@ -19,7 +18,7 @@ const Component = (props: Props): JSX.Element => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

@@ -1,11 +1,10 @@
-import React from "react";
 
 export interface Props {
   skills: string[];
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { skills } = props;
+  const { skills } = props
   return (
     <div className="flex flex-wrap items-center my-2">
       {skills.map((skill, index) => (
@@ -17,7 +16,7 @@ const Component = (props: Props): JSX.Element => {
         </div>
       ))}
     </div>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

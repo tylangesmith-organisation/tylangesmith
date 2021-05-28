@@ -1,7 +1,6 @@
-import React from "react";
-import Container from "../../ui/container/container";
-import Link from "./link";
-import Emoji from "../emoji/emoji";
+import Container from '../../ui/container/container'
+import Link from './link'
+import Emoji from '../emoji/emoji'
 
 const Component = (): JSX.Element => (
   <div className="bg-gray-50">
@@ -9,7 +8,7 @@ const Component = (): JSX.Element => (
       <div className="py-10 md:py-28">
         <div className="flex items-center justify-center mb-2">
           <p className="text-gray-500 font-light">
-            See <Emoji symbol="👀" label="eye" /> what I'm up to
+            See <Emoji symbol="👀" label="eye" /> what I&apos;m up to
           </p>
         </div>
         <div className="flex flex-col items-center">
@@ -23,6 +22,6 @@ const Component = (): JSX.Element => (
       </div>
     </Container>
   </div>
-);
+)
 
-export default Component;
+export default Component

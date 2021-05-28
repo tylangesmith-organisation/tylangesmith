@@ -1,5 +1,4 @@
-import React from "react";
-import Link from "next/link";
+import Link from 'next/link'
 
 export interface Props {
   children: string;
@@ -7,13 +6,13 @@ export interface Props {
 }
 
 const Component = (props: Props) => {
-  const { children, href } = props;
+  const { children, href } = props
 
   return (
     <Link href={href}>
       <a className="text-lg font-bold text-gray-900">{children}</a>
     </Link>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component
