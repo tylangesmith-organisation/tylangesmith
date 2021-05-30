@@ -25,10 +25,6 @@ jobs:
         with:
           node-version: "14"
       - run: .github/deploy/scripts/lint_test_build_cdk.sh
-      - uses: actions/upload-artifact@v2
-        with:
-          name: build.zip
-          path: build.zip
 
   deploy:
     name: Deploy
