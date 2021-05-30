@@ -32,7 +32,7 @@ const Component = (props: Props) => {
         icon={faClipboard}
       /> */}
       <span
-        className={` bg-black text-white text-sm rounded px-3 py-1 mx-2 transition ease-out duration-150 ${
+        className={` bg-black text-white text-sm rounded px-3 py-1 mx-2 transition ease-out duration-150 opacity-0 ${
           popoverVisible ? 'opacity-100' : 'opacity-0'
         }`}
       >
