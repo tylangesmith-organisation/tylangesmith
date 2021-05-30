@@ -1,7 +1,6 @@
-import React from "react";
-import StandardLayout from "../../layout/standardLayout";
-import Section from "../../ui/section/section";
-import Emoji from "../../ui/emoji/emoji";
+import StandardLayout from '../../layout/standardLayout'
+import Section from '../../ui/section/section'
+import Emoji from '../../ui/emoji/emoji'
 
 const Component = (): JSX.Element => (
   <StandardLayout>
@@ -10,11 +9,11 @@ const Component = (): JSX.Element => (
         Coming Soon
       </h1>
       <h2 className="font-medium text-xl md:text-2xl my-3 text-gray-600">
-        Ty's hard at work coding <Emoji symbol="👨‍💻" label="coding" />{" "}
+        Ty&apos;s hard at work coding <Emoji symbol="👨‍💻" label="coding" />{' '}
         <Emoji symbol="🛠" label="construction" />
       </h2>
     </Section>
   </StandardLayout>
-);
+)
 
-export default Component;
+export default Component

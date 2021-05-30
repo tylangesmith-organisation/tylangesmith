@@ -1,7 +1,5 @@
-import React from "react";
+import Index from './index'
 
-import Index from "./index";
+const Component = (): JSX.Element => <Index />
 
-const Component = (): JSX.Element => <Index />;
-
-export default Component;
+export default Component

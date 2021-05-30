@@ -1,4 +1,3 @@
-import React from "react";
 
 export interface Props {
   name: string;
@@ -7,7 +6,7 @@ export interface Props {
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { name, location, date } = props;
+  const { name, location, date } = props
   return (
     <div className="flex flex-wrap flex-col mb-2 md:flex-row">
       <h3 className="font-semibold mr-2">
@@ -17,7 +16,7 @@ const Component = (props: Props): JSX.Element => {
         {date}
       </h3>
     </div>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

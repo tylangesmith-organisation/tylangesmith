@@ -1,5 +1,4 @@
-import React from "react";
-import { useProgressiveImageLoad } from "../../hooks/progressiveImageLoad/useProgressiveImageLoad";
+import { useProgressiveImageLoad } from '../../hooks/progressiveImageLoad/useProgressiveImageLoad'
 
 export interface Props {
   className?: string;
@@ -9,24 +8,24 @@ export interface Props {
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { lowQualitySource, highQualitySource, className, alt } = props;
+  const { lowQualitySource, highQualitySource, className, alt } = props
 
   const { source, blur } = useProgressiveImageLoad({
     lowQualitySource,
-    highQualitySource,
-  });
+    highQualitySource
+  })
 
   return (
     <img
       className={`${className} w-full ${
         blur
-          ? "filter blur-md transition duration-500"
-          : "filter blur-0 transition duration-500"
+          ? 'filter blur-md transition duration-500'
+          : 'filter blur-0 transition duration-500'
       }`}
       src={source}
       alt={alt}
     />
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

@@ -1,20 +1,19 @@
-import { Stack } from "@aws-cdk/core";
-import { IHostedZone } from "@aws-cdk/aws-route53";
-import { DnsValidatedCertificate } from "@aws-cdk/aws-certificatemanager";
+import { Stack } from '@aws-cdk/core'
+import { IHostedZone } from '@aws-cdk/aws-route53'
+import { DnsValidatedCertificate } from '@aws-cdk/aws-certificatemanager'
 
 export interface CreateCertificateProps {
   scope: Stack;
   hostedZone: IHostedZone;
-  domainName: string;
-  subDomainName: string;
+  url: string;
 }
 
-export const createCertificate = (props: CreateCertificateProps) => {
-  const { scope, hostedZone, domainName, subDomainName } = props;
+export const createCertificate = (props: CreateCertificateProps): DnsValidatedCertificate => {
+  const { scope, hostedZone, url } = props
 
-  return new DnsValidatedCertificate(scope, "certificate", {
-    domainName: subDomainName ? `${subDomainName}.${domainName}` : domainName,
+  return new DnsValidatedCertificate(scope, 'certificate', {
+    domainName: url,
     hostedZone,
-    region: "us-east-1",
-  });
-};
+    region: 'us-east-1'
+  })
+}

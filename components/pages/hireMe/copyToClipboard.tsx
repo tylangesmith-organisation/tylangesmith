@@ -1,25 +1,25 @@
-import React, { useState } from "react";
-import { useCopyToClipboard } from "react-use";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClipboard } from "@fortawesome/free-regular-svg-icons";
-import { faCheck } from "@fortawesome/free-solid-svg-icons";
+import { useState } from 'react'
+import { useCopyToClipboard } from 'react-use'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faClipboard } from '@fortawesome/free-regular-svg-icons'
+import { faCheck } from '@fortawesome/free-solid-svg-icons'
 
 export interface Props {
   children: string;
 }
 
 const Component = (props: Props) => {
-  const { children } = props;
-  const [popoverVisible, setPopoverVisible] = useState(false);
-  const [, copyToClipboard] = useCopyToClipboard();
+  const { children } = props
+  const [popoverVisible, setPopoverVisible] = useState(false)
+  const [, copyToClipboard] = useCopyToClipboard()
 
   const handleOnClick = (valueToCopy: string) => {
-    copyToClipboard(valueToCopy);
-    setPopoverVisible(true);
+    copyToClipboard(valueToCopy)
+    setPopoverVisible(true)
     setTimeout(() => {
-      setPopoverVisible(false);
-    }, 3000);
-  };
+      setPopoverVisible(false)
+    }, 3000)
+  }
 
   return (
     <button
@@ -33,7 +33,7 @@ const Component = (props: Props) => {
       />
       <span
         className={` bg-black text-white text-sm rounded px-3 py-1 mx-2 transition ease-out duration-150 ${
-          popoverVisible ? "opacity-100" : "opacity-0"
+          popoverVisible ? 'opacity-100' : 'opacity-0'
         }`}
       >
         <FontAwesomeIcon
@@ -43,7 +43,7 @@ const Component = (props: Props) => {
         Copied!
       </span>
     </button>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

@@ -1,24 +1,23 @@
-import React from "react";
-import StandardLayout from "../../layout/standardLayout";
-import Emoji from "../../ui/emoji/emoji";
-import Heading from "./heading";
-import SubHeading from "./subHeading";
-import Paragraph from "./paragraph";
-import Image from "../../ui/image/image";
-import Label from "../../ui/image/label";
-import Section from "../../ui/section/section";
+import StandardLayout from '../../layout/standardLayout'
+import Emoji from '../../ui/emoji/emoji'
+import Heading from './heading'
+import SubHeading from './subHeading'
+import Paragraph from './paragraph'
+import Image from '../../ui/image/image'
+import Label from '../../ui/image/label'
+import Section from '../../ui/section/section'
 
 const Component = (): JSX.Element => (
   <StandardLayout>
     <Section pose>
       <Heading>
-        Hey <Emoji symbol="👋" label="wave emoji" />, I'm Ty Lange-Smith. I'm a
+        Hey <Emoji symbol="👋" label="wave emoji" />, I&apos;m Ty Lange-Smith. I&apos;m a
         software engineer based in Australia.
       </Heading>
 
       <SubHeading>
-        Those who know me would say I'm passionate about DevOps, AWS, Data,
-        Machine Learning and Entrepreneurship{" "}
+        Those who know me would say I&apos;m passionate about DevOps, AWS, Data,
+        Machine Learning and Entrepreneurship{' '}
         <Emoji symbol="🚀" label="rocket emoji" />
       </SubHeading>
     </Section>
@@ -39,12 +38,12 @@ const Component = (): JSX.Element => (
       <Paragraph>
         Once you spend a few years within this industry it becomes apparent how
         quickly the landscape changes. Naturally, as a young ambitious engineer,
-        I've always strived to continually learn and keep up with industry
+        I&apos;ve always strived to continually learn and keep up with industry
         trends.
       </Paragraph>
 
       <Paragraph>
-        However, doing this for a while it becomes apparent that there is{" "}
+        However, doing this for a while it becomes apparent that there is{' '}
         <span className="italic">a lot</span> of content out there. Sometimes
         the content is delivered well by industry experts and other times it
         fails to meet the standard you were hoping for.
@@ -65,6 +64,6 @@ const Component = (): JSX.Element => (
       </Paragraph>
     </Section>
   </StandardLayout>
-);
+)
 
-export default Component;
+export default Component

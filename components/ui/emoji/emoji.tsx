@@ -1,4 +1,3 @@
-import React from "react";
 
 export interface Props {
   label?: string;
@@ -6,17 +5,17 @@ export interface Props {
 }
 
 const Component = (props: Props) => {
-  const { label, symbol } = props;
+  const { label, symbol } = props
 
   return (
     <span
       role="img"
-      aria-label={label ? label : ""}
+      aria-label={label || ''}
       aria-hidden={label === undefined}
     >
       {symbol}
     </span>
-  );
-};
+  )
+}
 
-export default Component;
+export default Component

@@ -1,7 +1,6 @@
-import React from "react";
-import Container from "../container/container";
-import Title from "./title";
-import Link from "./link";
+import Container from '../container/container'
+import Title from './title'
+import Link from './link'
 
 const Component = () => (
   <div className="h-16 shadow-md flex items-center flex-shrink-0">
@@ -17,6 +16,6 @@ const Component = () => (
       </div>
     </Container>
   </div>
-);
+)
 
-export default Component;
+export default Component
