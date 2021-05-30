@@ -18,5 +18,5 @@ export interface GetUrlProps {
 
 export const getUrl = (props: GetUrlProps): string => {
   const { domainName, subDomainName } = props
-  return subDomainName === '' ? `${subDomainName}.${domainName}` : domainName
+  return subDomainName === '' ? domainName : `${subDomainName}.${domainName}`
 }
