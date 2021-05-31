@@ -7,7 +7,7 @@ cd .github/deploy
 
 # Install our npm dependencies
 echo "--- 🚀 Installing npm dependencies..."
-npm i
+npm ci
 
 echo "--- 🚀 Run lint..."
 npm run lint

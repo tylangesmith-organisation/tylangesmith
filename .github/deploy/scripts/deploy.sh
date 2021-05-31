@@ -11,7 +11,7 @@ unzip -q build.zip
 
 # Install our npm dependencies
 echo "--- 🚀 Installing npm dependencies..."
-npm i
+npm ci
 
 # Deploy the cdk stack
 echo "--- 🚀 Deploying CDK stack..."
