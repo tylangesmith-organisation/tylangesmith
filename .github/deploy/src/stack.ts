@@ -2,6 +2,7 @@ import { App, Stack, StackProps } from '@aws-cdk/core'
 import { createStaticWebsiteBucket, createStaticWebsiteBucketDeployment } from './helpers/bucket'
 import { getHostedZone, createARecordForDistribution } from './helpers/route53'
 import { createCertificate } from './helpers/certificate'
+import { createFunction } from './helpers/lambda'
 import { createDistribution } from './helpers/cloudfront'
 
 export interface Props extends StackProps {
@@ -33,11 +34,18 @@ export default class Website extends Stack {
       url
     })
 
+    const mapperFunction = createFunction({
+      scope: this,
+      handler: 'mapperFunction.handler',
+      name: 'mapper'
+    })
+
     const distribution = createDistribution({
       scope: this,
       staticWebsiteBucket,
       certificate,
-      url
+      url,
+      mapperFunction
     })
 
     createARecordForDistribution({

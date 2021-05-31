@@ -6,12 +6,10 @@ import Paragraph from './paragraph'
 import Image from '../../ui/image/image'
 import Label from '../../ui/image/label'
 import Section from '../../ui/section/section'
-import CopyToClipboard from '../hireMe/copyToClipboard'
 
 const Component = (): JSX.Element => (
   <StandardLayout>
     <Section pose>
-    <CopyToClipboard>tylangesmith@gmail.com</CopyToClipboard>
       <Heading>
         Hey <Emoji symbol="👋" label="wave emoji" />, I&apos;m Ty Lange-Smith. I&apos;m a
         software engineer based in Australia.
