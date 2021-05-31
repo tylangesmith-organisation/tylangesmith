@@ -31,7 +31,7 @@ const Component = (props: Props) => {
           </svg>
         </div>
       </button>
-      <div className={`flex items-center bg-black text-white text-sm rounded px-2 py-1 mx-2 transition ${popoverVisible ? 'opacity-100' : 'opacity-0 ease-out duration-150'}`}>
+      <div className={`flex items-center bg-black text-white text-sm rounded px-2 py-1 mx-2 ${popoverVisible ? 'opacity-100' : 'opacity-0 transition ease-out duration-150'}`}>
         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 font-bold mr-1 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
         </svg>
