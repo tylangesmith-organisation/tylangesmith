@@ -16,7 +16,7 @@ export const createFunctionVersion = (props: CreateFunctionVersionProps): Versio
     handler
   })
 
-  return new Version(scope, '', {
+  return new Version(scope, `${name}-function-version`, {
     lambda
   })
 }
