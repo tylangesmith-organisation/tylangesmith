@@ -2,18 +2,18 @@ import { Stack } from '@aws-cdk/core'
 import { IBucket } from '@aws-cdk/aws-s3'
 import { CloudFrontWebDistribution, OriginProtocolPolicy, LambdaEdgeEventType } from '@aws-cdk/aws-cloudfront'
 import { ICertificate } from '@aws-cdk/aws-certificatemanager'
-import { IFunction } from '@aws-cdk/aws-lambda'
+import { IVersion } from '@aws-cdk/aws-lambda'
 
 export interface CreateDistributionProps {
   scope: Stack;
   staticWebsiteBucket: IBucket;
   certificate: ICertificate;
   url: string;
-  mapperFunction: IFunction
+  edgeFunctionVersion: IVersion
 }
 
 export const createDistribution = (props: CreateDistributionProps): CloudFrontWebDistribution => {
-  const { scope, staticWebsiteBucket, certificate, url, mapperFunction } = props
+  const { scope, staticWebsiteBucket, certificate, url, edgeFunctionVersion } = props
 
   return new CloudFrontWebDistribution(scope, 'distribution', {
     originConfigs: [
@@ -27,7 +27,7 @@ export const createDistribution = (props: CreateDistributionProps): CloudFrontWe
             isDefaultBehavior: true,
             lambdaFunctionAssociations: [
               {
-                lambdaFunction: mapperFunction.latestVersion,
+                lambdaFunction: edgeFunctionVersion,
                 eventType: LambdaEdgeEventType.ORIGIN_REQUEST
               }
             ]

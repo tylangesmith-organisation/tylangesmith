@@ -1,18 +1,22 @@
 import { Stack } from '@aws-cdk/core'
-import { Function, Runtime, AssetCode } from '@aws-cdk/aws-lambda'
+import { Function, Runtime, AssetCode, Version } from '@aws-cdk/aws-lambda'
 
-export interface CreateFunctionProps {
+export interface CreateFunctionVersionProps {
   scope: Stack;
   name: string;
   handler: string;
 }
 
-export const createFunction = (props: CreateFunctionProps): Function => {
+export const createFunctionVersion = (props: CreateFunctionVersionProps): Version => {
   const { scope, name, handler } = props
 
-  return new Function(scope, `${name}-function`, {
+  const lambda = new Function(scope, `${name}-function`, {
     runtime: Runtime.NODEJS_14_X,
     code: new AssetCode('./src/functions'),
     handler
+  })
+
+  return new Version(scope, '', {
+    lambda
   })
 }
