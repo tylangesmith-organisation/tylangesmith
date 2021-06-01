@@ -525,9 +525,67 @@ Object {
       },
       "Type": "AWS::CloudFront::Distribution",
     },
+    "mapperexecutionroleD5DDF1F5": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Array [
+                  "lambda.amazonaws.com",
+                  "edgelambda.amazonaws.com",
+                ],
+              },
+            },
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "edgelambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "mapperexecutionroleDefaultPolicyEC553C22": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "mapperexecutionroleDefaultPolicyEC553C22",
+        "Roles": Array [
+          Object {
+            "Ref": "mapperexecutionroleD5DDF1F5",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "mapperfunction80B2CA22": Object {
       "DependsOn": Array [
-        "mapperfunctionServiceRoleDCB0272D",
+        "mapperexecutionroleDefaultPolicyEC553C22",
+        "mapperexecutionroleD5DDF1F5",
       ],
       "Properties": Object {
         "Code": Object {
@@ -571,51 +629,13 @@ Object {
         "Handler": "mapperFunction.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "mapperfunctionServiceRoleDCB0272D",
+            "mapperexecutionroleD5DDF1F5",
             "Arn",
           ],
         },
         "Runtime": "nodejs14.x",
       },
       "Type": "AWS::Lambda::Function",
-    },
-    "mapperfunctionServiceRoleDCB0272D": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "edgelambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-              ],
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
     },
     "mapperfunctionversionB9F26EB1": Object {
       "Properties": Object {
@@ -732,7 +752,7 @@ Object {
     "staticWebsiteBucketF3428350": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
-        "BucketName": "tylangesmith.com-us-east-1",
+        "BucketName": "tylangesmith.com",
         "WebsiteConfiguration": Object {
           "ErrorDocument": "404.html",
           "IndexDocument": "index.html",
@@ -1302,9 +1322,67 @@ Object {
       },
       "Type": "AWS::CloudFront::Distribution",
     },
+    "mapperexecutionroleD5DDF1F5": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Array [
+                  "lambda.amazonaws.com",
+                  "edgelambda.amazonaws.com",
+                ],
+              },
+            },
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "edgelambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "mapperexecutionroleDefaultPolicyEC553C22": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "mapperexecutionroleDefaultPolicyEC553C22",
+        "Roles": Array [
+          Object {
+            "Ref": "mapperexecutionroleD5DDF1F5",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
     "mapperfunction80B2CA22": Object {
       "DependsOn": Array [
-        "mapperfunctionServiceRoleDCB0272D",
+        "mapperexecutionroleDefaultPolicyEC553C22",
+        "mapperexecutionroleD5DDF1F5",
       ],
       "Properties": Object {
         "Code": Object {
@@ -1348,51 +1426,13 @@ Object {
         "Handler": "mapperFunction.handler",
         "Role": Object {
           "Fn::GetAtt": Array [
-            "mapperfunctionServiceRoleDCB0272D",
+            "mapperexecutionroleD5DDF1F5",
             "Arn",
           ],
         },
         "Runtime": "nodejs14.x",
       },
       "Type": "AWS::Lambda::Function",
-    },
-    "mapperfunctionServiceRoleDCB0272D": Object {
-      "Properties": Object {
-        "AssumeRolePolicyDocument": Object {
-          "Statement": Array [
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "lambda.amazonaws.com",
-              },
-            },
-            Object {
-              "Action": "sts:AssumeRole",
-              "Effect": "Allow",
-              "Principal": Object {
-                "Service": "edgelambda.amazonaws.com",
-              },
-            },
-          ],
-          "Version": "2012-10-17",
-        },
-        "ManagedPolicyArns": Array [
-          Object {
-            "Fn::Join": Array [
-              "",
-              Array [
-                "arn:",
-                Object {
-                  "Ref": "AWS::Partition",
-                },
-                ":iam::aws:policy/service-role/AWSLambdaBasicExecutionRole",
-              ],
-            ],
-          },
-        ],
-      },
-      "Type": "AWS::IAM::Role",
     },
     "mapperfunctionversionB9F26EB1": Object {
       "Properties": Object {
@@ -1509,7 +1549,7 @@ Object {
     "staticWebsiteBucketF3428350": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
-        "BucketName": "blog.tylangesmith.com-us-east-1",
+        "BucketName": "blog.tylangesmith.com",
         "WebsiteConfiguration": Object {
           "ErrorDocument": "404.html",
           "IndexDocument": "index.html",

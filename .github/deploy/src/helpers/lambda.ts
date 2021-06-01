@@ -20,7 +20,8 @@ export const createFunctionVersion = (props: CreateFunctionVersionProps): Versio
 
   executionRole.addToPolicy(new PolicyStatement({
     effect: Effect.ALLOW,
-    actions: ['sts:AssumeRole']
+    actions: ['sts:AssumeRole'],
+    resources: ['*']
   }))
 
   executionRole.addToPolicy(new PolicyStatement({
