@@ -19,7 +19,7 @@ export default class Website extends Stack {
     // Create the bucket to store the static files
     const staticWebsiteBucket = createStaticWebsiteBucket({
       scope: this,
-      bucketName: url
+      bucketName: `${url}-${scope.region}`
     })
 
     // Create the CDN
