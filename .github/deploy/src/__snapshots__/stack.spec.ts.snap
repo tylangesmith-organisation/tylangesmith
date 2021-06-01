@@ -732,7 +732,7 @@ Object {
     "staticWebsiteBucketF3428350": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
-        "BucketName": "tylangesmith.com",
+        "BucketName": "tylangesmith.com-us-east-1",
         "WebsiteConfiguration": Object {
           "ErrorDocument": "404.html",
           "IndexDocument": "index.html",
@@ -1509,7 +1509,7 @@ Object {
     "staticWebsiteBucketF3428350": Object {
       "DeletionPolicy": "Delete",
       "Properties": Object {
-        "BucketName": "blog.tylangesmith.com",
+        "BucketName": "blog.tylangesmith.com-us-east-1",
         "WebsiteConfiguration": Object {
           "ErrorDocument": "404.html",
           "IndexDocument": "index.html",

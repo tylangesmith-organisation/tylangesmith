@@ -26,7 +26,10 @@ describe('Stack', () => {
     const stack = new Stack(app, {
       url,
       domainName,
-      subDomainName
+      subDomainName,
+      env: {
+        region: 'us-east-1'
+      }
     })
 
     // Assert
@@ -44,7 +47,10 @@ describe('Stack', () => {
     const stack = new Stack(app, {
       url,
       domainName,
-      subDomainName
+      subDomainName,
+      env: {
+        region: 'us-east-1'
+      }
     })
 
     // Assert
