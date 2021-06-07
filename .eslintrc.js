@@ -7,7 +7,8 @@ module.exports = {
   },
   extends: [
     'plugin:react/recommended',
-    'standard'
+    'standard',
+    'eslint:recommended'
   ],
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -23,7 +24,8 @@ module.exports = {
   ],
   rules: {
     'no-new': 'off',
-    'react/react-in-jsx-scope': 'off'
+    'react/react-in-jsx-scope': 'off',
+    'react/jsx-indent': ['error', 2]
   },
   globals: {
     React: true,

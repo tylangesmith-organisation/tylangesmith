@@ -37,6 +37,18 @@ Object {
       "Description": "S3 key for asset version \\"9237631b006453b8d2b275e61053dbf9c1ec0da492720b99a9d83ce3b802c656\\"",
       "Type": "String",
     },
+    "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cArtifactHashBEAA5C03": Object {
+      "Description": "Artifact hash for asset \\"afa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913c\\"",
+      "Type": "String",
+    },
+    "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3Bucket5F35CB14": Object {
+      "Description": "S3 bucket for asset \\"afa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913c\\"",
+      "Type": "String",
+    },
+    "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3VersionKey940B5E47": Object {
+      "Description": "S3 key for asset version \\"afa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913c\\"",
+      "Type": "String",
+    },
     "AssetParametersc24b999656e4fe6c609c31bae56a1cf4717a405619c3aa6ba1bc686b8c2c86cfArtifactHash85F58E48": Object {
       "Description": "Artifact hash for asset \\"c24b999656e4fe6c609c31bae56a1cf4717a405619c3aa6ba1bc686b8c2c86cf\\"",
       "Type": "String",
@@ -450,6 +462,14 @@ Object {
               },
               "QueryString": false,
             },
+            "LambdaFunctionAssociations": Array [
+              Object {
+                "EventType": "origin-request",
+                "LambdaFunctionARN": Object {
+                  "Ref": "mapperfunctionversionB9F26EB1",
+                },
+              },
+            ],
             "TargetOriginId": "origin1",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
@@ -504,6 +524,126 @@ Object {
         },
       },
       "Type": "AWS::CloudFront::Distribution",
+    },
+    "mapperexecutionroleD5DDF1F5": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Array [
+                  "lambda.amazonaws.com",
+                  "edgelambda.amazonaws.com",
+                ],
+              },
+            },
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "edgelambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "mapperexecutionroleDefaultPolicyEC553C22": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "mapperexecutionroleDefaultPolicyEC553C22",
+        "Roles": Array [
+          Object {
+            "Ref": "mapperexecutionroleD5DDF1F5",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "mapperfunction80B2CA22": Object {
+      "DependsOn": Array [
+        "mapperexecutionroleDefaultPolicyEC553C22",
+        "mapperexecutionroleD5DDF1F5",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3Bucket5F35CB14",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3VersionKey940B5E47",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3VersionKey940B5E47",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "mapperFunction.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "mapperexecutionroleD5DDF1F5",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "mapperfunctionversionB9F26EB1": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "mapperfunction80B2CA22",
+        },
+      },
+      "Type": "AWS::Lambda::Version",
     },
     "staticWebsiteBucketDeploymentAwsCliLayer92C42D70": Object {
       "Properties": Object {
@@ -692,6 +832,18 @@ Object {
     },
     "AssetParameters9237631b006453b8d2b275e61053dbf9c1ec0da492720b99a9d83ce3b802c656S3VersionKeyEE13941B": Object {
       "Description": "S3 key for asset version \\"9237631b006453b8d2b275e61053dbf9c1ec0da492720b99a9d83ce3b802c656\\"",
+      "Type": "String",
+    },
+    "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cArtifactHashBEAA5C03": Object {
+      "Description": "Artifact hash for asset \\"afa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913c\\"",
+      "Type": "String",
+    },
+    "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3Bucket5F35CB14": Object {
+      "Description": "S3 bucket for asset \\"afa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913c\\"",
+      "Type": "String",
+    },
+    "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3VersionKey940B5E47": Object {
+      "Description": "S3 key for asset version \\"afa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913c\\"",
       "Type": "String",
     },
     "AssetParametersc24b999656e4fe6c609c31bae56a1cf4717a405619c3aa6ba1bc686b8c2c86cfArtifactHash85F58E48": Object {
@@ -1107,6 +1259,14 @@ Object {
               },
               "QueryString": false,
             },
+            "LambdaFunctionAssociations": Array [
+              Object {
+                "EventType": "origin-request",
+                "LambdaFunctionARN": Object {
+                  "Ref": "mapperfunctionversionB9F26EB1",
+                },
+              },
+            ],
             "TargetOriginId": "origin1",
             "ViewerProtocolPolicy": "redirect-to-https",
           },
@@ -1161,6 +1321,126 @@ Object {
         },
       },
       "Type": "AWS::CloudFront::Distribution",
+    },
+    "mapperexecutionroleD5DDF1F5": Object {
+      "Properties": Object {
+        "AssumeRolePolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": Array [
+                  "lambda.amazonaws.com",
+                  "edgelambda.amazonaws.com",
+                ],
+              },
+            },
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Principal": Object {
+                "Service": "edgelambda.amazonaws.com",
+              },
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+      },
+      "Type": "AWS::IAM::Role",
+    },
+    "mapperexecutionroleDefaultPolicyEC553C22": Object {
+      "Properties": Object {
+        "PolicyDocument": Object {
+          "Statement": Array [
+            Object {
+              "Action": "sts:AssumeRole",
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+            Object {
+              "Action": Array [
+                "logs:CreateLogStream",
+                "logs:PutLogEvents",
+                "logs:CreateLogGroup",
+              ],
+              "Effect": "Allow",
+              "Resource": "*",
+            },
+          ],
+          "Version": "2012-10-17",
+        },
+        "PolicyName": "mapperexecutionroleDefaultPolicyEC553C22",
+        "Roles": Array [
+          Object {
+            "Ref": "mapperexecutionroleD5DDF1F5",
+          },
+        ],
+      },
+      "Type": "AWS::IAM::Policy",
+    },
+    "mapperfunction80B2CA22": Object {
+      "DependsOn": Array [
+        "mapperexecutionroleDefaultPolicyEC553C22",
+        "mapperexecutionroleD5DDF1F5",
+      ],
+      "Properties": Object {
+        "Code": Object {
+          "S3Bucket": Object {
+            "Ref": "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3Bucket5F35CB14",
+          },
+          "S3Key": Object {
+            "Fn::Join": Array [
+              "",
+              Array [
+                Object {
+                  "Fn::Select": Array [
+                    0,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3VersionKey940B5E47",
+                        },
+                      ],
+                    },
+                  ],
+                },
+                Object {
+                  "Fn::Select": Array [
+                    1,
+                    Object {
+                      "Fn::Split": Array [
+                        "||",
+                        Object {
+                          "Ref": "AssetParametersafa996ab63396ad3be2d14e0bc1b971f946fd1765151a78ec974981cd0c5913cS3VersionKey940B5E47",
+                        },
+                      ],
+                    },
+                  ],
+                },
+              ],
+            ],
+          },
+        },
+        "Handler": "mapperFunction.handler",
+        "Role": Object {
+          "Fn::GetAtt": Array [
+            "mapperexecutionroleD5DDF1F5",
+            "Arn",
+          ],
+        },
+        "Runtime": "nodejs14.x",
+      },
+      "Type": "AWS::Lambda::Function",
+    },
+    "mapperfunctionversionB9F26EB1": Object {
+      "Properties": Object {
+        "FunctionName": Object {
+          "Ref": "mapperfunction80B2CA22",
+        },
+      },
+      "Type": "AWS::Lambda::Version",
     },
     "staticWebsiteBucketDeploymentAwsCliLayer92C42D70": Object {
       "Properties": Object {

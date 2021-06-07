@@ -4,7 +4,7 @@ set -euo pipefail
 
 # Install our npm dependencies
 echo "--- 🚀 Installing npm dependencies..."
-npm i
+npm ci
 
 echo "--- 🚀 Run next build..."
 npm run build

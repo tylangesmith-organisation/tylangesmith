@@ -33,7 +33,7 @@ jobs:
     concurrency: aws-deploy-step
     env:
       ACCOUNT_ID: ${{ secrets.ACCOUNT_ID }}
-      AWS_DEFAULT_REGION: ap-southeast-2
+      AWS_DEFAULT_REGION: us-east-1
       DOMAIN_NAME: tylangesmith.com
     steps:
       - uses: actions/checkout@v2
