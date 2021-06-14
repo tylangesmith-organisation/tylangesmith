@@ -9,11 +9,11 @@ export interface CreateDistributionProps {
   staticWebsiteBucket: IBucket;
   certificate: ICertificate;
   url: string;
-  edgeFunctionVersion: IVersion
+  edgeLambdaFunction: IVersion
 }
 
 export const createDistribution = (props: CreateDistributionProps): CloudFrontWebDistribution => {
-  const { scope, staticWebsiteBucket, certificate, url, edgeFunctionVersion } = props
+  const { scope, staticWebsiteBucket, certificate, url, edgeLambdaFunction } = props
 
   return new CloudFrontWebDistribution(scope, 'distribution', {
     originConfigs: [
@@ -27,10 +27,13 @@ export const createDistribution = (props: CreateDistributionProps): CloudFrontWe
             isDefaultBehavior: true,
             lambdaFunctionAssociations: [
               {
-                lambdaFunction: edgeFunctionVersion,
+                lambdaFunction: edgeLambdaFunction,
                 eventType: LambdaEdgeEventType.ORIGIN_REQUEST
               }
             ]
+          },
+          {
+            pathPattern: '/_next/*'
           }
         ]
       }

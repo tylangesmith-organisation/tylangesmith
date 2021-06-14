@@ -2,13 +2,13 @@ import { Stack } from '@aws-cdk/core'
 import { Function, Runtime, AssetCode, Version } from '@aws-cdk/aws-lambda'
 import { Role, PolicyStatement, ServicePrincipal, CompositePrincipal, Effect } from '@aws-cdk/aws-iam'
 
-export interface CreateFunctionVersionProps {
+export interface CreateEdgeLambdaFunctionProps {
   scope: Stack;
   name: string;
   handler: string;
 }
 
-export const createFunctionVersion = (props: CreateFunctionVersionProps): Version => {
+export const createEdgeLambdaFunction = (props: CreateEdgeLambdaFunctionProps): Version => {
   const { scope, name, handler } = props
 
   const executionRole = new Role(scope, `${name}-execution-role`, {

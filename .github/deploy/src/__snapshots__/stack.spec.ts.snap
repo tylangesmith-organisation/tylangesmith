@@ -446,6 +446,28 @@ Object {
           "Aliases": Array [
             "tylangesmith.com",
           ],
+          "CacheBehaviors": Array [
+            Object {
+              "AllowedMethods": Array [
+                "GET",
+                "HEAD",
+              ],
+              "CachedMethods": Array [
+                "GET",
+                "HEAD",
+              ],
+              "Compress": true,
+              "ForwardedValues": Object {
+                "Cookies": Object {
+                  "Forward": "none",
+                },
+                "QueryString": false,
+              },
+              "PathPattern": "/_next/*",
+              "TargetOriginId": "origin1",
+              "ViewerProtocolPolicy": "redirect-to-https",
+            },
+          ],
           "DefaultCacheBehavior": Object {
             "AllowedMethods": Array [
               "GET",
@@ -1242,6 +1264,28 @@ Object {
         "DistributionConfig": Object {
           "Aliases": Array [
             "blog.tylangesmith.com",
+          ],
+          "CacheBehaviors": Array [
+            Object {
+              "AllowedMethods": Array [
+                "GET",
+                "HEAD",
+              ],
+              "CachedMethods": Array [
+                "GET",
+                "HEAD",
+              ],
+              "Compress": true,
+              "ForwardedValues": Object {
+                "Cookies": Object {
+                  "Forward": "none",
+                },
+                "QueryString": false,
+              },
+              "PathPattern": "/_next/*",
+              "TargetOriginId": "origin1",
+              "ViewerProtocolPolicy": "redirect-to-https",
+            },
           ],
           "DefaultCacheBehavior": Object {
             "AllowedMethods": Array [
