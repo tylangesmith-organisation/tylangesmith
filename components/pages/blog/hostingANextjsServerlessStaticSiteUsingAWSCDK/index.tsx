@@ -1,14 +1,15 @@
-import StandardLayout from '../../../layout/standardLayout'
-import Section from '../../../ui/section/section'
+import BlogLayout from '../../../layout/blogLayout'
+import Section from '../../../ui/blog/section/section'
+import H1 from '../../../ui/blog/typography/h1'
 
 const Component = (): JSX.Element => (
-  <StandardLayout>
+  <BlogLayout>
     <Section>
-      <h1 className="font-extrabold text-2xl md:text-4xl my-3 md:my-4">
+      <H1>
         Hosting a nextjs serverless static site using AWS CDK
-      </h1>
+      </H1>
     </Section>
-  </StandardLayout>
+  </BlogLayout>
 )
 
 export default Component

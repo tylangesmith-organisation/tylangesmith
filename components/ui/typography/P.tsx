@@ -1,14 +1,16 @@
 
 export interface Props {
   children: JSX.Element | JSX.Element[] | string | any;
+  className?: string;
+  pose?: boolean;
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { children } = props
+  const { children, className, pose = false } = props
   return (
-    <h2 className="font-medium text-xl md:text-2xl my-3 text-gray-600">
+    <p className={`text-md sm:text-xl my-3 ${pose ? 'max-w-prose' : ''} ${className}`}>
       {children}
-    </h2>
+    </p>
   )
 }
 

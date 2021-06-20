@@ -1,14 +1,15 @@
 
 export interface Props {
   children: JSX.Element | JSX.Element[] | string | any;
+  className?: string;
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { children } = props
+  const { children, className } = props
   return (
-    <h1 className="font-extrabold text-2xl md:text-4xl my-3 md:my-4">
+    <h2 className={`font-medium text-md sm:text-xl md:text-2xl my-3 ${className}`}>
       {children}
-    </h1>
+    </h2>
   )
 }
 

@@ -1,7 +1,10 @@
 import StandardLayout from '../../layout/standardLayout'
 import Image from '../../ui/image/image'
 import Label from '../../ui/image/label'
-import Section from '../../ui/section/section'
+import Section from '../../ui/structure/section'
+import H1 from '../../ui/typography/H1'
+import H2 from '../../ui/typography/H2'
+import P from '../../ui/typography/P'
 import Link from './link'
 import CopyToClipboard from './copyToClipboard'
 import WorkExperience from './workExperience'
@@ -10,18 +13,18 @@ import Emoji from '../../ui/emoji/emoji'
 
 const Component = (): JSX.Element => (
   <StandardLayout>
-    {/* Contact Info */}
     <Section>
-      <div className="text-right">
-        <Link href="/hireMe/cv.pdf" newTab>
-          <Emoji label="Download CV" symbol="👉" /> Download CV
-        </Link>
-      </div>
-
-      <div className="flex flex-col items-start mb-2">
-        <h1 className="font-extrabold text-2xl md:text-4xl my-2">
-          Ty Lange-Smith
-        </h1>
+      <div className="flex flex-col items-start">
+        <div className="flex flex-col w-full md:flex-row-reverse md:items-center">
+          <div className="text-right md:flex-grow">
+            <Link href="/hireMe/cv.pdf" newTab>
+              <Emoji label="Download CV" symbol="👉" /> Download CV
+            </Link>
+          </div>
+          <H1>
+            Ty Lange-Smith
+          </H1>
+        </div>
         <CopyToClipboard>tylangesmith@gmail.com</CopyToClipboard>
         <Link href="https://github.com/tylangesmith-organisation" newTab>
           GitHub
@@ -30,20 +33,18 @@ const Component = (): JSX.Element => (
           LinkedIn
         </Link>
       </div>
-      <div className="max-w-prose">
-        <p className="text-lg">
-          An enthusiastic software engineer with a passion for DevOps, AWS,
-          Data, Machine Learning and Entrepreneurship. Through applying a
-          diverse well-rounded skill set I&apos;m able to solve challenging problems
-          at scale. I&apos;m an advocate for DevOps and have a proven history in
-          enabling companies drive this paradigm shift.
-        </p>
-      </div>
+
+      <P pose>
+        An enthusiastic software engineer with a passion for DevOps, AWS,
+        Data, Machine Learning and Entrepreneurship. Through applying a
+        diverse well-rounded skill set I&apos;m able to solve challenging problems
+        at scale. I&apos;m an advocate for DevOps and have a proven history in
+        enabling companies drive this paradigm shift.
+      </P>
     </Section>
 
-    {/* Work Experience */}
     <Section>
-      <h2 className="text-xl font-extrabold mb-2">Work Experience</h2>
+      <H2 className="font-extrabold">Work Experience</H2>
 
       <WorkExperience
         company="nib Group"
@@ -117,9 +118,8 @@ const Component = (): JSX.Element => (
       />
     </Section>
 
-    {/* Education */}
     <Section>
-      <h2 className="text-xl font-extrabold mb-2">Education</h2>
+      <H2 className="font-extrabold">Education</H2>
       <Education
         name="The University of Newcastle"
         location="Callaghan, NSW"
@@ -130,7 +130,6 @@ const Component = (): JSX.Element => (
       />
     </Section>
 
-    {/* Bottom Image */}
     <Section>
       <div className="w-96 mx-auto">
         <Image

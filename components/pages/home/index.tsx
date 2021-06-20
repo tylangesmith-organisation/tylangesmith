@@ -1,25 +1,25 @@
 import StandardLayout from '../../layout/standardLayout'
 import Emoji from '../../ui/emoji/emoji'
-import Heading from './heading'
-import SubHeading from './subHeading'
-import Paragraph from './paragraph'
+import H1 from '../../ui/typography/H1'
+import H2 from '../../ui/typography/H2'
+import P from '../../ui/typography/P'
 import Image from '../../ui/image/image'
 import Label from '../../ui/image/label'
-import Section from '../../ui/section/section'
+import Section from '../../ui/structure/section'
 
 const Component = (): JSX.Element => (
   <StandardLayout>
     <Section pose>
-      <Heading>
+      <H1>
         Hey <Emoji symbol="👋" label="wave emoji" />, I&apos;m Ty Lange-Smith. I&apos;m a
         software engineer based in Australia.
-      </Heading>
+      </H1>
 
-      <SubHeading>
+      <H2>
         Those who know me would say I&apos;m passionate about DevOps, AWS, Data,
         Machine Learning and Entrepreneurship{' '}
         <Emoji symbol="🚀" label="rocket emoji" />
-      </SubHeading>
+      </H2>
     </Section>
 
     <Section padding={false}>
@@ -35,33 +35,33 @@ const Component = (): JSX.Element => (
     </Section>
 
     <Section>
-      <Paragraph>
+      <P>
         Once you spend a few years within this industry it becomes apparent how
         quickly the landscape changes. Naturally, as a young ambitious engineer,
         I&apos;ve always strived to continually learn and keep up with industry
         trends.
-      </Paragraph>
+      </P>
 
-      <Paragraph>
-        However, doing this for a while it becomes apparent that there is{' '}
-        <span className="italic">a lot</span> of content out there. Sometimes
+      <P>
+        However, doing this for a while it becomes apparent that there is
+        a lot of content out there. Sometimes
         the content is delivered well by industry experts and other times it
         fails to meet the standard you were hoping for.
-      </Paragraph>
+      </P>
 
-      <Paragraph>
+      <P>
         This website is my attempt at delivering high-quality content on a wide
         range of topics relating to the best industry in the world.
-      </Paragraph>
+      </P>
 
-      <Paragraph>
+      <P>
         So join me on my journey as I explore all things computer science,
         engineering, business, and entrepreneurship.
-      </Paragraph>
+      </P>
 
-      <Paragraph className="text-center">
+      <P className="text-center">
         <Emoji symbol="✌️" label="peace" />
-      </Paragraph>
+      </P>
     </Section>
   </StandardLayout>
 )
