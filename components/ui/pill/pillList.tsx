@@ -1,18 +1,18 @@
 
 export interface Props {
-  skills: string[];
+  items: string[];
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { skills } = props
+  const { items } = props
   return (
-    <div className="flex flex-wrap items-center my-2">
-      {skills.map((skill, index) => (
+    <div className="flex flex-wrap items-center my-1">
+      {items.map((item, index) => (
         <div
           className="bg-black text-white text-sm rounded px-3 py-1 mx-1 my-1"
           key={index}
         >
-          {skill}
+          {item}
         </div>
       ))}
     </div>

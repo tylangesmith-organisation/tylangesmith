@@ -1,5 +1,5 @@
 import WorkExperienceTitle from './workExperienceTitle'
-import Skills from './skills'
+import PillList from '../../ui/pill/pillList'
 
 export interface Props {
   company: string;
@@ -19,7 +19,7 @@ const Component = (props: Props): JSX.Element => {
           <li key={index}>{highlight}</li>
         ))}
       </ul>
-      <Skills skills={skills} />
+      <PillList items={skills} />
     </div>
   )
 }
