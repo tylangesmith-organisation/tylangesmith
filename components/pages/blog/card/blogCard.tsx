@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import PillList from '../../ui/pill/pillList'
+import PillList from '../../../ui/pill/pillList'
 
 export interface Props {
   title: string;

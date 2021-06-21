@@ -1,6 +1,6 @@
 import StandardLayout from '../../layout/standardLayout'
 import Section from '../../ui/structure/section'
-import BlogCard from './blogCard'
+import BlogCard from './card/blogCard'
 import H1 from '../../ui/typography/h1'
 
 export interface BlogMetaData {
