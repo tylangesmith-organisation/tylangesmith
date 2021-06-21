@@ -1,16 +1,19 @@
+import ProseBase from './proseBase'
 
 export interface Props {
   children: JSX.Element | JSX.Element[] | string | any;
   className?: string;
-  pose?: boolean;
+  prose?: boolean;
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { children, className, pose = false } = props
+  const { children, className, prose = false } = props
   return (
-    <p className={`text-md sm:text-xl my-3 ${pose ? 'max-w-prose' : ''} ${className}`}>
-      {children}
-    </p>
+    <ProseBase prose={prose}>
+      <p className={`text-md sm:text-xl my-3 ${className}`}>
+        {children}
+      </p>
+    </ProseBase>
   )
 }
 

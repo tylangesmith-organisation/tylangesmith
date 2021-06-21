@@ -3,7 +3,7 @@ import Title from './title'
 import Link from './link'
 
 const Component = () => (
-  <div className="h-16 shadow-md flex items-center flex-shrink-0">
+  <div className="h-16 flex items-center flex-shrink-0">
     <Container>
       <div className="flex justify-between">
         <div>

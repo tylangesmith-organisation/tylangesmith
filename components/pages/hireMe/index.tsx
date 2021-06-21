@@ -2,9 +2,9 @@ import StandardLayout from '../../layout/standardLayout'
 import Image from '../../ui/image/image'
 import Label from '../../ui/image/label'
 import Section from '../../ui/structure/section'
-import H1 from '../../ui/typography/H1'
-import H2 from '../../ui/typography/H2'
-import P from '../../ui/typography/P'
+import H1 from '../../ui/typography/h1'
+import H2 from '../../ui/typography/h2'
+import P from '../../ui/typography/p'
 import Link from './link'
 import CopyToClipboard from './copyToClipboard'
 import WorkExperience from './workExperience'
@@ -34,7 +34,7 @@ const Component = (): JSX.Element => (
         </Link>
       </div>
 
-      <P pose>
+      <P prose>
         An enthusiastic software engineer with a passion for DevOps, AWS,
         Data, Machine Learning and Entrepreneurship. Through applying a
         diverse well-rounded skill set I&apos;m able to solve challenging problems

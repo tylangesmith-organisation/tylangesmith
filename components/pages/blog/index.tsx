@@ -1,6 +1,7 @@
 import StandardLayout from '../../layout/standardLayout'
-import Section from '../../ui/section/section'
+import Section from '../../ui/structure/section'
 import BlogCard from './blogCard'
+import H1 from '../../ui/typography/h1'
 
 export interface BlogMetaData {
   title: string;
@@ -20,9 +21,9 @@ const Component = (props: Props): JSX.Element => {
   return (
     <StandardLayout>
       <Section>
-        <h1 className="font-extrabold text-2xl md:text-4xl my-3 md:my-4">
+        <H1>
           Blog
-        </h1>
+        </H1>
         {
           blogsMetaData.map((blogMetaData) => {
             const { title, description, slug, keywords, date } = blogMetaData

@@ -1,15 +1,15 @@
 import StandardLayout from '../../layout/standardLayout'
 import Emoji from '../../ui/emoji/emoji'
-import H1 from '../../ui/typography/H1'
-import H2 from '../../ui/typography/H2'
-import P from '../../ui/typography/P'
+import H1 from '../../ui/typography/h1'
+import H2 from '../../ui/typography/h2'
+import P from '../../ui/typography/p'
 import Image from '../../ui/image/image'
 import Label from '../../ui/image/label'
 import Section from '../../ui/structure/section'
 
 const Component = (): JSX.Element => (
   <StandardLayout>
-    <Section pose>
+    <Section prose>
       <H1>
         Hey <Emoji symbol="👋" label="wave emoji" />, I&apos;m Ty Lange-Smith. I&apos;m a
         software engineer based in Australia.
