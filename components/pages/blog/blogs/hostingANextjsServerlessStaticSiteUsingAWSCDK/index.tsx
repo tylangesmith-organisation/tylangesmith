@@ -2,6 +2,8 @@ import StandardLayout from '../../../../layout/standardLayout'
 import Section from '../../../../ui/structure/section'
 import { BlogMetaData } from '../../index'
 import Header from '../../header/header'
+import H2 from '../../typography/h2'
+import P from '../../../../ui/typography/p'
 
 export interface Props {
   blogMetaData: BlogMetaData
@@ -17,7 +19,25 @@ const Component = (props: Props): JSX.Element => {
       </Section>
 
       <Section>
-        {/* <H2>HERE</H2> */}
+        <H2 id="introduction" href="#introduction">Introduction</H2>
+        <P>For a while, I've wanted to start a personal blog. As a professional, this is one of the best ways to get your expertise and name out into the world. So why not give it a go!</P>
+        <P>For now, I've chosen to implement this blog using Next.js. Next.js is a framework build on top of React. It provides many features right out of the box, has an exceptional developer experience, and has a large development community.</P>
+      </Section>
+
+      <Section>
+        <H2 id="nextjs-implementation" href="#nextjs-implementation">Next.js Implementation</H2>
+      </Section>
+
+      <Section>
+        <H2 id="solution-architecture" href="#solution-architecture">Solution Architecture</H2>
+      </Section>
+
+      <Section>
+        <H2 id="aws-infrastructure" href="#aws-infrastructure">AWS Infrastructure</H2>
+      </Section>
+
+      <Section>
+        <H2 id="closing-thoughts" href="#closing-thoughts">Closing Thoughts</H2>
       </Section>
     </StandardLayout>
   )
