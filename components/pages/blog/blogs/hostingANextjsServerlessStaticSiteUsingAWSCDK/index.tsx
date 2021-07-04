@@ -24,12 +24,12 @@ const Component = (props: Props): JSX.Element => {
       <Section padding={false}>
         <Image
           className="sm:rounded shadow-md"
-          lowQualitySource=""
-          highQualitySource="/blog/hostingANextjsServerlessStaticSiteUsingAWSCDK/header.jpg"
-          alt="Crescent Head Beach"
+          lowQualitySource="/blog/hostingANextjsServerlessStaticSiteUsingAWSCDK/header-low-res.jpg"
+          highQualitySource="/blog/hostingANextjsServerlessStaticSiteUsingAWSCDK/header-high-res.jpg"
+          alt="A Next.js + AWS ☁️ story"
         />
         <Label>
-          A rare sight of me doing something other than software stuff
+          A Next.js + AWS ☁️ story
         </Label>
       </Section>
 
