@@ -5,6 +5,8 @@ import Header from '../../header/header'
 import H2 from '../../../../ui/typography/h2'
 import P from '../../../../ui/typography/p'
 import A from '../../../../ui/typography/a'
+import Image from '../../../../ui/image/image'
+import Label from '../../../../ui/image/label'
 
 export interface Props {
   blogMetaData: BlogMetaData
@@ -17,6 +19,18 @@ const Component = (props: Props): JSX.Element => {
     <StandardLayout>
       <Section>
         <Header blogMetaData={blogMetaData} />
+      </Section>
+
+      <Section padding={false}>
+        <Image
+          className="sm:rounded shadow-md"
+          lowQualitySource=""
+          highQualitySource="/blog/hostingANextjsServerlessStaticSiteUsingAWSCDK/header.jpg"
+          alt="Crescent Head Beach"
+        />
+        <Label>
+          A rare sight of me doing something other than software stuff
+        </Label>
       </Section>
 
       <Section>
