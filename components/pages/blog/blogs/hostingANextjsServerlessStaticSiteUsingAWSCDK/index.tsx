@@ -21,8 +21,10 @@ const Component = (props: Props): JSX.Element => {
 
       <Section>
         <H2 id="introduction" href="#introduction">Introduction</H2>
-        <P>For a while, I've wanted to start a personal blog. As a professional, this is one of the best ways to get your expertise and name out into the world. So why not give it a go!</P>
-        <P>For now, I've chosen to implement this blog using Next.js. Next.js is a framework built on top of React. It provides many features right out of the box, has an exceptional developer experience, and has a large development community.</P>
+        <P>For a while, I've wanted to start a personal blog. As a professional, this is one of the best ways to get your expertise and name out into the world. So I thought why not give it a go!</P>
+        <P>For now, I've chosen to implement this blog using <A href="https://nextjs.org" newTab>Next.js</A>, which is a popular web development framework built on top of React. It provides many features right out of the box, has an exceptional developer experience, and has a large development community.</P>
+        <P>Currently, I work with <A href="https://aws.amazon.com" newTab>AWS</A> daily. So naturally, it makes sense to design and implement a solution to host my blog using this cloud ecosystem.</P>
+        <P>It's also worth noting that there are a fair few other hosting options available e.g. <A href="https://vercel.com" newTab>Vercel</A>. However, these options tend to abstract away a lot of the underlying infrastructure and ultimately provide developers with less understanding of how their applications are deployed. This has its target audience but for us, a <span className="italic">one-click hosting solution</span> doesn't sound like much fun.</P>
         <P>All of the code for this blog can be found on my <A href="https://github.com/tylangesmith-organisation/tylangesmith" newTab>GitHub</A>.</P>
       </Section>
 
