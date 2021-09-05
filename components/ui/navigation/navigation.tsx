@@ -1,21 +1,17 @@
 import Container from '../container/container'
-import Title from './title'
-import Link from './link'
 
-const Component = () => (
-  <div className="h-16 flex items-center flex-shrink-0">
-    <Container>
-      <div className="flex justify-between">
-        <div>
-          <Title href="/">Ty Lange-Smith</Title>
+const Component = () => {
+  return (
+    <header className="py-4">
+      <Container>
+        <div className="flex h-12">
+          <a href="/" aria-label="Home" className="flex items-center">
+            <h2 className="font-black text-xl">Ty Lange-Smith</h2>
+          </a>
         </div>
-        <div>
-          <Link href="/blog">Blog 💭</Link>
-          <Link href="/hire-me">Hire Me 👨‍💻</Link>
-        </div>
-      </div>
-    </Container>
-  </div>
-)
+      </Container>
+    </header>
+  )
+}
 
 export default Component
