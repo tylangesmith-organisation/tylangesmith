@@ -40,7 +40,19 @@ module.exports = {
       typography: (theme) => ({
         DEFAULT: {
           css: {
-            color: theme('colors.gray.800')
+            color: theme('colors.gray.800'),
+            'code::before': {
+              content: '""'
+            },
+            'code::after': {
+              content: '""'
+            },
+            'blockquote p:first-of-type::before': {
+              content: '""'
+            },
+            'blockquote p:first-of-type::after': {
+              content: '""'
+            }
           }
         }
       })

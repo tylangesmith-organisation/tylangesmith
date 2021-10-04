@@ -1,15 +1,17 @@
 import { useProgressiveImageLoad } from '../../hooks/progressiveImageLoad/useProgressiveImageLoad'
+import ProseWidth from '../container/proseWidth'
 
 export interface Props {
   className?: string;
-  lowQualitySource: string;
+  lowQualitySource?: string;
   highQualitySource: string;
   label?: string;
   alt?: string | undefined;
+  prose?: boolean;
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { className, lowQualitySource, highQualitySource, label, alt } = props
+  const { className, lowQualitySource, highQualitySource, label, alt, prose = true } = props
 
   const { source, blur } = useProgressiveImageLoad({
     lowQualitySource,
@@ -17,8 +19,9 @@ const Component = (props: Props): JSX.Element => {
   })
 
   return (
-    <div className="flex flex-col">
-      <img
+    <ProseWidth proseWidth={prose}>
+      <div className="flex flex-col -mx-4 xs:mx-0">
+        <img
         className={`${className} !my-4 w-full shadow-md ${
           blur
             ? 'filter blur-md transition duration-300'
@@ -27,10 +30,11 @@ const Component = (props: Props): JSX.Element => {
         src={source}
         alt={alt}
       />
-      {
+        {
         label && <label className="text-center text-gray-500 mb-4">{label}</label>
       }
-    </div>
+      </div>
+    </ProseWidth>
   )
 }
 

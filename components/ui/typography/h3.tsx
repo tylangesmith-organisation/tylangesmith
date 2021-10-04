@@ -1,18 +1,16 @@
-import { parse, format } from 'date-fns'
 import ProseWidth from '../container/proseWidth'
 
 export interface Props {
-  children: string
+  children: JSX.Element | JSX.Element[] | string
+
 }
 
 const Component = (props: Props) => {
   const { children } = props
 
-  const parsedDate = parse(children, 'yyyy-MM-dd', new Date())
-
   return (
     <ProseWidth proseWidth={true}>
-      <time className="mb-4">{format(parsedDate, 'MMMM yyyy')}</time>
+      <h3 className="!mt-3">{children}</h3>
     </ProseWidth>
   )
 }
