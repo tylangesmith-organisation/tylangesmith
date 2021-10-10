@@ -72,7 +72,7 @@ With a dynamic approach, we are required to generate the content for each reques
 
 <Section>
 
-## Solution Architecture
+## Designing our Solution
 
 Awesome! So we know we want our solution to serve our static bundle - but how do we even get started?
 
@@ -82,23 +82,39 @@ Well, for this project, we'll be using [AWS](https://aws.amazon.com/). AWS is a 
 
 First, we need somewhere to store our static bundle. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service to store objects. We store our objects in what's known as a bucket. We can easily access our objects after creating a bucket with a unique name and configuring public access.
 
+> S3 Bucket names are required to be globally unique, along with a few other [naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html)
+
 <Image
   highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/storeStaticBundleInS3.png"
   alt="Accessing objects from s3"
   label="Accessing objects from s3"
 />
 
-Above we have our static bundle stored in an s3 bucket named `tylangesmith.com`. Objects within this bucket can be accessed a few different ways, one of which is via HTTP. If we want to access our `index.html` file, which sits at the root of our bucket, we can do so with `https://s3.amazonaws.com/tylangesmith.com/index.html`.
+Above, we have our static bundle stored in an s3 bucket named `tylangesmith.com` (can be any name as long as it's globally unique). Objects within this bucket can be accessed a few different ways, one of which is via HTTP. If we want to access our `index.html` file, which sits at the root of our bucket, we can do so with `https://s3.amazonaws.com/tylangesmith.com/index.html`.
 
 Obviously, in this example, the access to our bucket and underlying objects is pretty open. We'll go through the process of tightening this access and increasing our security posture a little later on.
 
 > One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets.
 
-Great! We now have somewhere to store our objects, but just storing our objects isn't quite enough. Next, we need to actually serve our static bundle. This can be achieved through a few different methods. 
+Great! We now have somewhere to store our objects, but just storing our objects isn't quite enough. Next, we need to actually serve our static bundle.
 
-One potential approach is to configure [S3 Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html). This provides a website endpoint that will serve our static content. We can configure the index and custom error documents along with a few permissions. However, this method does not support HTTPS and comes with a few other configuration [caveats](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) that will be beneficial to avoid.
+AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static content. After configuring our index and custom error documents, we can access our static site through a website endpoint. However, this endpoint does not support HTTPS and comes with a few other configuration [caveats](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff).
 
-A better approach would be to use [AWS CloudFront](https://aws.amazon.com/cloudfront/).
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
+  alt="S3 Static Website Hosting"
+  label="S3 Static Website Hosting"
+/>
+
+From the above, we can see the behaviour of enabling static website hosting on our S3 bucket. One of the first things we can see is that we now access our static site via an S3 website endpoint `http://tylangesmith.com.s3-website-us-east-1.amazonaws.com`. When accessing the root path, we are returned our index document, which is configured to our `index.html` file. We can also note that we access this endpoint via `HTTP`.
+
+Previously we accessed this `index.html` file via the S3 REST endpoint, `https://s3.amazonaws.com/tylangesmith.com/index.html`. We can see that this endpoint requires a few additional paths `/tylangesmith.com/index.html` to actually access our file. This additional pathing breaks our static bundle's relative pathing, e.g. when trying to load a stylesheet `mystyle.css`, it'll look at the base of the URL for the file `https://s3.amazonaws.com/mystyle.css` rather than `https://s3.amazonaws.com/tylangesmith.com/mystyle.css` when the file actually lives. With the website endpoint, however, we avoid this situation as the static bundle is relative to the root of the URL.
+
+> There are ways to address this relative importing issue, but trying to host a website using the S3 REST endpoint is like trying to fit a round peg in a square hole.
+
+Awesome! We now have a working solution that hosts our static website. At this point, we could call the job done; however, there are few missing critical components to "productionise" this solution.
+
+
 
 
 </Section>
