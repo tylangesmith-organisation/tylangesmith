@@ -90,7 +90,7 @@ First, we need somewhere to store our static bundle. For that, we can use [AWS S
   label="Accessing objects from s3"
 />
 
-Above, we have our static bundle stored in an s3 bucket named `tylangesmith.com` (can be any name as long as it's globally unique). Objects within this bucket can be accessed a few different ways, one of which is via HTTP. If we want to access our `index.html` file, which sits at the root of our bucket, we can do so with `https://s3.amazonaws.com/tylangesmith.com/index.html`.
+Above, we have our static bundle stored in an s3 bucket named `tylangesmith.com` (can be any name as long as it's globally unique). Objects within this bucket can be accessed a few different ways, one of which is via HTTPS. If we want to access our `index.html` file, which sits at the root of our bucket, we can do so with `https://s3.amazonaws.com/tylangesmith.com/index.html`.
 
 Obviously, in this example, the access to our bucket and underlying objects is pretty open. We'll go through the process of tightening this access and increasing our security posture a little later on.
 
@@ -112,9 +112,26 @@ Previously we accessed this `index.html` file via the S3 REST endpoint, `https:/
 
 > There are ways to address this relative importing issue, but trying to host a website using the S3 REST endpoint is like trying to fit a round peg in a square hole.
 
-Awesome! We now have a working solution that hosts our static website. At this point, we could call the job done; however, there are few missing critical components to "productionise" this solution.
+Awesome! We now have a working solution that hosts our static website. At this point, we could call the job done; however, there are few missing critical components to "productionise" this solution. For example, we don't have a personalised URL, our content is being served via `HTTP`, and our content is delivered to our users from a single geographical location.
 
+[AWS CloudFront](https://aws.amazon.com/cloudfront/) is a content delivery network ([CDN](https://en.wikipedia.org/wiki/Content_delivery_network)) that enables us to securely deliver our content to our users with low latency. CloudFront solves a few issues for us. One of the main selling points is that we can cache our content geographically close to our users via hundreds of edge locations.
 
+> Check out all of the [features](https://aws.amazon.com/cloudfront/features/) CloudFront offers
 
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontPropogation.png"
+  alt="CloudFront Content Propogation"
+  label="CloudFront Content Propogation"
+/>
+
+As we can see, the content served from our S3 website endpoint is propagated across our CloudFront distribution and cached across many edge nodes. This reduces the distance the users' request for content has to travel, ultimately increasing delivery speed. The user now accesses our static content via the CloudFront distribution URL `xyz.cloudfront.net`.
+
+Next, we can put this CloudFront distribution URL behind a custom URL, `tylangesmith.com` and enforce `HTTPS` with an `SSL` certificate for this domain.
+
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontURLAndHttps.png"
+  alt="CloudFront Custom URL and HTTPS"
+  label="CloudFront Custom URL and HTTPS"
+/>
 
 </Section>
