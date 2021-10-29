@@ -40,9 +40,9 @@ Just before we get started, the code for this project can be found on my [GitHub
 
 ## Static vs Dynamic Content
 
-Since our project is built using static generation, our hosting solution's overall complexity and costing are relatively minimal.
+The way we build our project can drastically change the way we host it. Since our project is built using static generation, our hosting solution is relatively simple, performant, and cost optimised.
 
-Our solution is only required to serve static files for a given request.
+Our hosting solution is only required to serve static files for a given request.
 
 <Image
   highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/serveStaticSiteHighQuality.png"
@@ -52,7 +52,7 @@ Our solution is only required to serve static files for a given request.
 
 This is conceptually similar to the above example where a user requests the route `/blog/hello-world`, and our server simply responds with the related static file for that route - in this example, the HTML file for the hello-world blog `/blog/hello-world.html`.
 
-If we had a more dynamic application, each request might need some extra custom compute to provide the correct response to the user, e.g. querying a list of our blogs.
+If we had a more dynamic application that isn't just static content, each request might need some extra custom compute to provide the correct response to the user, e.g. querying a list of our blogs.
 
 <Image
   highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/dynamicApplicationHighQuality.png"
@@ -64,9 +64,9 @@ In this example, we're doing more than just returning a static file - instead, w
 
 Obviously, each approach has its own advantages and disadvantages. 
 
-With a static approach, we don't require any complex custom code to serve our content. We can also highly optimise the delivery of this content to our users. However, if we want to make updates, we'll have to rebuild and redeploy our static bundle.
+With a static content approach, we don't require any complex custom code to serve our content, and we can highly optimise the delivery of this content to our users. However, if we want to make updates, we'll have to rebuild and redeploy our static content.
 
-With a dynamic approach, we are required to generate the content for each request. This requires extra overhead and complexity. However, updates to our content can be served to the user without having to rebuild and redeploy.
+With a dynamic approach, we must generate the content for each request which requires extra complexity and overhead. However, updates to our content can be served to the user without having to rebuild and redeploy, e.g. if a new blog was added to the database, it would be returned to the user on their next request.
 
 </Section>
 
@@ -80,7 +80,7 @@ Well, for this project, we'll be using [AWS](https://aws.amazon.com/). AWS is a 
 
 > If you're a beginner in this space, it can be pretty overwhelming at first. However, from experience, if you stick with it, you'll quickly be able to navigate the ecosystem with confidence, and that once daunting list of services becomes another set of tools within your professional toolbox.
 
-First, we need somewhere to store our static bundle. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service to store objects. We store our objects in what's known as a bucket. We can easily access our objects after creating a bucket with a unique name and configuring public access.
+First, we need somewhere to store our static bundle. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service that enables us to store objects. These objects are stored in what's known as a bucket. After we've created a bucket with a unique name, configured public access and uploaded our static bundle - we'll be able to easily access these files.
 
 > S3 Bucket names are required to be globally unique, along with a few other [naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html)
 
@@ -92,7 +92,7 @@ First, we need somewhere to store our static bundle. For that, we can use [AWS S
 
 Above, we have our static bundle stored in an s3 bucket named `tylangesmith.com` (can be any name as long as it's globally unique). Objects within this bucket can be accessed a few different ways, one of which is via HTTPS. If we want to access our `index.html` file, which sits at the root of our bucket, we can do so with `https://s3.amazonaws.com/tylangesmith.com/index.html`.
 
-Obviously, in this example, the access to our bucket and underlying objects is pretty open. We'll go through the process of tightening this access and increasing our security posture a little later on.
+Obviously, in this example, the access to our bucket and underlying objects is pretty open (anyone can access these files via the above URL). We'll go through the process of tightening this access and increasing our security posture a little later on.
 
 > One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets.
 
