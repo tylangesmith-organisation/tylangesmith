@@ -166,8 +166,14 @@ To address this, we need to ensure these paths are translated for the required r
   label="CloudFront with Lambda@Edge Function"
 />
 
-We can trigger this Lambda@Edge function on the required paths, which will map the incoming request to the correct related file within our S3 bucket.
+We can trigger this Lambda@Edge function on the required paths, mapping the incoming request to the correct related file within our S3 bucket.
 
 Phew, a bit to take in there, but we've done well. At this point, we have a solution that will scale with our demand, is highly performant and is cost optimised.
+
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
+  alt="Overall Solution Architecture"
+  label="Overall Solution Architecture"
+/>
 
 </Section>
