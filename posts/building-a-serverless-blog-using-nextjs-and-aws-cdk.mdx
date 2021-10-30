@@ -134,4 +134,40 @@ Next, we can put this CloudFront distribution URL behind a custom URL, `tylanges
   label="CloudFront Custom URL and HTTPS"
 />
 
+Now our users can access our website via something a bit more well-known `https://tylangesmith.com`.
+
+OK, one last thing we need to account for. When the user accesses our website via the URL `https://tylangesmith.com`, the S3 website endpoint knows that we need to return our index document; once returned, the Next.js library is loaded. The user can click around and navigate to different pages from this initially loaded index document, e.g. `https://tylangesmith.com/blog/some-blog`.
+
+Since the Next.js library is loaded, the inbuilt router knows that when the users' browser navigates to the `blog/some-blog` path, we really want to send a request for the `blog/some-blog.html` HTML file.
+
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterLoaded.png"
+  alt="Requests with Next.js Loaded"
+  label="Requests with Next.js Loaded"
+/>
+
+However, a problem arises when the user requests the `https://tylangesmith.com/blog/some-blog` URL without the Next.js library being loaded. E.g. when refreshing the page.
+
+The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which results in the `/blog/some-blog` path being requested instead.
+
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterNotLoaded.png"
+  alt="Requests without Next.js Loaded"
+  label="Requests without Next.js Loaded"
+/>
+
+As a result, the S3 website endpoint cannot find the related file and instead returns the configured error document.
+
+To address this, we need to ensure these paths are translated for the required requests. We can achieve this by configuring a CloudFront behaviour to run a lightweight [Lambda@Edge](https://aws.amazon.com/lambda/edge/) function.
+
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/lambda@edgeFunction.png"
+  alt="CloudFront with Lambda@Edge Function"
+  label="CloudFront with Lambda@Edge Function"
+/>
+
+We can trigger this Lambda@Edge function on the required paths, which will map the incoming request to the correct related file within our S3 bucket.
+
+Phew, a bit to take in there, but we've done well. At this point, we have a solution that will scale with our demand, is highly performant and is cost optimised.
+
 </Section>
