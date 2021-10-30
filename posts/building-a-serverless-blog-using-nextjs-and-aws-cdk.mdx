@@ -82,7 +82,7 @@ Well, for this project, we'll be using [AWS](https://aws.amazon.com/). AWS is a 
 
 First, we need somewhere to store our static bundle. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service that enables us to store objects. These objects are stored in what's known as a bucket. After we've created a bucket with a unique name, configured public access and uploaded our static bundle - we'll be able to easily access these files.
 
-> S3 Bucket names are required to be globally unique, along with a few other [naming rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html)
+> S3 Bucket names are required to be globally unique, along with a few other [rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html)
 
 <Image
   highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/storeStaticBundleInS3.png"
@@ -94,7 +94,7 @@ Above, we have our static bundle stored in an s3 bucket named `tylangesmith.com`
 
 Obviously, in this example, the access to our bucket and underlying objects is pretty open (anyone can access these files via the above URL). We'll go through the process of tightening this access and increasing our security posture a little later on.
 
-> One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets.
+> One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets
 
 Great! We now have somewhere to store our objects, but just storing our objects isn't quite enough. Next, we need to actually serve our static bundle.
 
@@ -112,7 +112,7 @@ Previously we accessed this `index.html` file via the S3 REST endpoint, `https:/
 
 > There are ways to address this relative importing issue, but trying to host a website using the S3 REST endpoint is like trying to fit a round peg in a square hole.
 
-Awesome! We now have a working solution that hosts our static website. At this point, we could call the job done; however, there are few missing critical components to "productionise" this solution. For example, we don't have a personalised URL, our content is being served via `HTTP`, and our content is delivered to our users from a single geographical location.
+Awesome! We now have a working solution that hosts our static website. At this point, we could call the job done; however, there are a few missing critical components to "productionise" this solution. For example, we don't have a personalised URL, our content is being served via `HTTP`, and our content is delivered to our users from a single geographical location.
 
 [AWS CloudFront](https://aws.amazon.com/cloudfront/) is a content delivery network ([CDN](https://en.wikipedia.org/wiki/Content_delivery_network)) that enables us to securely deliver our content to our users with low latency. CloudFront solves a few issues for us. One of the main selling points is that we can cache our content geographically close to our users via hundreds of edge locations.
 
