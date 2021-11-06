@@ -31,42 +31,10 @@ In this blog, we'll explore how to host a Next.js static site on AWS. We'll use 
   alt="A Next.js + AWS ☁️ story"
 />
 
-Just before we get started, the code for this project can be found on my [GitHub](https://github.com/tylangesmith-organisation/tylangesmith). Currently, all of our content is static and known ahead of time. [Next.js](https://nextjs.org/) comes with a pre-rendering [static generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) feature that suits this exact use case. That being said, I've gone ahead and built out a simple blog application using Next.js and these features. The end result is a static bundle we want to deploy.
 
-</Section>
+We'll explore the solution I've implemented to host my personal blog website [tylangesmith.com](https://tylangesmith.com). This is a simple static website built using [Next.js](https://nextjs.org/). Next.js comes with a set of pre-rendering [static generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) features right out of the box that suits this exact use case. We won't deep-dive into this implementation, but for the context of this blog, the end result is a small static bundle that we want to deploy.
 
-
-<Section>
-
-## Static vs Dynamic Content
-
-The way we build our project can drastically change the way we host it. Since our project is built using static generation, our hosting solution is relatively simple, performant, and cost optimised.
-
-Our hosting solution is only required to serve static files for a given request.
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/serveStaticSiteHighQuality.png"
-  alt="Serving static files"
-  label="Serving static files"
-/>
-
-This is conceptually similar to the above example where a user requests the route `/blog/hello-world`, and our server simply responds with the related static file for that route - in this example, the HTML file for the hello-world blog `/blog/hello-world.html`.
-
-If we had a more dynamic application that isn't just static content, each request might need some extra custom compute to provide the correct response to the user, e.g. querying a list of our blogs.
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/dynamicApplicationHighQuality.png"
-  alt="Responding dynamically"
-  label="Responding dynamically"
-/>
-
-In this example, we're doing more than just returning a static file - instead, we're running custom code to gather a list of blogs. This custom code could query a database, read the local file system or query an external api. Each time the user requests the `/blog/blogs` route, we need to compute this custom code and return the dynamic result to the user.
-
-Obviously, each approach has its own advantages and disadvantages. 
-
-With a static content approach, we don't require any complex custom code to serve our content, and we can highly optimise the delivery of this content to our users. However, if we want to make updates, we'll have to rebuild and redeploy our static content.
-
-With a dynamic approach, we must generate the content for each request which requires extra complexity and overhead. However, updates to our content can be served to the user without having to rebuild and redeploy, e.g. if a new blog was added to the database, it would be returned to the user on their next request.
+All of the code for this can be found on my [GitHub](https://github.com/tylangesmith-organisation/tylangesmith)!
 
 </Section>
 
@@ -74,106 +42,35 @@ With a dynamic approach, we must generate the content for each request which req
 
 ## Designing our Solution
 
-Awesome! So we know we want our solution to serve our static bundle - but how do we even get started?
+Awesome! So when designing a hosting solution for this project, I knew I wanted something performant, scalable, reliable, secure, and cost-optimised. Naturally, I also wanted to keep things relatively simple.
 
-Well, for this project, we'll be using [AWS](https://aws.amazon.com/). AWS is a cloud platform that provides hundreds of cloud services to solve a variety of problems.
+Thankfully, since our website is static, we can meet these requirements without too much hassle.
 
-> If you're a beginner in this space, it can be pretty overwhelming at first. However, from experience, if you stick with it, you'll quickly be able to navigate the ecosystem with confidence, and that once daunting list of services becomes another set of tools within your professional toolbox.
+To implement our solution, we'll be using [AWS](https://aws.amazon.com/). AWS is a cloud platform that provides hundreds of cloud services to solve a variety of problems.
 
-First, we need somewhere to store our static bundle. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service that enables us to store objects. These objects are stored in what's known as a bucket. After we've created a bucket with a unique name, configured public access and uploaded our static bundle - we'll be able to easily access these files.
+> If you're a beginner in this space, it can be pretty overwhelming at first. However, from experience, if you stick with it, you'll quickly be able to navigate the ecosystem with confidence.
 
-> S3 Bucket names are required to be globally unique, along with a few other [rules](https://docs.aws.amazon.com/AmazonS3/latest/userguide/bucketnamingrules.html)
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/storeStaticBundleInS3.png"
-  alt="Accessing objects from s3"
-  label="Accessing objects from s3"
-/>
-
-Above, we have our static bundle stored in an s3 bucket named `tylangesmith.com` (can be any name as long as it's globally unique). Objects within this bucket can be accessed a few different ways, one of which is via HTTPS. If we want to access our `index.html` file, which sits at the root of our bucket, we can do so with `https://s3.amazonaws.com/tylangesmith.com/index.html`.
-
-Obviously, in this example, the access to our bucket and underlying objects is pretty open (anyone can access these files via the above URL). We'll go through the process of tightening this access and increasing our security posture a little later on.
-
-> One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets
-
-Great! We now have somewhere to store our objects, but just storing our objects isn't quite enough. Next, we need to actually serve our static bundle.
-
-AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static content. After configuring our index and custom error documents, we can access our static site through a website endpoint. However, this endpoint does not support HTTPS and comes with a few other configuration [caveats](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff).
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
-  alt="S3 Static Website Hosting"
-  label="S3 Static Website Hosting"
-/>
-
-From the above, we can see the behaviour of enabling static website hosting on our S3 bucket. One of the first things we can see is that we now access our static site via an S3 website endpoint `http://tylangesmith.com.s3-website-us-east-1.amazonaws.com`. When accessing the root path, we are returned our index document, which is configured to our `index.html` file. We can also note that we access this endpoint via `HTTP`.
-
-Previously we accessed this `index.html` file via the S3 REST endpoint, `https://s3.amazonaws.com/tylangesmith.com/index.html`. We can see that this endpoint requires a few additional paths `/tylangesmith.com/index.html` to actually access our file. This additional pathing breaks our static bundle's relative pathing, e.g. when trying to load a stylesheet `mystyle.css`, it'll look at the base of the URL for the file `https://s3.amazonaws.com/mystyle.css` rather than `https://s3.amazonaws.com/tylangesmith.com/mystyle.css` when the file actually lives. With the website endpoint, however, we avoid this situation as the static bundle is relative to the root of the URL.
-
-> There are ways to address this relative importing issue, but trying to host a website using the S3 REST endpoint is like trying to fit a round peg in a square hole.
-
-Awesome! We now have a working solution that hosts our static website. At this point, we could call the job done; however, there are a few missing critical components to "productionise" this solution. For example, we don't have a personalised URL, our content is being served via `HTTP`, and our content is delivered to our users from a single geographical location.
-
-[AWS CloudFront](https://aws.amazon.com/cloudfront/) is a content delivery network ([CDN](https://en.wikipedia.org/wiki/Content_delivery_network)) that enables us to securely deliver our content to our users with low latency. CloudFront solves a few issues for us. One of the main selling points is that we can cache our content geographically close to our users via hundreds of edge locations.
-
-> Check out all of the [features](https://aws.amazon.com/cloudfront/features/) CloudFront offers
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontPropogation.png"
-  alt="CloudFront Content Propogation"
-  label="CloudFront Content Propogation"
-/>
-
-As we can see, the content served from our S3 website endpoint is propagated across our CloudFront distribution and cached across many edge nodes. This reduces the distance the users' request for content has to travel, ultimately increasing delivery speed. The user now accesses our static content via the CloudFront distribution URL `xyz.cloudfront.net`.
-
-Next, we can put this CloudFront distribution URL behind a custom URL, `tylangesmith.com` and enforce `HTTPS` with an `SSL` certificate for this domain.
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontURLAndHttps.png"
-  alt="CloudFront Custom URL and HTTPS"
-  label="CloudFront Custom URL and HTTPS"
-/>
-
-Now our users can access our website via something a bit more well-known `https://tylangesmith.com`.
-
-OK, one last thing we need to account for. When the user accesses our website via the URL `https://tylangesmith.com`, the S3 website endpoint knows that we need to return our index document; once returned, the Next.js library is loaded. The user can click around and navigate to different pages from this initially loaded index document, e.g. `https://tylangesmith.com/blog/some-blog`.
-
-Since the Next.js library is loaded, the inbuilt router knows that when the users' browser navigates to the `blog/some-blog` path, we really want to send a request for the `blog/some-blog.html` HTML file.
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterLoaded.png"
-  alt="Requests with Next.js Loaded"
-  label="Requests with Next.js Loaded"
-/>
-
-However, a problem arises when the user requests the `https://tylangesmith.com/blog/some-blog` URL without the Next.js library being loaded. E.g. when refreshing the page.
-
-The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which results in the `/blog/some-blog` path being requested instead.
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterNotLoaded.png"
-  alt="Requests without Next.js Loaded"
-  label="Requests without Next.js Loaded"
-/>
-
-As a result, the S3 website endpoint cannot find the related file and instead returns the configured error document.
-
-To address this, we need to ensure these paths are translated for the required requests. We can achieve this by configuring a CloudFront behaviour to run a lightweight [Lambda@Edge](https://aws.amazon.com/lambda/edge/) function.
-
-<Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/lambda@edgeFunction.png"
-  alt="CloudFront with Lambda@Edge Function"
-  label="CloudFront with Lambda@Edge Function"
-/>
-
-We can trigger this Lambda@Edge function on the required paths, mapping the incoming request to the correct related file within our S3 bucket.
-
-Phew, a bit to take in there, but we've done well. At this point, we have a solution that will scale with our demand, is highly performant and is cost optimised.
+So with all those requirements in mind, we can implement a solution that looks like the following.
 
 <Image
   highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
-  alt="Overall Solution Architecture"
-  label="Overall Solution Architecture"
+  alt="High Level Solution Architecture"
+  label="High Level Solution Architecture"
 />
+
+OK, hopefully, that doesn't look too scary - let's break each of these components down to better understand how they all fit together.
+
+### AWS Simple Storage Service (S3)
+
+First, we need somewhere to store our static bundle. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service that enables us to store objects. 
+
+These objects are stored in what's known as a bucket. Once stored and configured with the correct permissions, objects within this bucket can be accessed via a few different methods, e.g. an object URL.
+
+> One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets
+
+For example, if we uploaded our static bundle to a bucket we've created named `tylangesmith.com`, and we wanted to grab the `index.html` file, we could do so with `https://s3.amazonaws.com/tylangesmith.com/index.html`.
+
+
+
 
 </Section>
