@@ -70,9 +70,9 @@ These objects are stored in what's known as a bucket. Once stored and configured
 
 For example, if we uploaded our static bundle to a bucket we've created named `tylangesmith.com` and wanted to grab the `index.html` file, we could do so via the object URL `https://s3.amazonaws.com/tylangesmith.com/index.html`.
 
-Great! We now have somewhere to store our objects, but just storing our objects isn't quite enough. Next, we need to actually serve our static bundle like a website.
+This gives us somewhere to store our objects, but just storing these objects and accessing them via the S3 REST APIs isn't quite enough.
 
-Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static content. This has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the standard S3 object access methods.
+Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static content. This has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the S3 REST APIs.
 
 <Image
   highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
@@ -82,9 +82,29 @@ Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.
 
 After configuring our index and custom error documents, we can access our static site through an S3 website endpoint. To access the index of our website, we can do so with `http://tylangesmith.com.s3-website-us-east-1.amazonaws.com`.
 
-So at this point, we've got a pretty decent initial solution to host our website, but we still need to address a few things.
-
+This is a pretty decent initial solution, but we want to go a few steps further. Notably, the website is accessed via `HTTP`; we don't have a personalised URL, and our content is being served our of `us-east-1`, which isn't great for users across the other side of the world.
 
 ### AWS CloudFront
+
+[AWS CloudFront](https://aws.amazon.com/cloudfront/) is a content delivery network ([CDN](https://en.wikipedia.org/wiki/Content_delivery_network)) that enables us to securely deliver our content to our users with low latency. CloudFront solves a few issues for us. One of the main selling points is that we can cache our content geographically close to our users via hundreds of edge locations.
+
+> Check out all of the [features](https://aws.amazon.com/cloudfront/features/) CloudFront offers
+
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontPropogation.png"
+  alt="CloudFront Content Propogation"
+  label="CloudFront Content Propogation"
+/>
+
+As we can see, the content served from our S3 website endpoint is propagated across our CloudFront distribution and cached across many edge nodes. This reduces the distance the users' request for content has to travel, ultimately increasing delivery speed. The user now accesses our static content via the CloudFront distribution URL `xyz.cloudfront.net`.
+
+Next, we can put this CloudFront distribution URL behind a custom URL, `tylangesmith.com`, with a simple [AWS Route53](https://aws.amazon.com/route53/) record. After that, we can generate an SSL certificate for the domain with [AWS ACM](https://aws.amazon.com/certificate-manager/) (Certificate Manager) and attach it to our CloudFront distribution enforcing `HTTPS`.
+
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontURLAndHttps.png"
+  alt="CloudFront Custom URL and HTTPS"
+  label="CloudFront Custom URL and HTTPS"
+/>
+
 
 </Section>
