@@ -58,7 +58,7 @@ So with all those requirements in mind, we can implement a solution that looks l
   label="High Level Solution Architecture"
 />
 
-OK, hopefully, that doesn't look too scary - let's break each of these components down to better understand how they all fit together.
+Hopefully, that doesn't look too scary - let's break each of these components down to better understand how they all fit together.
 
 ### AWS Simple Storage Service (S3)
 
@@ -68,9 +68,23 @@ These objects are stored in what's known as a bucket. Once stored and configured
 
 > One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets
 
-For example, if we uploaded our static bundle to a bucket we've created named `tylangesmith.com`, and we wanted to grab the `index.html` file, we could do so with `https://s3.amazonaws.com/tylangesmith.com/index.html`.
+For example, if we uploaded our static bundle to a bucket we've created named `tylangesmith.com` and wanted to grab the `index.html` file, we could do so via the object URL `https://s3.amazonaws.com/tylangesmith.com/index.html`.
+
+Great! We now have somewhere to store our objects, but just storing our objects isn't quite enough. Next, we need to actually serve our static bundle like a website.
+
+Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static content. This has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the standard S3 object access methods.
+
+<Image
+  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
+  alt="S3 Static Website Hosting"
+  label="S3 Static Website Hosting"
+/>
+
+After configuring our index and custom error documents, we can access our static site through an S3 website endpoint. To access the index of our website, we can do so with `http://tylangesmith.com.s3-website-us-east-1.amazonaws.com`.
+
+So at this point, we've got a pretty decent initial solution to host our website, but we still need to address a few things.
 
 
-
+### AWS CloudFront
 
 </Section>
