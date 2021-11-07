@@ -1,17 +1,16 @@
-import ProseWidth from '../container/proseWidth'
+import ProseBase, { Props as ProseBaseProps } from './proseBase'
 
-export interface Props {
+export interface Props extends ProseBaseProps {
   children: JSX.Element | JSX.Element[] | string
-
 }
 
 const Component = (props: Props) => {
-  const { children } = props
+  const { children, ...proseBaseProps } = props
 
   return (
-    <ProseWidth proseWidth={true}>
-      <h1 className="text-center">{children}</h1>
-    </ProseWidth>
+    <ProseBase {...proseBaseProps}>
+      <h1 className="">{children}</h1>
+    </ProseBase>
   )
 }
 

@@ -2,7 +2,7 @@ import { MDXRemote } from 'next-mdx-remote'
 
 import PostLayout from '../../../layout/postLayout'
 import Section from '../../../ui/container/section'
-import { GetStaticPropsResult } from './controller'
+import { Props } from './controller'
 
 import H1 from '../../../ui/typography/h1'
 import H2 from '../../../ui/typography/h2'
@@ -33,7 +33,7 @@ const components = {
   li: (props: any) => <Li {...props} />
 }
 
-const Component = (props: GetStaticPropsResult): JSX.Element => {
+const Component = (props: Props): JSX.Element => {
   return (
     <PostLayout {...props.postMetaData}>
       <MDXRemote

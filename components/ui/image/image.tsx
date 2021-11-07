@@ -7,11 +7,10 @@ export interface Props {
   highQualitySource: string;
   label?: string;
   alt?: string | undefined;
-  prose?: boolean;
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { className, lowQualitySource, highQualitySource, label, alt, prose = true } = props
+  const { className, lowQualitySource, highQualitySource, label, alt } = props
 
   const { source, blur } = useProgressiveImageLoad({
     lowQualitySource,
@@ -19,7 +18,7 @@ const Component = (props: Props): JSX.Element => {
   })
 
   return (
-    <ProseWidth proseWidth={prose}>
+    <ProseWidth>
       <div className="flex flex-col -mx-4 xs:mx-0">
         <img
         className={`${className} !my-4 w-full shadow-md ${

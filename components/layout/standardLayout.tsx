@@ -1,9 +1,8 @@
 import Navigation from '../ui/navigation/navigation'
 import Footer from '../ui/footer/footer'
 import Container from '../ui/container/container'
-import { PostMetaData } from '../../models/post'
 
-export interface Props extends PostMetaData {
+export interface Props {
   children: JSX.Element | JSX.Element[] | string
 }
 
