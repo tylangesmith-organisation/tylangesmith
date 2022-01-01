@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 
 export interface Props {
-  lowQualitySource: string;
+  lowQualitySource?: string;
   highQualitySource: string;
 }
 
@@ -13,7 +13,7 @@ export interface Return {
 export const useProgressiveImageLoad = (props: Props): Return => {
   const { lowQualitySource, highQualitySource } = props
 
-  const [source, setSource] = useState(lowQualitySource)
+  const [source, setSource] = useState(lowQualitySource ?? highQualitySource)
 
   useEffect(() => {
     setSource(source)

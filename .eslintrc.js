@@ -25,7 +25,9 @@ module.exports = {
   rules: {
     'no-new': 'off',
     'react/react-in-jsx-scope': 'off',
-    'react/jsx-indent': ['error', 2]
+    'react/no-unescaped-entities': 'off',
+    'react/jsx-indent': ['error', 2],
+    'react/display-name': 'off'
   },
   globals: {
     React: true,

@@ -1,5 +1,16 @@
-import Home from '../components/pages/home/controller'
+import { GetStaticPropsResult } from 'next'
 
-const Page = (): JSX.Element => <Home />
+import { getPosts } from '../utils/server/posts'
+import Index, { Props } from '../components/pages/index/controller'
+
+const Page = (props: Props): JSX.Element => <Index {...props} />
+
+export const getStaticProps = async (): Promise<GetStaticPropsResult<Props>> => {
+  return {
+    props: {
+      posts: await getPosts()
+    }
+  }
+}
 
 export default Page

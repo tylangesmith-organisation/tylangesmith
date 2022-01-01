@@ -1,19 +1,23 @@
 import Navigation from '../ui/navigation/navigation'
-import Footer from '../ui/footer/footer'
+import Container from '../ui/container/container'
 
 export interface Props {
-  children: JSX.Element | JSX.Element[] | string;
-  footer?: boolean;
+  children: JSX.Element | JSX.Element[] | string
 }
 
 const Component = (props: Props) => {
-  const { children, footer = true } = props
+  const { children } = props
 
   return (
     <div className="flex flex-col h-screen">
       <Navigation />
-      <div className="flex-grow">{children}</div>
-      {footer && <Footer />}
+      <main className="flex-grow pb-12">
+        <Container>
+          <div className="flex flex-col prose max-w-none">
+            {children}
+          </div>
+        </Container>
+      </main>
     </div>
   )
 }
