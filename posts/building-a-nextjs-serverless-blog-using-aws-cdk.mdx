@@ -1,28 +1,16 @@
 ---
-slug: building-a-serverless-blog-using-nextjs-and-aws-cdk
-title: Building a Serverless Blog using Next.js and AWS CDK
+slug: building-a-nextjs-serverless-blog-using-aws-cdk
+title: Building a Next.js Serverless Blog using AWS CDK
+description: Designing and implementing a cloud native serverless solution using modern DevOps.
 date: '2021-09-04'
 tags:
   - aws
   - serverless
   - cdk
-  - next.js
   - devops
-  - ci / cd
 ---
 
 <Section>
-
-# Building a Serverless Blog using Next.js and AWS CDK
-
-<time>2021-09-04</time>
-
-<Tags tags={[
-  'aws',
-  'serverless',
-  'cdk',
-  'next.js'
-]} />
 
 In this blog, we'll explore how to host a Next.js static site on AWS. We'll use AWS CloudFront, Lambda@Edge, and S3 to implement a fully serverless solution. We'll leverage AWS CDK to define our infrastructure as code and implement a continuous integration and continuous delivery pipeline with Github Actions.
 
@@ -141,7 +129,7 @@ To address this, we need to ensure these paths are translated for the required r
 
 We can trigger this Lambda@Edge function on the required paths, mapping the incoming request to the correct related file within our S3 bucket.
 
-🎉 - that should be everything! Our solution should now satisfy all of our original requirements.
+🎉 that should be everything! Our solution should now satisfy all of our original requirements.
 
 </Section>
 

@@ -1,5 +1,4 @@
 import Navigation from '../ui/navigation/navigation'
-import Footer from '../ui/footer/footer'
 import Container from '../ui/container/container'
 
 export interface Props {
@@ -12,14 +11,13 @@ const Component = (props: Props) => {
   return (
     <div className="flex flex-col h-screen">
       <Navigation />
-      <main className="flex-grow">
+      <main className="flex-grow pb-12">
         <Container>
-          <article className="flex flex-col prose max-w-none">
+          <div className="flex flex-col prose max-w-none">
             {children}
-          </article>
+          </div>
         </Container>
       </main>
-      <Footer />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { GetPostResult } from '../../../utils/posts/posts'
+import { GetPostResult } from '../../../utils/server/posts'
 import Index from './index'
 
 export interface Props {

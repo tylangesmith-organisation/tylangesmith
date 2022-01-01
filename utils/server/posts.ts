@@ -22,7 +22,9 @@ const getPost = async (postFileName: string): Promise<GetPostResult> => {
 
   return {
     mdxSerializeResult: mdxSerializeResult,
-    postMetaData: post.data as PostMetaData
+    postMetaData: {
+      ...post.data
+    } as PostMetaData
   }
 }
 

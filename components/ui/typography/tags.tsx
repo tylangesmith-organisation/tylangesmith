@@ -1,18 +1,20 @@
-import { parse, format } from 'date-fns'
 import ProseBase, { Props as ProseBaseProps } from './proseBase'
 
 export interface Props extends ProseBaseProps {
-  children: string
+  children: string[]
 }
 
 const Component = (props: Props) => {
   const { children, ...proseBaseProps } = props
-
-  const parsedDate = parse(children, 'yyyy-MM-dd', new Date())
-
   return (
     <ProseBase {...proseBaseProps}>
-      <time className="mb-4">{format(parsedDate, 'MMMM yyyy')}</time>
+      <div className="flex flex-wrap mb-2 space-x-2">
+        {
+          children.map((tag) => {
+            return (<div key={tag} className="px-3 py-1 rounded-none bg-blue-600 text-coolGray-50 text-lg">{tag}</div>)
+          })
+        }
+      </div>
     </ProseBase>
   )
 }

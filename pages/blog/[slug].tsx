@@ -1,6 +1,6 @@
 import { GetStaticPropsContext, GetStaticPropsResult as BaseGetStaticPropsResult, GetStaticPathsResult } from 'next'
 
-import { getPosts, getPostForSlug } from '../../utils/posts/posts'
+import { getPosts, getPostForSlug } from '../../utils/server/posts'
 import Blog, { Props } from '../../components/pages/blog/slug/controller'
 
 const Page = (props: Props): JSX.Element => <Blog {...props} />

@@ -11,8 +11,7 @@ import P from '../../../ui/typography/p'
 import A from '../../../ui/typography/a'
 import Blockquote from '../../../ui/typography/blockquote'
 import InlineCode from '../../../ui/typography/inlineCode'
-import Time from '../../../ui/typography/time'
-import Tags from '../../../ui/tags/tags'
+import Tags from '../../../ui/typography/tags'
 import Image from '../../../ui/image/image'
 import Ul from '../../../ui/list/ul'
 import Li from '../../../ui/list/li'
@@ -26,7 +25,6 @@ const components = {
   a: (props: any) => <A {...props} />,
   blockquote: (props: any) => <Blockquote {...props} />,
   inlineCode: (props: any) => <InlineCode {...props} />,
-  time: (props: any) => <Time {...props} />,
   Tags: (props: any) => <Tags {...props} />,
   Image: (props: any) => <Image {...props} />,
   ul: (props: any) => <Ul {...props} />,

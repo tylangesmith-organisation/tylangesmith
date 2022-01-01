@@ -8,7 +8,7 @@ const Component = () => {
         <div className="flex h-12">
           <Link href="/">
             <a aria-label="Home" className="flex items-center">
-              <h2 className="font-black text-xl">Ty Lange-Smith</h2>
+              <h2 className="font-black text-xl">tylangesmith.com</h2>
             </a>
           </Link>
         </div>

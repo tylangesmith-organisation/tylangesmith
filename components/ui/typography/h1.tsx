@@ -9,7 +9,7 @@ const Component = (props: Props) => {
 
   return (
     <ProseBase {...proseBaseProps}>
-      <h1 className="">{children}</h1>
+      <h1 className="!mb-2">{children}</h1>
     </ProseBase>
   )
 }

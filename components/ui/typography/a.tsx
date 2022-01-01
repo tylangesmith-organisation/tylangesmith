@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export interface Props {
   children: JSX.Element | JSX.Element[] | string
   href: string
@@ -7,7 +9,9 @@ const Component = (props: Props) => {
   const { children, href } = props
 
   return (
-    <a className="!text-blue-600" href={href} target="_blank" rel="noreferrer">{children}</a>
+    <Link href={href}>
+      <a className="!text-blue-600" target="_blank">{children}</a>
+    </Link>
   )
 }
 

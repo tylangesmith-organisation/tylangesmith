@@ -1,7 +1,7 @@
 import ProseWidth from '../container/proseWidth'
 
 export interface Props {
-  children: JSX.Element | JSX.Element[] | string
+  children?: JSX.Element | JSX.Element[] | string | string[]
   proseWidth?: boolean
   center?: boolean
 }
