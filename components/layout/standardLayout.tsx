@@ -1,5 +1,6 @@
 import Navigation from '@/components/ui/navigation/navigation'
 import Container from '@/components/ui/container/container'
+import Footer from '@/components/ui/footer/footer'
 
 export interface Props {
   children: JSX.Element | JSX.Element[] | string
@@ -9,7 +10,7 @@ const Component = (props: Props) => {
   const { children } = props
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen break-words">
       <Navigation />
       <main className="flex-grow">
         <Container>
@@ -18,6 +19,7 @@ const Component = (props: Props) => {
           </div>
         </Container>
       </main>
+      <Footer />
     </div>
   )
 }
