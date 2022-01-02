@@ -12,7 +12,7 @@ const Component = (props: Props) => {
   const { children, title, tags } = props
 
   return (
-    <div className="flex flex-col h-screen">
+    <div className="flex flex-col h-screen break-words">
       <Navigation />
       <main className="flex-grow">
         <Container>
