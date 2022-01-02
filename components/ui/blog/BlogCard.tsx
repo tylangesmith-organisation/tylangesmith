@@ -2,7 +2,6 @@ import Link from 'next/link'
 
 import { getPostUrl } from '@/utils/client/posts'
 import { PostMetaData } from '@/models/post'
-import Tags from '@/components/ui/typography/tags'
 
 export interface Props {
   post: PostMetaData
