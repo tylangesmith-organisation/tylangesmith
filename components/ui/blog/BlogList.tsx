@@ -10,15 +10,13 @@ const Component = (props: Props): JSX.Element => {
 
   return (
     <>
-      <div className="my-4">
-        {
-          posts.map(post =>
-            (
-              <BlogCard key={post.slug} post={post} />
-            )
+      {
+        posts.map(post =>
+          (
+            <BlogCard key={post.slug} post={post} />
           )
-        }
-      </div>
+        )
+      }
     </>
   )
 }
