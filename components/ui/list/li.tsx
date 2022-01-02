@@ -10,7 +10,7 @@ const Component = (props: Props) => {
 
   return (
     <ProseWidth proseWidth={true}>
-      <li className="!my-1">{children}</li>
+      <li className="my-1">{children}</li>
     </ProseWidth>
   )
 }

@@ -11,7 +11,7 @@ const Component = (props: Props) => {
   return (
     <div className="flex flex-col h-screen">
       <Navigation />
-      <main className="flex-grow pb-12">
+      <main className="flex-grow">
         <Container>
           <div className="flex flex-col prose max-w-none">
             {children}

@@ -10,7 +10,7 @@ const Component = (props: Props) => {
 
   return (
     <Link href={href}>
-      <a className="!text-blue-600" target="_blank">{children}</a>
+      <a className="text-blue-600" target="_blank">{children}</a>
     </Link>
   )
 }
