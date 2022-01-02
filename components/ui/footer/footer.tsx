@@ -19,7 +19,7 @@ const FooterItem = (props: FooterItemProps) => {
 
 const Component = () => {
   return (
-    <footer className="bg-gray-50 py-12">
+    <footer className="bg-gray-100 py-12">
       <Container>
         <ul className="flex flex-col items-center sm:flex-row">
           <FooterItem href="https://github.com/tylangesmith/" text="GitHub" />
