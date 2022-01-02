@@ -1,5 +1,5 @@
-import { GetPostResult } from '../../../utils/server/posts'
-import Index from './index'
+import { GetPostResult } from '@/utils/server/posts'
+import Index from '@/components/pages/index/index'
 
 export interface Props {
   posts: GetPostResult[]

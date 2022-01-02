@@ -15,8 +15,7 @@ tags:
 In this blog, we'll explore how to host a Next.js static site on AWS. We'll use AWS CloudFront, Lambda@Edge, and S3 to implement a fully serverless solution. We'll leverage AWS CDK to define our infrastructure as code and implement a continuous integration and continuous delivery pipeline with Github Actions.
 
 <Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/headerHighQuality.jpg"
-  lowQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/headerLowQuality.jpg"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/headerHighQuality.jpg"
   alt="A Next.js + AWS ☁️ story"
 />
 
@@ -42,7 +41,7 @@ To implement our solution, we'll be using [AWS](https://aws.amazon.com/). AWS is
 So with all those requirements in mind, we can implement a solution that looks like the following.
 
 <Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
   alt="High Level Solution Architecture"
   label="High Level Solution Architecture"
 />
@@ -64,7 +63,7 @@ This gives us somewhere to store our objects, but just storing these objects and
 Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static content. This has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the S3 REST APIs.
 
 <Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
   alt="S3 Static Website Hosting"
   label="S3 Static Website Hosting"
 />
@@ -80,7 +79,7 @@ This is a pretty decent initial solution, but we want to go a few steps further.
 > Check out all of the [features](https://aws.amazon.com/cloudfront/features/) CloudFront offers
 
 <Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontPropogation.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontPropogation.png"
   alt="CloudFront Content Propogation"
   label="CloudFront Content Propogation"
 />
@@ -90,7 +89,7 @@ As we can see, the content served from our S3 website endpoint is propagated acr
 Next, we can put this CloudFront distribution URL behind a custom URL, `tylangesmith.com`, with a simple [AWS Route53](https://aws.amazon.com/route53/) record. After that, we can generate an SSL certificate for the domain with [AWS ACM](https://aws.amazon.com/certificate-manager/) (Certificate Manager) and attach it to our CloudFront distribution enforcing `HTTPS`.
 
 <Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontURLAndHttps.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontURLAndHttps.png"
   alt="CloudFront Custom URL and HTTPS"
   label="CloudFront Custom URL and HTTPS"
 />
@@ -102,7 +101,7 @@ OK, one last thing we need to account for. When the user accesses our website vi
 Since the Next.js library is loaded, the inbuilt router knows that when the users' browser navigates to the `blog/some-blog` path, we really want to send a request for the `blog/some-blog.html` HTML file.
 
 <Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterLoaded.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterLoaded.png"
   alt="Requests with Next.js Loaded"
   label="Requests with Next.js Loaded"
 />
@@ -112,7 +111,7 @@ However, a problem arises when the user requests the `https://tylangesmith.com/b
 The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which results in the `/blog/some-blog` path being requested instead.
 
 <Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterNotLoaded.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterNotLoaded.png"
   alt="Requests without Next.js Loaded"
   label="Requests without Next.js Loaded"
 />
@@ -122,7 +121,7 @@ As a result, the S3 website endpoint cannot find the related file and instead re
 To address this, we need to ensure these paths are translated for the required requests. We can achieve this by configuring a CloudFront behaviour to run a lightweight [Lambda@Edge](https://aws.amazon.com/lambda/edge/) function.
 
 <Image
-  highQualitySource="buildingAServerlessBlogUsingNextjsAndAwsCdk/lambda@edgeFunction.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/lambda@edgeFunction.png"
   alt="CloudFront with Lambda@Edge Function"
   label="CloudFront with Lambda@Edge Function"
 />

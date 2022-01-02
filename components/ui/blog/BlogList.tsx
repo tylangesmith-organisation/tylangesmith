@@ -1,5 +1,5 @@
-import { PostMetaData } from '../../../models/post'
-import BlogCard from './BlogCard'
+import { PostMetaData } from '@/models/post'
+import BlogCard from '@/components/ui/blog/BlogCard'
 
 export interface Props {
   posts: PostMetaData[]
@@ -10,9 +10,15 @@ const Component = (props: Props): JSX.Element => {
 
   return (
     <>
-      {
-        posts.map(post => <BlogCard key={post.slug} post={post} />)
-      }
+      <div className="my-4">
+        {
+          posts.map(post =>
+            (
+              <BlogCard key={post.slug} post={post} />
+            )
+          )
+        }
+      </div>
     </>
   )
 }

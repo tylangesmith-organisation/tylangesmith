@@ -3,8 +3,8 @@ import matter from 'gray-matter'
 import { MDXRemoteSerializeResult } from 'next-mdx-remote'
 import { serialize } from 'next-mdx-remote/serialize'
 
-import { Config } from '../../config'
-import { PostMetaData } from '../../models/post'
+import { Config } from '@/config'
+import { PostMetaData } from '@/models/post'
 
 export interface GetPostResult {
   mdxSerializeResult: MDXRemoteSerializeResult

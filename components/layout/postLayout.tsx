@@ -1,9 +1,8 @@
-import Navigation from '../ui/navigation/navigation'
-import Footer from '../ui/footer/footer'
-import Container from '../ui/container/container'
-import { PostMetaData } from '../../models/post'
-import H1 from '../ui/typography/h1'
-import Tags from '../ui/typography/tags'
+import Navigation from '@/components/ui/navigation/navigation'
+import Footer from '@/components/ui/footer/footer'
+import Container from '@/components/ui/container/container'
+import { PostMetaData } from '@/models/post'
+import Tags from '@/components/ui/typography/tags'
 
 export interface Props extends PostMetaData {
   children: JSX.Element | JSX.Element[] | string
@@ -17,8 +16,8 @@ const Component = (props: Props) => {
       <Navigation />
       <main className="flex-grow">
         <Container>
-          <article className="flex flex-col prose max-w-none">
-            <H1>{title}</H1>
+          <article className="flex flex-col mx-auto prose">
+            <h1 className="mb-3">{title}</h1>
             <Tags>{tags}</Tags>
             {children}
           </article>

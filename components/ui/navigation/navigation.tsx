@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import Container from '../container/container'
+import Container from '@/components/ui/container/container'
 
 const Component = () => {
   return (

@@ -1,5 +1,5 @@
-import Navigation from '../ui/navigation/navigation'
-import Container from '../ui/container/container'
+import Navigation from '@/components/ui/navigation/navigation'
+import Container from '@/components/ui/container/container'
 
 export interface Props {
   children: JSX.Element | JSX.Element[] | string
@@ -11,7 +11,7 @@ const Component = (props: Props) => {
   return (
     <div className="flex flex-col h-screen">
       <Navigation />
-      <main className="flex-grow pb-12">
+      <main className="flex-grow">
         <Container>
           <div className="flex flex-col prose max-w-none">
             {children}

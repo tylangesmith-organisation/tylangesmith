@@ -1,22 +1,22 @@
-import StandardLayout from '../../layout/standardLayout'
-import H1 from '../../ui/typography/h1'
-
-import BlogList from '../../ui/blog/BlogList'
-import Section from '../../ui/container/section'
-
-import { Props } from './controller'
+import StandardLayout from '@/components/layout/standardLayout'
+import BlogList from '@/components/ui/blog/BlogList'
+import { Props } from '@/components/pages/index/controller'
 
 const Component = (props: Props): JSX.Element => {
   const { posts } = props
-
   const x = posts.concat(posts)
+
+  const title = "I'm Ty, a Machine Learning Engineer based in Australia 🦘"
 
   return (
     <StandardLayout>
-      <Section>
-        <H1 center={false}>I'm Ty, a Machine Learning Engineer based in Australia 🦘</H1>
+      <div className="max-w-prose">
+        <h1 className="mb-8">{title}</h1>
+      </div>
+
+      <div className="max-w-prose">
         <BlogList posts={x.map(post => post.postMetaData)} />
-      </Section>
+      </div>
     </StandardLayout>
   )
 }
