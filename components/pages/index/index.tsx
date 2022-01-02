@@ -11,9 +11,7 @@ const Component = (props: Props): JSX.Element => {
     <StandardLayout>
       <div className="max-w-prose">
         <h1 className="mb-8">{title}</h1>
-      </div>
-
-      <div className="max-w-prose">
+        <h2 className="my-2 font-black">What's New?</h2>
         <BlogList posts={posts.map(post => post.postMetaData)} />
       </div>
     </StandardLayout>
