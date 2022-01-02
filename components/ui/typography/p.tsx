@@ -1,4 +1,4 @@
-import ProseBase, { Props as ProseBaseProps } from './proseBase'
+import ProseBase, { Props as ProseBaseProps } from '@/components/ui/typography/proseBase'
 
 export interface Props extends ProseBaseProps {
   children: JSX.Element | JSX.Element[] | string

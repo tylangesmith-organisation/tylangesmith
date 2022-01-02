@@ -1,5 +1,5 @@
-import { PostMetaData } from '../../../models/post'
-import BlogCard from './BlogCard'
+import { PostMetaData } from '@/models/post'
+import BlogCard from '@/components/ui/blog/BlogCard'
 
 export interface Props {
   posts: PostMetaData[]

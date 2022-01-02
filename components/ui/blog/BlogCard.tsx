@@ -1,11 +1,9 @@
 import Link from 'next/link'
 
-import { getPostUrl } from '../../../utils/client/posts'
-import { PostMetaData } from '../../../models/post'
-import H2 from '../../ui/typography/h2'
-import P from '../../ui/typography/p'
-// import Tags from '../typography/tags'
-// import Time from '../../ui/typography/time'
+import { getPostUrl } from '@/utils/client/posts'
+import { PostMetaData } from '@/models/post'
+import H2 from '@/components/ui/typography/h2'
+import P from '@/components/ui/typography/p'
 
 export interface Props {
   post: PostMetaData

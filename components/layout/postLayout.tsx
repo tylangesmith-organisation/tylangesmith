@@ -1,9 +1,10 @@
-import Navigation from '../ui/navigation/navigation'
-import Footer from '../ui/footer/footer'
-import Container from '../ui/container/container'
-import { PostMetaData } from '../../models/post'
-import H1 from '../ui/typography/h1'
-import Tags from '../ui/typography/tags'
+// import Navigation from '../ui/navigation/navigation'
+import Navigation from '@/components/ui/navigation/navigation'
+import Footer from '@/components/ui/footer/footer'
+import Container from '@/components/ui/container/container'
+import { PostMetaData } from '@/models/post'
+import H1 from '@/components/ui/typography/h1'
+import Tags from '@/components/ui/typography/tags'
 
 export interface Props extends PostMetaData {
   children: JSX.Element | JSX.Element[] | string
