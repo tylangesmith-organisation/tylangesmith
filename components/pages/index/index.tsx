@@ -4,7 +4,6 @@ import { Props } from '@/components/pages/index/controller'
 
 const Component = (props: Props): JSX.Element => {
   const { posts } = props
-  const x = posts.concat(posts)
 
   const title = "I'm Ty, a Machine Learning Engineer based in Australia 🦘"
 
@@ -15,7 +14,7 @@ const Component = (props: Props): JSX.Element => {
       </div>
 
       <div className="max-w-prose">
-        <BlogList posts={x.map(post => post.postMetaData)} />
+        <BlogList posts={posts.map(post => post.postMetaData)} />
       </div>
     </StandardLayout>
   )
