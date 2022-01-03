@@ -34,11 +34,13 @@ Awesome! So when designing a hosting solution for this project, I knew I wanted 
 
 Thankfully, since our website is static, we can meet these requirements without too much hassle.
 
-To implement our solution, we'll be using [AWS](https://aws.amazon.com/). AWS is a cloud platform that provides hundreds of cloud services to solve a variety of problems.
+It's also worth mentioning that hosting solutions like [Vercel](https://vercel.com/) make deploying a Next.js project ridiculously easy (plus a bunch of other frameworks), not to mention all of the optimisations that it provides right out of the box. From a developer experience perspective, this is amazing and well worth consideration. I'll probably be moving this deployment to Vercel soon.
+
+However, to gain a deeper understanding, we will take a more hands-on approach. We'll implement our solution using [AWS](https://aws.amazon.com/). AWS is a cloud platform that provides hundreds of cloud services to solve a variety of problems.
 
 > If you're a beginner in this space, it can be pretty overwhelming at first. However, from experience, if you stick with it, you'll quickly be able to navigate the ecosystem with confidence.
 
-So with all those requirements in mind, we can implement a solution that looks like the following.
+So with all of that in mind, we can implement a solution that looks like the following.
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
@@ -70,7 +72,7 @@ Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.
 
 After configuring our index and custom error documents, we can access our static site through an S3 website endpoint. To access the index of our website, we can do so with `http://tylangesmith.com.s3-website-us-east-1.amazonaws.com`.
 
-This is a pretty decent initial solution, but we want to go a few steps further. Notably, the website is accessed via `HTTP`; we don't have a personalised URL, and our content is being served our of `us-east-1`, which isn't great for users across the other side of the world.
+This is a pretty decent initial solution, but we want to go a few steps further. Notably, the website is accessed via `HTTP`; we don't have a personalised URL, and our content is being served out of `us-east-1`, which isn't great for users across the other side of the world.
 
 ### AWS CloudFront
 
@@ -135,5 +137,26 @@ We can trigger this Lambda@Edge function on the required paths, mapping the inco
 <Section>
 
 ## Implementing our Solution
+
+> In this section, I assume you can create a Typescript project
+
+We're now at the point where we want to start implementing our solution. To refresh from a high level, this looks like:
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
+  alt="High Level Solution Architecture"
+  label="High Level Solution Architecture"
+/>
+
+As previously mentioned, we'll be using AWS CDK to define our AWS infrastructure. In our case, we'll be using the Typescript AWS CDK implementation.
+
+Let's first start by installing a few required dependencies.
+
+<Gist id="038bbcc4ab75b96d7820f5b36bbf71ae" />
+
+This installs core AWS CDK dependencies, the required resource constructs and assertion helpers for unit testing.
+
+### CloudFormation Stack
+
 
 </Section>

@@ -14,6 +14,12 @@ module.exports = {
             },
             'code::after': {
               content: '""'
+            },
+            'blockquote>p::before': {
+              content: '""'
+            },
+            'blockquote>p::after': {
+              content: '""'
             }
           }
         }

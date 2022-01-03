@@ -1,4 +1,5 @@
 import { MDXRemote } from 'next-mdx-remote'
+import Gist from 'react-gist'
 
 import PostLayout from '@/components/layout/postLayout'
 import Section from '@/components/ui/container/section'
@@ -13,9 +14,10 @@ const components = {
   h3: (props: any) => <h3 className="my-2" {...props} />,
   p: (props: any) => <p className="my-2 text-lg font-normal" {...props} />,
   a: (props: any) => <A {...props} />,
-  blockquote: (props: any) => <blockquote className="border-blue-600 bg-gray-50" {...props} />,
+  blockquote: (props: any) => <blockquote className="border-blue-600 bg-gray-100" {...props} />,
   inlineCode: (props: any) => <code className="px-2 py-1 font-normal rounded-sm bg-gray-200" {...props} />,
-  Image: (props: any) => <Image {...props} />
+  Image: (props: any) => <Image {...props} />,
+  Gist: (props: any) => <Gist {...props} />
 }
 
 const Component = (props: Props): JSX.Element => {
