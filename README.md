@@ -2,9 +2,9 @@
 
 # Ty Lange-Smith
 
-<div style="text-align:center">
+<p align="center">
   <img height="200" src="assets/highAlch.gif" />
-</div>
+</p>
 
 Hey there! Looks like you've stumbled upon the code for my personal website [tylangesmith.com](https://tylangesmith.com). This is intended to be a fun little personal project where I can blog about some of the cool stuff I've worked on.
 
