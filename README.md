@@ -2,29 +2,29 @@
 
 # Ty Lange-Smith
 
-Hey there 👋, looks like you've stumbled upon the source code for my personal website [tylangesmith.com](https://tylangesmith.com). This project intends to be my little space on the internet where I blog about cool things I've worked on or am interested in.
+<p align="center">
+  <img height="200" src="assets/highAlch.gif" />
+</p>
 
-As you can probably see this project is open source, which means all of the code from deployment to the actual website is openly avaliable. This means you can fork this project or clone it locally and get practically the exact same website - how exciting 😁.
+Hey there! Looks like you've stumbled upon the code for my personal website [tylangesmith.com](https://tylangesmith.com). This is intended to be a fun little personal project where I can blog about some of the cool stuff I've worked on.
 
 ## Project Overview
 
-This project is built leveraging [Next.js](https://nextjs.org/) which is a framework build on top of [React](https://reactjs.org/). This gives us a whole bunch of awesome features right out of the box, not mention the massive community behind both project. 🚀🌕
+This project is built using [Next.js](https://nextjs.org/), if you haven't heard of it before it's definitely worth checking out.
 
-For the deployment of this project I also leverage [Github Actions](https://github.com/features/actions) which is CI / CD workflow tooling that allows you to build, test and deploy (_Not to mention it's free for open source project!_). All of this code can be found in the [.github](./.github) directory in the root of the project.
+The CI / CD pipeline for the project is implemented with [Github Actions](https://github.com/features/actions). This allows us to build, test and deploy the project. All of this code can be found in the [.github](./.github) directory.
 
-The GitHub actions workflow deploys to [AWS](https://aws.amazon.com/), to do this it leverages [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/home.html).
+Our website currently hosted using [AWS](https://aws.amazon.com/). All of this AWS infrastructure is defined as code using [AWS CDK](https://docs.aws.amazon.com/cdk/latest/guide/home.html). However, later down the track this may changes as Next.js hosting options such as [Vercel](https://vercel.com/) are becoming more and more attractive.
 
 ## Getting Started
 
-Ok enough talk, let's jump right in.
+If you actually want to build and dpeloy this project here's how.
 
 ### Prerequisites
 
-- Node v14
+- Node v17
 
-That's it 😇 - the rest of the dependencies will be installed using npm.
-
-### Running the Project
+### Running the Project Locally
 
 ```bash
 # First install the node dependencies
@@ -34,7 +34,7 @@ npm i
 npm run dev
 ```
 
-Now navigate to [localhost:3000](http://localhost:3000/) and you should be meet with the home page.
+Check the output of the terminal for the `localhost` port and navigate to it in you browser. This will usually be [localhost:3000](http://localhost:3000/).
 
 ### Deploying the Project
 
