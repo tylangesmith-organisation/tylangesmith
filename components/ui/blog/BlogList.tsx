@@ -10,13 +10,15 @@ const Component = (props: Props): JSX.Element => {
 
   return (
     <>
-      {
-        posts.map(post =>
-          (
-            <BlogCard key={post.slug} post={post} />
+      <div className="flex flex-col">
+        {
+          posts.map(post =>
+            (
+              <BlogCard key={post.slug} post={post} />
+            )
           )
-        )
-      }
+        }
+      </div>
     </>
   )
 }
