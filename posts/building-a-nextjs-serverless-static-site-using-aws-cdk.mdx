@@ -1,6 +1,6 @@
 ---
-slug: building-a-nextjs-serverless-blog-using-aws-cdk
-title: Building a Next.js Serverless Blog using AWS CDK
+slug: building-a-nextjs-serverless-static-site-using-aws-cdk
+title: Building a Next.js Serverless Static Site using AWS CDK
 description: Designing and implementing a cloud native serverless solution using modern DevOps.
 date: '2021-09-04'
 tags:
@@ -136,11 +136,9 @@ We can trigger this Lambda@Edge function on the required paths, mapping the inco
 
 <Section>
 
-## Implementing our Solution
+## Infrastructure as Code
 
-> In this section, I assume you can create a Typescript project
-
-We're now at the point where we want to start implementing our solution. To refresh from a high level, this looks like:
+We're now at the point where we can start defining our above infrastructure as code using AWS CDK. Again our high-level solution architecture looks like the following:
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
@@ -148,15 +146,13 @@ We're now at the point where we want to start implementing our solution. To refr
   label="High Level Solution Architecture"
 />
 
-As previously mentioned, we'll be using AWS CDK to define our AWS infrastructure. In our case, we'll be using the Typescript AWS CDK implementation.
+Let's break down each of these components and define them as CDK.
 
-Let's first start by installing a few required dependencies.
+### Overview of AWS CDK
 
-<Gist id="038bbcc4ab75b96d7820f5b36bbf71ae" />
+Before AWS CDK, there were a few other ways to define our infrastructure as code. One of the main ways being with a [CloudFormation Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html#gettingstarted.templatebasics.what) which allowed for infrastructure to be defined in a `yaml` or `json` file. 
 
-This installs core AWS CDK dependencies, the required resource constructs and assertion helpers for unit testing.
-
-### CloudFormation Stack
+This was an excellent win for DevOps as infrastructure could be easily defined as code. However, complex infrastructure projects often required verbose CloudFormation Template definitions, quickly becoming hard to maintain and error-prone.
 
 
 </Section>
