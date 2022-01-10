@@ -5,7 +5,7 @@
   "main": "",
   "scripts": {
     "test": "jest --verbose",
-    "test-update": "jest --updateSnapshot --verbose",
+    "test:update": "jest --updateSnapshot --verbose",
     "lint": "eslint . --ext .ts,.tsx"
   },
   "repository": {
