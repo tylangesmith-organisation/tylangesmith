@@ -1,13 +1,15 @@
 import { App } from '@aws-cdk/core'
 import { SynthUtils } from '@aws-cdk/assert'
 import Stack from './stack'
+import { GetHostedZoneProps } from './helpers/route53'
 
 // The HostedZone.fromLookup requires an AWS SDK call so let's mock that
 jest.mock('./helpers/route53', () => ({
   ...(jest.requireActual('./helpers/route53')),
-  getHostedZone: jest.fn(() => {
+  getHostedZone: jest.fn((props: GetHostedZoneProps) => {
+    const { domainName } = props
     return {
-      zoneName: 'tylangesmith.com',
+      zoneName: domainName,
       hostedZoneArn: '',
       hostedZoneId: ''
     }
@@ -18,13 +20,13 @@ describe('Stack', () => {
   it('should create the expected stack for the master branch', () => {
     // Arrange
     const app = new App()
+    const branchName = 'master'
     const domainName = 'tylangesmith.com'
     const subDomainName = ''
-    const url = 'tylangesmith.com'
 
     // Act
     const stack = new Stack(app, {
-      url,
+      branchName,
       domainName,
       subDomainName,
       env: {
@@ -39,13 +41,13 @@ describe('Stack', () => {
   it('should create the expected stack for the non-master branch', () => {
     // Arrange
     const app = new App()
+    const branchName = 'my-feature'
     const domainName = 'tylangesmith.com'
-    const subDomainName = 'blog'
-    const url = 'blog.tylangesmith.com'
+    const subDomainName = ''
 
     // Act
     const stack = new Stack(app, {
-      url,
+      branchName,
       domainName,
       subDomainName,
       env: {
