@@ -47,5 +47,5 @@ In the [deploy.yml](.github/workflows/deploy.yml) you will find the required Git
 | ACCOUNT_ID            | GitHub Secret        | The AWS Account ID             |
 | AWS_ACCESS_KEY_ID     | GitHub Secret        | The IAM user Access Key ID     |
 | AWS_SECRET_ACCESS_KEY | GitHub Secret        | The IAM user Secret Access Key |
-| AWS_DEFAULT_REGION    | Environment Variable | The IAM user Secret Access Key |
-| DOMAIN_NAME           | Environment Variable | The IAM user Secret Access Key |
+| AWS_DEFAULT_REGION    | Environment Variable | The default AWS region to use  |
+| DOMAIN_NAME           | Environment Variable | Your domain name               |
