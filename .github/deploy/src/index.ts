@@ -5,7 +5,7 @@ import Stack from './stack'
 // Ensure we have the required environment variables
 if (!process.env.BRANCH_NAME) throw Error('A BRANCH_NAME must be provided...')
 if (!process.env.DOMAIN_NAME) throw Error('A DOMAIN_NAME must be provided...')
-if (!process.env.SUBDOMAIN_NAME) throw Error('A SUBDOMAIN_NAME must be provided...')
+if (process.env.SUBDOMAIN_NAME === undefined || process.env.SUBDOMAIN_NAME === null) throw Error('A SUBDOMAIN_NAME must be provided...')
 if (!process.env.GITHUB_REPOSITORY) throw Error('A GITHUB_REPOSITORY must be provided...')
 
 // Get our stack name for our github repository name and branch name
