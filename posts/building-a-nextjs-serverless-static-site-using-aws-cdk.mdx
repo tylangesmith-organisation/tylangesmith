@@ -12,17 +12,18 @@ tags:
 
 <Section>
 
-In this blog, we'll explore how to host a Next.js static site on AWS. We'll use AWS CloudFront, Lambda@Edge, and S3 to implement a fully serverless solution. We'll leverage AWS CDK to define our infrastructure as code and implement a continuous integration and continuous delivery pipeline with Github Actions.
+In this blog, we'll explore how to host a Next.js static site on AWS. We'll use AWS CloudFront, CloudFront Functions, and S3 to implement a fully serverless solution. We'll then take this serverless solution and leverage AWS CDK to define our infrastructure as code.
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/headerHighQuality.jpg"
   alt="A Next.js + AWS ☁️ story"
 />
 
+We'll explore a simple example solution I've implemented [nextjs-serverless-static-site.tylangesmith.com](https://nextjs-serverless-static-site.tylangesmith.com).
 
-We'll explore the solution I've implemented to host my personal blog website [tylangesmith.com](https://tylangesmith.com). This is a simple static website built using [Next.js](https://nextjs.org/). Next.js comes with a set of pre-rendering [static generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) features right out of the box that suits this exact use case. We won't deep-dive into this implementation, but for the context of this blog, the end result is a small static bundle that we want to deploy.
+This is a simple static website built using [Next.js](https://nextjs.org). Next.js comes with a set of pre-rendering [static generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) features right out of the box that suits this exact use case. We won't deep-dive into this Next.js implementation, but for the context of this blog, the end result is a small static bundle that we want to deploy.
 
-All of the code for this can be found on my [GitHub](https://github.com/tylangesmith-organisation/tylangesmith)!
+All of the code for this can be found on my [GitHub](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site)!
 
 </Section>
 
