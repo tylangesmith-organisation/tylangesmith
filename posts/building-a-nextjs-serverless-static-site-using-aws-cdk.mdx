@@ -23,7 +23,7 @@ We'll explore a simple example solution I've implemented [nextjs-serverless-stat
 
 This is a simple static website built using [Next.js](https://nextjs.org). Next.js comes with a set of pre-rendering [static generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) features right out of the box that suits this exact use case. We won't deep-dive into this Next.js implementation, but for the context of this blog, the end result is a small static bundle that we want to deploy.
 
-All of the code for this can be found on my [GitHub](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site)!
+And of course, all of the code for this can be found on my [GitHub](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site)!
 
 </Section>
 
@@ -31,11 +31,11 @@ All of the code for this can be found on my [GitHub](https://github.com/tylanges
 
 ## Designing our Solution
 
-Awesome! So when designing a hosting solution for this project, I knew I wanted something performant, scalable, reliable, secure, and cost-optimised. Naturally, I also wanted to keep things relatively simple.
+Awesome! So we want to develop a hosting solution for our Next.js static site. We want a solution that'll be performant,  scalable, reliable, secure, and cost-optimised. Naturally, we also want to try and keep things relatively simple.
 
 Thankfully, since our website is static, we can meet these requirements without too much hassle.
 
-It's also worth mentioning that hosting solutions like [Vercel](https://vercel.com/) make deploying a Next.js project ridiculously easy (plus a bunch of other frameworks), not to mention all of the optimisations that it provides right out of the box. From a developer experience perspective, this is amazing and well worth consideration. I'll probably be moving this deployment to Vercel soon.
+It's also worth mentioning that hosting solutions like [Vercel](https://vercel.com/) make deploying a Next.js project ridiculously easy (plus a bunch of other frameworks), not to mention it provides a bunch of optimisations right out of the box. From a developer experience perspective, this is amazing and well worth consideration.
 
 However, to gain a deeper understanding, we will take a more hands-on approach. We'll implement our solution using [AWS](https://aws.amazon.com/). AWS is a cloud platform that provides hundreds of cloud services to solve a variety of problems.
 
