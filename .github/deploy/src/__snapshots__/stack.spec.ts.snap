@@ -629,10 +629,10 @@ function handler (event) {
 }
 ",
         "FunctionConfig": Object {
-          "Comment": "mapping-tylangesmith.com",
+          "Comment": "mapping-staticWebsite",
           "Runtime": "cloudfront-js-1.0",
         },
-        "Name": "mapping-tylangesmith.com",
+        "Name": "mapping-staticWebsite",
       },
       "Type": "AWS::CloudFront::Function",
     },
@@ -1537,10 +1537,10 @@ function handler (event) {
 }
 ",
         "FunctionConfig": Object {
-          "Comment": "mapping-my-feature.tylangesmith.com",
+          "Comment": "mapping-staticWebsite",
           "Runtime": "cloudfront-js-1.0",
         },
-        "Name": "mapping-my-feature.tylangesmith.com",
+        "Name": "mapping-staticWebsite",
       },
       "Type": "AWS::CloudFront::Function",
     },
