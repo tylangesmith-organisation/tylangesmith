@@ -12,18 +12,16 @@ tags:
 
 <Section>
 
-In this blog, we'll explore how to host a Next.js static site on AWS. We'll use AWS CloudFront, CloudFront Functions, and S3 to implement a fully serverless solution. We'll then take this serverless solution and leverage AWS CDK to define our infrastructure as code.
+In this blog, we'll explore how to host a Next.js static site on AWS. We'll design a fully serverless solution using AWS CloudFront, CloudFront Functions, and S3. We'll then take this serverless solution and leverage AWS CDK to define our infrastructure as code.
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/headerHighQuality.jpg"
   alt="A Next.js + AWS ☁️ story"
 />
 
-We'll explore a simple example solution I've implemented [nextjs-serverless-static-site.tylangesmith.com](https://nextjs-serverless-static-site.tylangesmith.com).
+For this blog, we'll attempt to host a simple [Next.js](https://nextjs.org) static site I've implemented [nextjs-serverless-static-site.tylangesmith.com](https://nextjs-serverless-static-site.tylangesmith.com).
 
-This is a simple static website built using [Next.js](https://nextjs.org). Next.js comes with a set of pre-rendering [static generation](https://nextjs.org/docs/basic-features/pages#static-generation-recommended) features right out of the box that suits this exact use case. We won't deep-dive into this Next.js implementation, but for the context of this blog, the end result is a small static bundle that we want to deploy.
-
-And of course, all of the code for this can be found on my [GitHub](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site)!
+Of course, if you want to jump straight to the code, you can by checking out the project [GitHub repository](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site)!
 
 </Section>
 
