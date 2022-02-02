@@ -190,7 +190,7 @@ Thankfully, with the introduction of AWS CDK, developers now had a way to define
 
 With this new set of tooling and high-level abstractions, developers can now quickly deliver quality cloud infrastructure.
 
-That being said, let's break down each of our components and implement them with AWS CDK.  Again our high-level solution architecture looks like the following:
+For our following example, we'll use the Typescript AWS CDK SDK. Let's get started and implement each of our components. Again our high-level solution architecture looks like the following:
 
 </ProseWidth>
 
@@ -202,7 +202,17 @@ That being said, let's break down each of our components and implement them with
 
 <ProseWidth>
 
+## Prerequisites
 
+In this example, I won't cover setting up a Typescript AWS CDK project. If you want to follow along, I recommend checking out the project [GitHub repository](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site).
+
+## Creating a CloudFormation Stack
+
+Our infrastructure resources will be contained within a [CloudFromation Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html). This allows us to manage this set of resources as a single unit, making creating, updating and deleting our resources much more straightforward.
+
+Let's go ahead and define our stack class.
+
+<Gist id="ce1f7de6bad3ea4727f95bd139583fc6" />
 
 </ProseWidth>
 
