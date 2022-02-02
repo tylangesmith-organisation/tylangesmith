@@ -2,15 +2,16 @@ export interface Props {
   source: string;
   label?: string;
   alt?: string | undefined;
+  shadow?: boolean;
 }
 
 const Component = (props: Props): JSX.Element => {
-  const { source, label, alt } = props
+  const { source, label, alt, shadow = false } = props
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col mx-auto max-w-5xl 2xl:my-6">
       <img
-          className="my-4 w-full shadow-md"
+          className={`my-6 w-full ${shadow ? 'shadow-md' : ''}`}
           src={source}
           alt={alt}
         />
