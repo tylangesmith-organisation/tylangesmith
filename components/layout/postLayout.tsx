@@ -3,6 +3,7 @@ import Footer from '@/components/ui/footer/footer'
 import Container from '@/components/ui/container/container'
 import { PostMetaData } from '@/models/post'
 import Tags from '@/components/ui/typography/tags'
+import ProseWidth from '@/components/ui/container/proseWidth'
 
 export interface Props extends PostMetaData {
   children: JSX.Element | JSX.Element[] | string
@@ -16,9 +17,11 @@ const Component = (props: Props) => {
       <Navigation />
       <main className="flex-grow">
         <Container>
-          <article className="flex flex-col mx-auto prose">
-            <h1 className="mb-3">{title}</h1>
-            <Tags>{tags}</Tags>
+          <article className="flex flex-col mx-auto">
+            <ProseWidth>
+              <h1 className="mb-3">{title}</h1>
+              <Tags>{tags}</Tags>
+            </ProseWidth>
             {children}
           </article>
         </Container>

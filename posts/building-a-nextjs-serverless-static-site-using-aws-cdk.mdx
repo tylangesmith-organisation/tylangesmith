@@ -12,20 +12,30 @@ tags:
 
 <Section>
 
+<ProseWidth>
+
 In this blog, we'll explore how to host a Next.js static site on AWS. We'll design a fully serverless solution using AWS CloudFront, CloudFront Functions, and S3. We'll then take this serverless solution and leverage AWS CDK to define our infrastructure as code.
+
+</ProseWidth>
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/headerHighQuality.jpg"
   alt="A Next.js + AWS ☁️ story"
 />
 
+<ProseWidth>
+
 For this blog, we'll attempt to host a simple [Next.js](https://nextjs.org) static site I've implemented [nextjs-serverless-static-site.tylangesmith.com](https://nextjs-serverless-static-site.tylangesmith.com).
 
 Of course, if you want to jump straight to the code, you can by checking out the project [GitHub repository](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site)!
 
+</ProseWidth>
+
 </Section>
 
 <Section>
+
+<ProseWidth>
 
 ## Designing our Solution
 
@@ -41,27 +51,33 @@ However, to gain a deeper understanding, we will take a more hands-on approach. 
 
 So with all of that in mind, we can implement a solution that looks like the following.
 
+</ProseWidth>
+
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/highLevelSolutionArchitecture.png"
   alt="High Level Solution Architecture"
   label="High Level Solution Architecture"
 />
+
+<ProseWidth>
 
 Hopefully, that doesn't look too scary - let's break each of these components down to better understand how they all fit together.
 
 ### AWS Simple Storage Service (S3)
 
-First, we need somewhere to store our static bundle. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service that enables us to store objects. 
+When we build our Next.js project, we get a bunch of static files, also known as a static bundle; we need somewhere to store these files. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service that enables us to store objects.
 
 These objects are stored in what's known as a bucket. Once stored and configured with the correct permissions, objects within this bucket can be accessed via a few different methods, e.g. an object URL.
 
 > One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets
 
-For example, if we uploaded our static bundle to a bucket we've created named `tylangesmith.com` and wanted to grab the `index.html` file, we could do so via the object URL `https://s3.amazonaws.com/tylangesmith.com/index.html`.
+If we uploaded our static bundle to a bucket we've created named `mybucket` and wanted to grab the `index.html` file, we could do so via the object URL `https://s3.amazonaws.com/mybucket/index.html`.
 
-This gives us somewhere to store our objects, but just storing these objects and accessing them via the S3 REST APIs isn't quite enough.
+This gives us somewhere to store our objects, but just storing these objects and accessing them via the S3 REST APIs isn't quite enough to host a website.
 
-Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static content. This has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the S3 REST APIs.
+Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static bundle. This has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the S3 REST APIs.
+
+</ProseWidth>
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
@@ -69,7 +85,9 @@ Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.
   label="S3 Static Website Hosting"
 />
 
-After configuring our index and custom error documents, we can access our static site through an S3 website endpoint. To access the index of our website, we can do so with `http://tylangesmith.com.s3-website-us-east-1.amazonaws.com`.
+<ProseWidth>
+
+After configuring our index and custom error documents, we can access our static site through an S3 website endpoint. To access the index of our website, we can do so with `http://mybucket.s3-website-us-east-1.amazonaws.com`.
 
 This is a pretty decent initial solution, but we want to go a few steps further. Notably, the website is accessed via `HTTP`; we don't have a personalised URL, and our content is being served out of `us-east-1`, which isn't great for users across the other side of the world.
 
@@ -79,15 +97,21 @@ This is a pretty decent initial solution, but we want to go a few steps further.
 
 > Check out all of the [features](https://aws.amazon.com/cloudfront/features/) CloudFront offers
 
+</ProseWidth>
+
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontPropogation.png"
   alt="CloudFront Content Propogation"
   label="CloudFront Content Propogation"
 />
 
+<ProseWidth>
+
 As we can see, the content served from our S3 website endpoint is propagated across our CloudFront distribution and cached across many edge nodes. This reduces the distance the users' request for content has to travel, ultimately increasing delivery speed. The user now accesses our static content via the CloudFront distribution URL `xyz.cloudfront.net`.
 
-Next, we can put this CloudFront distribution URL behind a custom URL, `tylangesmith.com`, with a simple [AWS Route53](https://aws.amazon.com/route53/) record. After that, we can generate an SSL certificate for the domain with [AWS ACM](https://aws.amazon.com/certificate-manager/) (Certificate Manager) and attach it to our CloudFront distribution enforcing `HTTPS`.
+Next, we can put this CloudFront distribution URL behind a custom URL, `nextjs-serverless-static-site.tylangesmith.com`, with a simple [AWS Route53](https://aws.amazon.com/route53/) record. After that, we can generate an SSL certificate for the domain with [AWS ACM](https://aws.amazon.com/certificate-manager/) (Certificate Manager) and attach it to our CloudFront distribution enforcing `HTTPS`.
+
+</ProseWidth>
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontURLAndHttps.png"
@@ -95,11 +119,15 @@ Next, we can put this CloudFront distribution URL behind a custom URL, `tylanges
   label="CloudFront Custom URL and HTTPS"
 />
 
-### AWS Lambda@Edge
+<ProseWidth>
 
-OK, one last thing we need to account for. When the user accesses our website via the URL `https://tylangesmith.com`, the S3 website endpoint knows that we need to return our index document; once returned, the Next.js library is loaded. The user can click around and navigate to different pages from this initially loaded index document, e.g. `https://tylangesmith.com/blog/some-blog`.
+### CloudFront Functions
+
+OK, one last thing we need to account for. When the user accesses our website via the URL `https://nextjs-serverless-static-site.tylangesmith.com`, the S3 website endpoint knows that we need to return our index document; once returned, the Next.js library is loaded. The user can click around and navigate to different pages from this initially loaded index document, e.g. `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog`.
 
 Since the Next.js library is loaded, the inbuilt router knows that when the users' browser navigates to the `blog/some-blog` path, we really want to send a request for the `blog/some-blog.html` HTML file.
+
+</ProseWidth>
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterLoaded.png"
@@ -107,9 +135,13 @@ Since the Next.js library is loaded, the inbuilt router knows that when the user
   label="Requests with Next.js Loaded"
 />
 
-However, a problem arises when the user requests the `https://tylangesmith.com/blog/some-blog` URL without the Next.js library first being loaded. E.g. when refreshing the page.
+<ProseWidth>
+
+However, a problem arises when the user requests the `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog` URL without the Next.js library first being loaded. E.g. when refreshing the page.
 
 The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which results in the `/blog/some-blog` path being requested instead.
+
+</ProseWidth>
 
 <Image
   source="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterNotLoaded.png"
@@ -117,33 +149,47 @@ The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which re
   label="Requests without Next.js Loaded"
 />
 
+<ProseWidth>
+
 As a result, the S3 website endpoint cannot find the related file and instead returns the configured error document.
 
-To address this, we need to ensure these paths are translated for the required requests. We can achieve this by configuring a CloudFront behaviour to run a lightweight [Lambda@Edge](https://aws.amazon.com/lambda/edge/) function.
+We need to ensure these paths are translated for the required requests to address this. We can achieve this by configuring a CloudFront behaviour to run a lightweight [CloudFront Function](https://aws.amazon.com/blogs/aws/introducing-cloudfront-functions-run-your-code-at-the-edge-with-low-latency-at-any-scale/).
+
+</ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/lambda@edgeFunction.png"
-  alt="CloudFront with Lambda@Edge Function"
-  label="CloudFront with Lambda@Edge Function"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudfrontFunction.png"
+  alt="CloudFront with CloudFront Function"
+  label="CloudFront with CloudFront Function"
 />
 
-We can trigger this Lambda@Edge function on the required paths, mapping the incoming request to the correct related file within our S3 bucket.
+<ProseWidth>
+
+We can trigger this CloudFront Function on the required paths, mapping the incoming request to the correct related file within our S3 bucket.
 
 🎉 that should be everything! Our solution should now satisfy all of our original requirements.
+
+</ProseWidth>
 
 </Section>
 
 <Section>
 
+<ProseWidth>
+
 ## Infrastructure as Code
 
 We're now at the point where we can start defining our above infrastructure as code using AWS CDK. Again our high-level solution architecture looks like the following:
 
+</ProseWidth>
+
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/solutionArchitecture.png"
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/highLevelSolutionArchitecture.png"
   alt="High Level Solution Architecture"
   label="High Level Solution Architecture"
 />
+
+<ProseWidth>
 
 Let's break down each of these components and define them as CDK.
 
@@ -153,5 +199,6 @@ Before AWS CDK, there were a few other ways to define our infrastructure as code
 
 This was an excellent win for DevOps as infrastructure could be easily defined as code. However, complex infrastructure projects often required verbose CloudFormation Template definitions, quickly becoming hard to maintain and error-prone.
 
+</ProseWidth>
 
 </Section>
