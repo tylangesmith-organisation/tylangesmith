@@ -180,7 +180,17 @@ We can trigger this CloudFront Function on the required paths, mapping the incom
 
 ## Infrastructure as Code
 
-We're now at the point where we can start defining our above infrastructure as code using AWS CDK. Again our high-level solution architecture looks like the following:
+We're now at the point where we can start defining our above infrastructure as code using [AWS CDK](https://aws.amazon.com/cdk/).
+
+Before AWS CDK, there were a few other ways to define our infrastructure as code. One of the main ways being with a [CloudFormation Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html#gettingstarted.templatebasics.what) which allowed for infrastructure to be defined in a `yaml` or `json` file. 
+
+This was an excellent win for DevOps as infrastructure could now be easily defined as code. However, complex infrastructure projects often required verbose CloudFormation Template definitions, quickly becoming hard to maintain and error-prone.
+
+Thankfully, with the introduction of AWS CDK, developers now had a way to define their cloud infrastructure as code using a familiar set of tools; high-level programming languages. 
+
+With this new set of tooling and high-level abstractions, developers can now quickly deliver quality cloud infrastructure.
+
+That being said, let's break down each of our components and implement them with AWS CDK.  Again our high-level solution architecture looks like the following:
 
 </ProseWidth>
 
@@ -192,13 +202,7 @@ We're now at the point where we can start defining our above infrastructure as c
 
 <ProseWidth>
 
-Let's break down each of these components and define them as CDK.
 
-### Overview of AWS CDK
-
-Before AWS CDK, there were a few other ways to define our infrastructure as code. One of the main ways being with a [CloudFormation Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html#gettingstarted.templatebasics.what) which allowed for infrastructure to be defined in a `yaml` or `json` file. 
-
-This was an excellent win for DevOps as infrastructure could be easily defined as code. However, complex infrastructure projects often required verbose CloudFormation Template definitions, quickly becoming hard to maintain and error-prone.
 
 </ProseWidth>
 
