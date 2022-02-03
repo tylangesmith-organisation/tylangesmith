@@ -138,7 +138,7 @@ Since the Next.js library is loaded, the inbuilt router knows that when the user
 
 <ProseWidth>
 
-However, a problem arises when the user requests the `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog` URL without the Next.js library first being loaded. E.g. when refreshing the page.
+However, a problem arises when the user requests the `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog` URL without the Next.js library first being loaded. e.g. when refreshing the page.
 
 The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which results in the `/blog/some-blog` path being requested instead.
 
@@ -222,13 +222,17 @@ With that now defined, we need to instantiate the class - let's create an `index
 
 This file instantiates our stack with a few environment variables provided when running the file. To construct our stack correctly, we need to give it a few parameters.
 
-- **`stackName`**: The name of our CloudFormation Stack.
+- `stackName`: The name of our CloudFormation Stack.
 
-- `branchName`: Our current Git branch name is used to generate resources with unique names for the branch, enabling testing the branch in isolation. E.g. I can test the branch `my-feature-1` separately from `my-other-feature`.
+- `branchName`: Our current Git branch name is used to generate resources with unique names for the branch, enabling testing the branch in isolation. e.g. I can test the branch `my-feature-1` separately from `my-other-feature`.
 
-- `domainName`: The base domain name of the URL for our project. E.g. `tylangesmith.com`.
+- `domainName`: The base domain name of the URL for our project. e.g. `tylangesmith.com`.
 
-- `subDomainName`: The subdomain name of the URL for our project. E.g. `nextjs-serverless-static-site`.
+- `subDomainName`: The subdomain name of the URL for our project. e.g. `nextjs-serverless-static-site`.
+
+As you can see, we generate a `stackName` from our `GITHUB_REPOSITORY` e.g. `tylangesmith-organisation/nextjs-serverless-static-site` and our `BRANCH_NAME`. For this we've created a `getStackName` function - let's define it.
+
+<Gist id="56ae1bdc10535560af2c53d5edd80aae" />
 
 </ProseWidth>
 
