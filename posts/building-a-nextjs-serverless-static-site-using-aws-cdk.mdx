@@ -208,11 +208,27 @@ In this example, I won't cover setting up a Typescript AWS CDK project. If you w
 
 ## Creating a CloudFormation Stack
 
-Our infrastructure resources will be contained within a [CloudFromation Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html). This allows us to manage this set of resources as a single unit, making creating, updating and deleting our resources much more straightforward.
+Our infrastructure resources will be contained within a [CloudFromation Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html). This allows us to manage this set of resources as a single unit, making creating, updating and deleting our application resources much more straightforward.
 
 Let's go ahead and define our stack class.
 
 <Gist id="ce1f7de6bad3ea4727f95bd139583fc6" />
+
+This defines our `StaticWebsiteStack` class which extends the base `Stack` CDK class and will contain all of our static website resources. 
+
+With that now defined, we need to instantiate the class - let's create an `index.ts` file as our main entrypoint.
+
+<Gist id="1b1d67247ae6ba7c11d6dc6c2796cf7e" />
+
+This file instantiates our stack with a few environment variables provided when running the file. To construct our stack correctly, we need to give it a few parameters.
+
+- **`stackName`**: The name of our CloudFormation Stack.
+
+- `branchName`: Our current Git branch name is used to generate resources with unique names for the branch, enabling testing the branch in isolation. E.g. I can test the branch `my-feature-1` separately from `my-other-feature`.
+
+- `domainName`: The base domain name of the URL for our project. E.g. `tylangesmith.com`.
+
+- `subDomainName`: The subdomain name of the URL for our project. E.g. `nextjs-serverless-static-site`.
 
 </ProseWidth>
 
