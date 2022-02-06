@@ -277,53 +277,63 @@ Given 2 branches `my-feature-1` and `master` we'd get the following stack names 
 
 ## Creating an S3 Static Website Bucket
 
-Now, we need to create an S3 Static Website Bucket. We can create a simple helper function in our stack to abstract this. We'll also need to define a simple function that generates the URL for our branch. We can then use this URL as our bucket name.
+Now, we need to create an S3 Static Website Bucket. For this, we need to give our bucket a unique name. Since we need to generate our URL with branching support anyway, we can use this as our bucket name.
 
 <Gist id="d65b5252912c43964197274f7cec1ed2" />
 
-Our URL branch generation code is pretty straightforward, similar to our stack name generation.
+To generate our branched URL, we have the following code. This is pretty similar to our stack name generation code.
 
 <Gist id="010a0f4dea981d149865a225cc43ff8c" />
 
-And finally, our `createStaticWebsiteBucket` code.
+The main thing to note here is if we are not on our default `master` branch, the branch name will be suffixed onto our subdomain name. However, if we are on the default `master` branch, we'll return the subdomain name without any suffix.
+
+Now let's define our actual bucket creation code. 
 
 <Gist id="83de43f4fad6a958195753221a44b3b0" />
 
-By default, this bucket denies all public access. This bucket will also have static website hosting enabled because we've specified the `websiteIndexDocument` and `websiteErrorDocument` documents. 
+Here we use the `Bucket` construct. This bucket denies all public access by default. Static website hosting will also be enabled because we've specified the `websiteIndexDocument` and `websiteErrorDocument` documents. 
 
-One last thing to note here as well is we've set the `autoDeleteObjects` and `removalPolicy` to be pretty destructive when we delete the CloudFormation stack. This makes the cleanup of branches a lot easier; however, it might be worth turning this off for the production stack to ensure we don't easily delete our production bucket.
+One last thing to note here as well is we've set the `autoDeleteObjects` and `removalPolicy` to be pretty destructive when we delete the CloudFormation stack. This makes the cleanup of branches much easier; however, it might be worth turning this off for the production stack to ensure we don't easily delete our production bucket.
 
 ## Creating an SSL Certificate
 
-Now, we need to create our SSL certificate to use with our CloudFront Distribution. To do this, we first need to grab a reference to our domain's hosted zone in Route53. Let's define these abstractions in our stack.
+Next, we need to create an SSL certificate to use with our CloudFront Distribution. To do this, we need to specify which Route53 hosted zone we want to issue the certificate for.
 
 <Gist id="e4778832977e144d1658ced51e69591f" />
 
-Our Route53 hosted zone lookup is simple.
+Here we define 2 functions, a `getHostedZone` function that will grab a reference to the Route53 hosted zone for our domain and a `createCertificate` function that will create the certificate.
+
+The lookup for our Route53 hosted zone is pretty simple.
+
+> Note for this to work, we need the extra `env` variables (`account` and `region`) to be passed to our stack in our `index.ts` file.
 
 <Gist id="1661ac3b5aa733aaa5aa89d90f1eb2ca" />
 
-And our certificate creation is pretty simple too.
+Our certificate creation is pretty simple too.
 
 <Gist id="a71be2bc42ca0c97076166bd30970e0d" />
 
-To create the certificate, AWS needs to ensure that we actually manage the Route53 hosted zone. For this, we can use the `DnsValidatedCertificate` construct, which will automatically validate our hosted zone.
+Here we use the `DnsValidatedCertificate` construct. This construct issues a certificate for the domain we specify. However, to create this certificate, AWS needs to ensure we actually manage the Route53 hosted zone. Thankfully this construct will automatically validate this for us.
 
 ## Creating a CloudFront Function
 
-Next, let's go ahead and create our CloudFront Function. This allows us to define a lightweight function that we can run when a user requests content from our CloudFront Distribution.
+Next up, we need to create our CloudFront Function. This allows us to correctly map any non-html translated Next.js URLs to their respective `.html` files. 
+
+For this, we can run lightweight code on specific user requests.
 
 <Gist id="5b0e2a1e20448865cf05dc13b4542213" />
 
-Defining the `createFunction` function.
+The main thing to note here is that we specify the `filePath` of our code to run.
+
+Now lets define `createFunction`.
 
 <Gist id="2184f20bf0e94b8435957c0fbb933a55" />
 
-This `Function` construct grabs our lightweight code to run from a local file we've defined `./src/functions/mapperFunction.js`.
+Here we use the `Function` construct with the `FunctionCode` utility. This will grab the code we've defined at `./src/functions/mapperFunction.js`. 
 
 <Gist id="2d4a9bcac4638ae95c7ea7c4e9bb1939" />
 
-This pretty straightforward mapping maps URI's that don't map to a file to their respective `.html` file.
+This mapping code modifies the incoming request URI. This will only run on a specified set of paths we'll define later on.
 
 </ProseWidth>
 
