@@ -230,7 +230,7 @@ This file instantiates our stack with a few environment variables provided when 
 
 - `subDomainName`: The subdomain for our project. e.g. `nextjs-serverless-static-site`.
 
-- `env`: A few extra variables to correctly enable route53 lookups to work
+- `env`: A few extra variables to correctly enable route53 lookups to work.
 
 As you can probably see, we generate our `stackName` from our `GITHUB_REPOSITORY` e.g. `tylangesmith-organisation/nextjs-serverless-static-site` and our `BRANCH_NAME`. Why? Well, let's explore this.
 
@@ -277,7 +277,7 @@ Given 2 branches `my-feature-1` and `master` we'd get the following stack names 
 
 ## Creating an S3 Static Website Bucket
 
-Next, we need to create an S3 Static Website Bucket. We can create a simple helper function in our stack to abstract this. We'll also need to define a simple function that generates the URL for our branch. We can then use this URL as our bucket name.
+Now, we need to create an S3 Static Website Bucket. We can create a simple helper function in our stack to abstract this. We'll also need to define a simple function that generates the URL for our branch. We can then use this URL as our bucket name.
 
 <Gist id="d65b5252912c43964197274f7cec1ed2" />
 
@@ -311,6 +311,19 @@ To create the certificate, AWS needs to ensure that we actually manage the Route
 
 ## Creating a CloudFront Function
 
+Next, let's go ahead and create our CloudFront Function. This allows us to define a lightweight function that we can run when a user requests content from our CloudFront Distribution.
+
+<Gist id="5b0e2a1e20448865cf05dc13b4542213" />
+
+Defining the `createFunction` function.
+
+<Gist id="2184f20bf0e94b8435957c0fbb933a55" />
+
+This `Function` construct grabs our lightweight code to run from a local file we've defined `./src/functions/mapperFunction.js`.
+
+<Gist id="2d4a9bcac4638ae95c7ea7c4e9bb1939" />
+
+This pretty straightforward mapping maps URI's that don't map to a file to their respective `.html` file.
 
 </ProseWidth>
 
