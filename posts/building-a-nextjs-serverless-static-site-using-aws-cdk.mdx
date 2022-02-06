@@ -224,16 +224,95 @@ This file instantiates our stack with a few environment variables provided when 
 
 - `stackName`: The name of our CloudFormation Stack.
 
-- `branchName`: Our current Git branch name is used to generate resources with unique names for the branch, enabling testing the branch in isolation. e.g. I can test the branch `my-feature-1` separately from `my-other-feature`.
+- `branchName`: Our current Git branch name e.g. `my-feature-1`.
 
-- `domainName`: The base domain name of the URL for our project. e.g. `tylangesmith.com`.
+- `domainName`: The domain name for our project. e.g. `tylangesmith.com`.
 
-- `subDomainName`: The subdomain name of the URL for our project. e.g. `nextjs-serverless-static-site`.
+- `subDomainName`: The subdomain for our project. e.g. `nextjs-serverless-static-site`.
 
-As you can see, we generate a `stackName` from our `GITHUB_REPOSITORY` e.g. `tylangesmith-organisation/nextjs-serverless-static-site` and our `BRANCH_NAME`. For this we've created a `getStackName` function - let's define it.
+- `env`: A few extra variables to correctly enable route53 lookups to work
+
+As you can probably see, we generate our `stackName` from our `GITHUB_REPOSITORY` e.g. `tylangesmith-organisation/nextjs-serverless-static-site` and our `BRANCH_NAME`. Why? Well, let's explore this.
+
+## Branched Infrastructure
+
+Continuous delivery strategies can vary between companies. In the early DevOps days, some companies implemented a simple approach, provisioning 3 or so main long-lived deployment environments.
+
+- Development (DEV)
+- User Acceptance Testing (UAT)
+- Production (PROD)
+
+In theory, each of these environments is configured to be identical. A software change can then be developed and verified within a set of environments (DEV and UAT) that are *"as identical to production as possible"*. This increases the confidence that the change will work as expected when it is finally promoted to the production environment.
+
+On paper, this sounds great; however, after using this workflow for a while, a few issues can arise. Mainly, these environments drift over time, decreasing their original similarity. Not to mention the logistical complexities of managing who's code is on what server - *"hey, are you finished with the DEV environment?"*
+
+Thankfully, with the flexibility of cloud computing and modern DevOps, we can avoid a lot of these issues. We can write our infrastructure code to deploy an entirely separate CloudFormation stack for each of our Git branches. This enables each branch to be verified in isolation, avoiding the environmental drift and bottlenecks introduced by using long-lived standalone environments.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/gitBranchDeploy.png"
+  alt="Separate CloudFormation Stack Deployment"
+  label="Separate CloudFormation Stack Deployment"
+/>
+
+<ProseWidth>
+
+In this example, we have 2 developers, each developing different features on different branches. Each developer gets an entirely separate set of infrastructure for their branch, allowing them to validate their changes in isolation. Once their branch is merged into the default `master` branch, the deployment pipeline will deploy the latest code to the `master` stack, which is the production infrastructure.
+
+This all occurs within a single AWS account which is fine for our use case. However, we'll likely want to separate our testing infrastructure from our production infrastructure in an enterprise setting. This helps decrease the blast radius of any deployment branches impacting the production deployed infrastructure.
+
+To support branched infrastructure, we need to ensure that any resources that require a unique name are named - well, uniquely. We can achieve this relatively easily by including the GitHub repository and branch name in our name generation. 
+
+For example, let's take the above `stackName` example. A stack's name must be unique for the AWS account and AWS region. We generate the `stackName` with the following helper code.
 
 <Gist id="56ae1bdc10535560af2c53d5edd80aae" />
 
+This code should be relatively self-explanatory. In our case, our GitHub repository name breaks down to `nextjs-serverless-static-site`. 
+
+Given 2 branches `my-feature-1` and `master` we'd get the following stack names respectively:
+
+- `nextjs-serverless-static-site-my-feature-1`
+- `nextjs-serverless-static-site-master`
+
+## Creating an S3 Static Website Bucket
+
+Next, we need to create an S3 Static Website Bucket. We can create a simple helper function in our stack to abstract this. We'll also need to define a simple function that generates the URL for our branch. We can then use this URL as our bucket name.
+
+<Gist id="d65b5252912c43964197274f7cec1ed2" />
+
+Our URL branch generation code is pretty straightforward, similar to our stack name generation.
+
+<Gist id="010a0f4dea981d149865a225cc43ff8c" />
+
+And finally, our `createStaticWebsiteBucket` code.
+
+<Gist id="83de43f4fad6a958195753221a44b3b0" />
+
+By default, this bucket denies all public access. This bucket will also have static website hosting enabled because we've specified the `websiteIndexDocument` and `websiteErrorDocument` documents. 
+
+One last thing to note here as well is we've set the `autoDeleteObjects` and `removalPolicy` to be pretty destructive when we delete the CloudFormation stack. This makes the cleanup of branches a lot easier; however, it might be worth turning this off for the production stack to ensure we don't easily delete our production bucket.
+
+## Creating an SSL Certificate
+
+Now, we need to create our SSL certificate to use with our CloudFront Distribution. To do this, we first need to grab a reference to our domain's hosted zone in Route53. Let's define these abstractions in our stack.
+
+<Gist id="e4778832977e144d1658ced51e69591f" />
+
+Our Route53 hosted zone lookup is simple.
+
+<Gist id="1661ac3b5aa733aaa5aa89d90f1eb2ca" />
+
+And our certificate creation is pretty simple too.
+
+<Gist id="a71be2bc42ca0c97076166bd30970e0d" />
+
+To create the certificate, AWS needs to ensure that we actually manage the Route53 hosted zone. For this, we can use the `DnsValidatedCertificate` construct, which will automatically validate our hosted zone.
+
+## Creating a CloudFront Function
+
+
 </ProseWidth>
+
 
 </Section>
