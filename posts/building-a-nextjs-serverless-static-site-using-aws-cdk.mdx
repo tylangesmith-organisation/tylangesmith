@@ -361,6 +361,23 @@ Finally, we want to specify our `defaultRootObject` and `errorResponses`. These 
 
 ## The Last Little Bits
 
+Ok, we're nearly there! There are 2 final things we need to do. First, we need to create a DNS record in Route53 that points our URL to our CloudFront distribution URL. Then we need to deploy our static website files to our s3 bucket.
+
+Let's create both of these functions in our stack.
+
+<Gist id="01ca14a9c9b661c64fc1cf295136aee0" />
+
+Our `createARecordForDistribution` code looks like.
+
+<Gist id="258196127f6671159a294b3f155573e8" />
+
+This creates an `ARecord` in Route53 that points our branched URL to our CloudFront distribution URL e.g. `nextjs-serverless-static-site.tylangesmith.com` ==> `xyz.cloudfront.net`.
+
+Then our `createBucketDeployment` code looks like.
+
+<Gist id="3e0c1b69dd55ed8d655ab3e3242c342e" />
+
+This `BucketDeployment` construct grabs our built local Next.js static files and deploys them to our bucket.
 
 </ProseWidth>
 
