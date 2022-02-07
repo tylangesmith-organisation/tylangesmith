@@ -76,7 +76,7 @@ If we uploaded our static bundle to a bucket we've created named `mybucket` and 
 
 This gives us somewhere to store our objects, but just storing these objects and accessing them via the S3 REST APIs isn't quite enough to host a website.
 
-Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static bundle. This has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the S3 REST APIs.
+AWS S3 does have built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static bundle, and this has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the S3 REST APIs.
 
 </ProseWidth>
 
@@ -88,9 +88,11 @@ Thankfully AWS S3 has built-in [Static Website Hosting](https://docs.aws.amazon.
 
 <ProseWidth>
 
-After configuring our index and custom error documents, we can access our static site through an S3 website endpoint. To access the index of our website, we can do so with `http://mybucket.s3-website-us-east-1.amazonaws.com`.
+After configuring the index and custom error documents, the static site can be accessed via an S3 website endpoint. To access the index of our website, we can use something like `http://mybucket.s3-website-us-east-1.amazonaws.com`.
 
 This is a pretty decent initial solution, but we want to go a few steps further. Notably, the website is accessed via `HTTP`; we don't have a personalised URL, and our content is being served out of `us-east-1`, which isn't great for users across the other side of the world.
+
+So for our solution, we won't be using s3 static website hosting.
 
 ### AWS CloudFront
 
@@ -108,7 +110,7 @@ This is a pretty decent initial solution, but we want to go a few steps further.
 
 <ProseWidth>
 
-As we can see, the content served from our S3 website endpoint is propagated across our CloudFront distribution and cached across many edge nodes. This reduces the distance the users' request for content has to travel, ultimately increasing delivery speed. The user now accesses our static content via the CloudFront distribution URL `xyz.cloudfront.net`.
+As we can see, the content in our s3 bucket is propagated across our CloudFront distribution and cached across many edge nodes. This reduces the distance the users' request for content has to travel, ultimately increasing delivery speed. The user now accesses our static content via the CloudFront distribution URL `xyz.cloudfront.net`.
 
 Next, we can put this CloudFront distribution URL behind a custom URL, `nextjs-serverless-static-site.tylangesmith.com`, with a simple [AWS Route53](https://aws.amazon.com/route53/) record. After that, we can generate an SSL certificate for the domain with [AWS ACM](https://aws.amazon.com/certificate-manager/) (Certificate Manager) and attach it to our CloudFront distribution enforcing `HTTPS`.
 
@@ -124,7 +126,7 @@ Next, we can put this CloudFront distribution URL behind a custom URL, `nextjs-s
 
 ### CloudFront Functions
 
-OK, one last thing we need to account for. When the user accesses our website via the URL `https://nextjs-serverless-static-site.tylangesmith.com`, the S3 website endpoint knows that we need to return our index document; once returned, the Next.js library is loaded. The user can click around and navigate to different pages from this initially loaded index document, e.g. `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog`.
+OK, one last thing we need to account for. When the user accesses our website via the URL `https://nextjs-serverless-static-site.tylangesmith.com`, the CloudFront distribution knows that we need to return our index document; once returned, the Next.js library is loaded. The user can click around and navigate to different pages from this initially loaded index document, e.g. `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog`.
 
 Since the Next.js library is loaded, the inbuilt router knows that when the users' browser navigates to the `blog/some-blog` path, we really want to send a request for the `blog/some-blog.html` HTML file.
 
@@ -152,9 +154,11 @@ The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which re
 
 <ProseWidth>
 
-As a result, the S3 website endpoint cannot find the related file and instead returns the configured error document.
+As a result, the CloudFront distribution doesn't can't find a relating file in s3 to return, so it instead returns the configured error document.
 
 We need to ensure these paths are translated for the required requests to address this. We can achieve this by configuring a CloudFront behaviour to run a lightweight [CloudFront Function](https://aws.amazon.com/blogs/aws/introducing-cloudfront-functions-run-your-code-at-the-edge-with-low-latency-at-any-scale/).
+
+> A CloudFront Function is cheaper than Lambda@Edge.
 
 </ProseWidth>
 
@@ -275,9 +279,9 @@ Given 2 branches `my-feature-1` and `master` we'd get the following stack names 
 - `nextjs-serverless-static-site-my-feature-1`
 - `nextjs-serverless-static-site-master`
 
-## Creating an S3 Static Website Bucket
+## Creating an S3 Bucket
 
-Now, we need to create an S3 Static Website Bucket. For this, we need to give our bucket a unique name. Since we need to generate our URL with branching support anyway, we can use this as our bucket name.
+Now, we need to create an S3 Bucket. For this, we need to give our bucket a unique name. Since we need to generate our URL with branching support anyway, we can use this as our bucket name.
 
 <Gist id="d65b5252912c43964197274f7cec1ed2" />
 
@@ -291,7 +295,7 @@ Now let's define our actual bucket creation code.
 
 <Gist id="83de43f4fad6a958195753221a44b3b0" />
 
-Here we use the `Bucket` construct. This bucket denies all public access by default. Static website hosting will also be enabled because we've specified the `websiteIndexDocument` and `websiteErrorDocument` documents. 
+Here we use the `Bucket` construct. This bucket denies all public access by default. Since we will use a CloudFront distribution, we don't need to enable static website hosting. However, it is worth mentioning that we can enable static website hosting and put it behind a CloudFront distribution, but this has a few nuances we need to consider when defining the AWS CDK code.
 
 One last thing to note here as well is we've set the `autoDeleteObjects` and `removalPolicy` to be pretty destructive when we delete the CloudFormation stack. This makes the cleanup of branches much easier; however, it might be worth turning this off for the production stack to ensure we don't easily delete our production bucket.
 
@@ -333,7 +337,30 @@ Here we use the `Function` construct with the `FunctionCode` utility. This will 
 
 <Gist id="2d4a9bcac4638ae95c7ea7c4e9bb1939" />
 
-This mapping code modifies the incoming request URI. This will only run on a specified set of paths we'll define later on.
+This mapping code modifies the incoming request URI.
+
+## Creating a CloudFront Distribution
+
+Ok, we're finally at the point where we can start using all of these components to create our CloudFront Distribution.
+
+As you'd expect, we call a simple function that will create our CloudFront Distribution from our stack class `createDistribution`.
+
+<Gist id="d8345ac44d5f422d6b8389454c47c8a1" />
+
+Let's take a look at the implementation.
+
+<Gist id="97bb36a34d0677c1444963afaf619b91" />
+
+To create our CloudFront distribution, we can use the `Distribution` construct. We could have also used the `CloudFrontWebDistribution` construct; however, as previously mentioned, this comes with a few nuances.
+
+This construct mainly pulls together all of our previously created resources. First, we ensure we can access our distribution via our URL. To do this, we specify an alternate domain name with `domainName` and provide the issued `certificate` for the URL.
+
+Next, we need to define how our distribution behaves; we can do this with the `defaultBehavior` property. In our case, we want to serve static content from our bucket so we can define an `origin` that points to our S3 bucket. We also need to associate this behaviour with our CloudFront Function, which we only want to run what a user requests to view content.
+
+Finally, we want to specify our `defaultRootObject` and `errorResponses`. These will be configured to return the `index.html` and `404.html` files respectively.
+
+## The Last Little Bits
+
 
 </ProseWidth>
 
