@@ -19,8 +19,8 @@ In this blog, we'll explore how to host a Next.js static site on AWS. We'll desi
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/headerHighQuality.jpg"
-  alt="A Next.js + AWS ☁️ story"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/header1.png"
+  alt="Next.js + AWS"
   shadow={true}
 />
 
@@ -55,7 +55,7 @@ So with all of that in mind, we can implement a solution that looks like the fol
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/highLevelSolutionArchitecture.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/highLevelSolutionArchitecture.png"
   alt="High Level Solution Architecture"
   label="High Level Solution Architecture"
 />
@@ -81,7 +81,7 @@ AWS S3 does have built-in [Static Website Hosting](https://docs.aws.amazon.com/A
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/s3StaticWebsiteHosting.png"
   alt="S3 Static Website Hosting"
   label="S3 Static Website Hosting"
 />
@@ -103,7 +103,7 @@ So for our solution, we won't be using s3 static website hosting.
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontPropogation.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/cloudFrontPropogation.png"
   alt="CloudFront Content Propogation"
   label="CloudFront Content Propogation"
 />
@@ -117,7 +117,7 @@ Next, we can put this CloudFront distribution URL behind a custom URL, `nextjs-s
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontURLAndHttps.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/cloudFrontURLAndHttps.png"
   alt="CloudFront Custom URL and HTTPS"
   label="CloudFront Custom URL and HTTPS"
 />
@@ -133,7 +133,7 @@ Since the Next.js library is loaded, the inbuilt router knows that when the user
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterLoaded.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/nextjsRouterLoaded.png"
   alt="Requests with Next.js Loaded"
   label="Requests with Next.js Loaded"
 />
@@ -147,7 +147,7 @@ The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which re
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterNotLoaded.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/nextjsRouterNotLoaded.png"
   alt="Requests without Next.js Loaded"
   label="Requests without Next.js Loaded"
 />
@@ -163,7 +163,7 @@ We need to ensure these paths are translated for the required requests to addres
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudfrontFunction.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/cloudfrontFunction.png"
   alt="CloudFront with CloudFront Function"
   label="CloudFront with CloudFront Function"
 />
@@ -172,7 +172,7 @@ We need to ensure these paths are translated for the required requests to addres
 
 We can trigger this CloudFront Function on the required paths, mapping the incoming request to the correct related file within our S3 bucket.
 
-🎉 that should be everything! Our solution should now satisfy all of our original requirements.
+🎉 We should now have a serverless solution that's performant, scalable, reliable, secure, and cost-optimised.
 
 </ProseWidth>
 
@@ -199,7 +199,7 @@ For our following example, we'll use the Typescript AWS CDK SDK. Let's get start
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/highLevelSolutionArchitecture.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/highLevelSolutionArchitecture.png"
   alt="High Level Solution Architecture"
   label="High Level Solution Architecture"
 />
@@ -255,7 +255,7 @@ Thankfully, with the flexibility of cloud computing and modern DevOps, we can av
 </ProseWidth>
 
 <Image
-  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/gitBranchDeploy.png"
+  source="buildingANextjsServerlessStaticSiteUsingAwsCdk/gitBranchDeploy.png"
   alt="Separate CloudFormation Stack Deployment"
   label="Separate CloudFormation Stack Deployment"
 />
@@ -375,8 +375,36 @@ Then our `createBucketDeployment` code looks like.
 
 This `BucketDeployment` construct grabs our built local Next.js static files and deploys them to our bucket.
 
+🎉 We've now created all of the resources required to build our Next.js serverless static site.
 
 </ProseWidth>
 
+</Section>
+
+<Section>
+
+<ProseWidth>
+
+## Infrastructure Testing
+
+As you've just seen with AWS CDK, the way we write our infrastructure code looks pretty similar to any other piece of code we'd write. One of the best things about this is that we can write our infrastructure code to be as testable as we'd like. This ultimately gives us confidence when delivering our infrastructure.
+
+But we'll dive much deeper into this topic in future blogs!
+
+</ProseWidth>
+
+</Section>
+
+<Section>
+
+<ProseWidth>
+
+## Conclusion
+
+Ok, well, that's it for today; thanks for checking out the blog!
+
+Hopefully, that was a good little walkthrough of how to build a Next.js serverless static site using AWS CDK.
+
+</ProseWidth>
 
 </Section>
