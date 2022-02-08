@@ -16,6 +16,7 @@ tags:
 
 In this blog, we'll explore how to host a Next.js static site on AWS. We'll design a fully serverless solution using AWS CloudFront, CloudFront Functions, and S3. We'll then take this serverless solution and leverage AWS CDK to define our infrastructure as code.
 
+
 </ProseWidth>
 
 <Image
@@ -124,7 +125,7 @@ Next, we can put this CloudFront distribution URL behind a custom URL, `nextjs-s
 
 <ProseWidth>
 
-### CloudFront Functions
+### AWS CloudFront Functions
 
 OK, one last thing we need to account for. When the user accesses our website via the URL `https://nextjs-serverless-static-site.tylangesmith.com`, the CloudFront distribution knows that we need to return our index document; once returned, the Next.js library is loaded. The user can click around and navigate to different pages from this initially loaded index document, e.g. `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog`.
 
@@ -182,7 +183,7 @@ We can trigger this CloudFront Function on the required paths, mapping the incom
 
 <ProseWidth>
 
-## Infrastructure as Code
+## Implementing our Solution
 
 We're now at the point where we can start defining our above infrastructure as code using [AWS CDK](https://aws.amazon.com/cdk/).
 
@@ -206,11 +207,11 @@ For our following example, we'll use the Typescript AWS CDK SDK. Let's get start
 
 <ProseWidth>
 
-## Prerequisites
+### Prerequisites
 
 In this example, I won't cover setting up a Typescript AWS CDK project. If you want to follow along, I recommend checking out the project [GitHub repository](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site).
 
-## Creating a CloudFormation Stack
+### Creating a CloudFormation Stack
 
 Our infrastructure resources will be contained within a [CloudFromation Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html). This allows us to manage this set of resources as a single unit, making creating, updating and deleting our application resources much more straightforward.
 
@@ -238,7 +239,7 @@ This file instantiates our stack with a few environment variables provided when 
 
 As you can probably see, we generate the `branchedSubDomainName`, `url` and `stackName` using a few different variables, notably our `BRANCH_NAME`. Why? Well, let's explore this.
 
-## Branched Infrastructure
+### Branched Infrastructure
 
 Continuous delivery strategies can vary between companies. In the early DevOps days, some companies implemented a simple approach, provisioning 3 or so main long-lived deployment environments.
 
@@ -283,7 +284,7 @@ Additionally, we have a similar pattern for generating our `branchedSubDomainNam
 
 <Gist id="c7658f3ca07292082cdd46905921438f" />
 
-## Creating an S3 Bucket
+### Creating an S3 Bucket
 
 The first thing we can create in our stack is our S3 bucket. Let's define a simple function to abstract that for us.
 
@@ -297,7 +298,7 @@ Here we use the `Bucket` construct. This bucket denies all public access by defa
 
 One last thing to note here as well is we've set the `autoDeleteObjects` and `removalPolicy` to be pretty destructive when we delete the CloudFormation stack. This makes the cleanup of branches much easier; however, it might be worth turning this off for the production stack to ensure we don't easily delete our production bucket.
 
-## Creating an SSL Certificate
+### Creating an SSL Certificate
 
 Next, we need to create an SSL certificate for our `url`. This certificate will be used with our CloudFront distribution to secure our traffic.
 
@@ -319,7 +320,7 @@ To actually issue a certificate, AWS needs to ensure that we actually manage the
 
 To issue our certificate, we can use the `DnsValidatedCertificate` construct. This will also abstract away and handle all of the validation for us.
 
-## Creating a CloudFront Function
+### Creating a CloudFront Function
 
 Let's now create a CloudFront function to map any non-html translated Next.js URLs to their respective `.html` files. 
 
@@ -337,7 +338,7 @@ This mapping code takes the incoming request URI and modifies it to reference th
 
 To actually create our CloudFront function, we use the `Function` construct. We also use the `FunctionCode` utility to correctly reference and upload the code we want to run.
 
-## Creating a CloudFront Distribution
+### Creating a CloudFront Distribution
 
 Ok, we're finally at the point where we can create our CloudFront Distribution. Let's define an abstraction in our stack for this.
 
@@ -355,7 +356,7 @@ Next, we need to define how our distribution behaves; for our use case, we only 
 
 Finally, we want to specify our `defaultRootObject` and `errorResponses`. These will be configured to return the `index.html` and `404.html` files respectively.
 
-## The Last Little Bits
+### The Last Little Bits
 
 Ok, we're nearly there! There are 2 final things we need to do. First, we need to create a DNS record in Route53 that points our URL to our CloudFront distribution URL. Then we need to deploy our static website files to our s3 bucket.
 
