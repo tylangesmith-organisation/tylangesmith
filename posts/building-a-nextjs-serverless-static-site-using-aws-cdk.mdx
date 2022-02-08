@@ -218,7 +218,7 @@ Let's go ahead and define our stack class.
 
 <Gist id="ce1f7de6bad3ea4727f95bd139583fc6" />
 
-This defines our `StaticWebsiteStack` class which extends the base `Stack` CDK class and will contain all of our static website resources. 
+This defines our `StaticWebsiteStack` class which extends the base `Stack` CDK class and will contain all of our static website constructs.
 
 With that now defined, we need to instantiate the class - let's create an `index.ts` file as our main entrypoint.
 
@@ -228,15 +228,15 @@ This file instantiates our stack with a few environment variables provided when 
 
 - `stackName`: The name of our CloudFormation Stack.
 
-- `branchName`: Our current Git branch name e.g. `my-feature-1`.
+- `url`: The URL we want to use for our site. e.g. `nextjs-serverless-static-site-my-feature.tylangesmith.com`.
 
 - `domainName`: The domain name for our project. e.g. `tylangesmith.com`.
 
-- `subDomainName`: The subdomain for our project. e.g. `nextjs-serverless-static-site`.
+- `subDomainName`: The "branched subdomain" for our project. e.g. `nextjs-serverless-static-site-my-feature`.
 
 - `env`: A few extra variables to correctly enable route53 lookups to work.
 
-As you can probably see, we generate our `stackName` from our `GITHUB_REPOSITORY` e.g. `tylangesmith-organisation/nextjs-serverless-static-site` and our `BRANCH_NAME`. Why? Well, let's explore this.
+As you can probably see, we generate the `branchedSubDomainName`, `url` and `stackName` using a few different variables, notably our `BRANCH_NAME`. Why? Well, let's explore this.
 
 ## Branched Infrastructure
 
@@ -279,23 +279,21 @@ Given 2 branches `my-feature-1` and `master` we'd get the following stack names 
 - `nextjs-serverless-static-site-my-feature-1`
 - `nextjs-serverless-static-site-master`
 
+Additionally, we have a similar pattern for generating our `branchedSubDomainName` and `url` variables.
+
+<Gist id="c7658f3ca07292082cdd46905921438f" />
+
 ## Creating an S3 Bucket
 
-Now, we need to create an S3 Bucket. For this, we need to give our bucket a unique name. Since we need to generate our URL with branching support anyway, we can use this as our bucket name.
+The first thing we can create in our stack is our S3 bucket. Let's define a simple function to abstract that for us.
 
 <Gist id="d65b5252912c43964197274f7cec1ed2" />
 
-To generate our branched URL, we have the following code. This is pretty similar to our stack name generation code.
-
-<Gist id="010a0f4dea981d149865a225cc43ff8c" />
-
-The main thing to note here is if we are not on our default `master` branch, the branch name will be suffixed onto our subdomain name. However, if we are on the default `master` branch, we'll return the subdomain name without any suffix.
-
-Now let's define our actual bucket creation code. 
+To create our bucket, we need to provide a `bucketName`. As previously mentioned, S3 bucket names are required to be globally unique. For this, we should be ok with using the `url` as the bucket name. This also turns out to be pretty handy when trying to identify what bucket belongs to what stack. 
 
 <Gist id="83de43f4fad6a958195753221a44b3b0" />
 
-Here we use the `Bucket` construct. This bucket denies all public access by default. Since we will use a CloudFront distribution, we don't need to enable static website hosting. However, it is worth mentioning that we can enable static website hosting and put it behind a CloudFront distribution, but this has a few nuances we need to consider when defining the AWS CDK code.
+Here we use the `Bucket` construct. This bucket denies all public access by default. Since we will use a CloudFront distribution, we don't need to enable static website hosting. However, it is worth mentioning that we can enable static website hosting and put it behind a CloudFront distribution, but this has a few nuances that need to be considered when defining the AWS CDK code.
 
 One last thing to note here as well is we've set the `autoDeleteObjects` and `removalPolicy` to be pretty destructive when we delete the CloudFormation stack. This makes the cleanup of branches much easier; however, it might be worth turning this off for the production stack to ensure we don't easily delete our production bucket.
 
@@ -353,7 +351,7 @@ Let's take a look at the implementation.
 
 To create our CloudFront distribution, we can use the `Distribution` construct. We could have also used the `CloudFrontWebDistribution` construct; however, as previously mentioned, this comes with a few nuances.
 
-This construct mainly pulls together all of our previously created resources. First, we ensure we can access our distribution via our URL. To do this, we specify an alternate domain name with `domainName` and provide the issued `certificate` for the URL.
+First, we ensure we can access our distribution via our URL. To do this, we specify an alternate domain name with `domainName` and provide the issued `certificate` for the URL.
 
 Next, we need to define how our distribution behaves; we can do this with the `defaultBehavior` property. In our case, we want to serve static content from our bucket so we can define an `origin` that points to our S3 bucket. We also need to associate this behaviour with our CloudFront Function, which we only want to run what a user requests to view content.
 
@@ -378,6 +376,7 @@ Then our `createBucketDeployment` code looks like.
 <Gist id="3e0c1b69dd55ed8d655ab3e3242c342e" />
 
 This `BucketDeployment` construct grabs our built local Next.js static files and deploys them to our bucket.
+
 
 </ProseWidth>
 
