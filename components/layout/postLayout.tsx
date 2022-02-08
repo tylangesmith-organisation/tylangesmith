@@ -1,3 +1,5 @@
+import { NextSeo } from 'next-seo'
+
 import Navigation from '@/components/ui/navigation/navigation'
 import Footer from '@/components/ui/footer/footer'
 import Container from '@/components/ui/container/container'
@@ -10,24 +12,42 @@ export interface Props extends PostMetaData {
 }
 
 const Component = (props: Props) => {
-  const { children, title, tags } = props
+  const { children, title, tags, description, slug, headerImage } = props
 
   return (
-    <div className="flex flex-col h-screen break-words">
-      <Navigation />
-      <main className="flex-grow">
-        <Container>
-          <article className="flex flex-col mx-auto">
-            <ProseWidth>
-              <h1 className="mb-3">{title}</h1>
-              <Tags>{tags}</Tags>
-            </ProseWidth>
-            {children}
-          </article>
-        </Container>
-      </main>
-      <Footer />
-    </div>
+    <>
+      <NextSeo
+        title={title}
+        description={description}
+        openGraph={
+          {
+            url: `https://tylangesmith.com/${slug}/`,
+            title,
+            description,
+            images: [
+              {
+                url: headerImage
+              }
+            ]
+          }
+        }
+      />
+      <div className="flex flex-col h-screen break-words">
+        <Navigation />
+        <main className="flex-grow">
+          <Container>
+            <article className="flex flex-col mx-auto">
+              <ProseWidth>
+                <h1 className="mb-3">{title}</h1>
+                <Tags>{tags}</Tags>
+              </ProseWidth>
+              {children}
+            </article>
+          </Container>
+        </main>
+        <Footer />
+      </div>
+    </>
   )
 }
 
