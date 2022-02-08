@@ -299,53 +299,51 @@ One last thing to note here as well is we've set the `autoDeleteObjects` and `re
 
 ## Creating an SSL Certificate
 
-Next, we need to create an SSL certificate to use with our CloudFront Distribution. To do this, we need to specify which Route53 hosted zone we want to issue the certificate for.
+Next, we need to create an SSL certificate for our `url`. This certificate will be used with our CloudFront distribution to secure our traffic.
+
+To create our certificate, we also need a reference to the Route53 hosted zone for the domain we're issuing the certificate against. Let's create these function abstractions in our stack.
 
 <Gist id="e4778832977e144d1658ced51e69591f" />
 
-Here we define 2 functions, a `getHostedZone` function that will grab a reference to the Route53 hosted zone for our domain and a `createCertificate` function that will create the certificate.
+Here the `getHostedZone` function grabs the Route53 hosted zone for our `domainName`. The `createCertificate` function then generates a certificate for our `hostedZone` and `url`.
 
-The lookup for our Route53 hosted zone is pretty simple.
-
-> Note for this to work, we need the extra `env` variables (`account` and `region`) to be passed to our stack in our `index.ts` file.
+> To perform this Route53 hosted zone lookup, we are required to pass the `env` variables (`account` and `region`) to our stack constructor in our `index.ts` file.
 
 <Gist id="1661ac3b5aa733aaa5aa89d90f1eb2ca" />
 
-Our certificate creation is pretty simple too.
+Here we use the `HostedZone` construct to lookup the hosted zone for our `domainName` in our current `account` and `region` (specified by the stack `env` variables).
 
 <Gist id="a71be2bc42ca0c97076166bd30970e0d" />
 
-Here we use the `DnsValidatedCertificate` construct. This construct issues a certificate for the domain we specify. However, to create this certificate, AWS needs to ensure we actually manage the Route53 hosted zone. Thankfully this construct will automatically validate this for us.
+To actually issue a certificate, AWS needs to ensure that we actually manage the Route53 hosted zone we're trying to issue for. In previous versions of AWS CDK, this validation step took forever! Thankfully these constructs have improved heaps over time, and this certificate creation is now super straightforward.
+
+To issue our certificate, we can use the `DnsValidatedCertificate` construct. This will also abstract away and handle all of the validation for us.
 
 ## Creating a CloudFront Function
 
-Next up, we need to create our CloudFront Function. This allows us to correctly map any non-html translated Next.js URLs to their respective `.html` files. 
+Let's now create a CloudFront function to map any non-html translated Next.js URLs to their respective `.html` files. 
 
-For this, we can run lightweight code on specific user requests.
+Again let's define an abstraction that we can use in our stack.
 
 <Gist id="5b0e2a1e20448865cf05dc13b4542213" />
 
-The main thing to note here is that we specify the `filePath` of our code to run.
-
-Now lets define `createFunction`.
-
-<Gist id="2184f20bf0e94b8435957c0fbb933a55" />
-
-Here we use the `Function` construct with the `FunctionCode` utility. This will grab the code we've defined at `./src/functions/mapperFunction.js`. 
+This `createFunction` abstraction will create a new CloudFront function that will run our code defined at `./src/functions/mapperFunction.js`.
 
 <Gist id="2d4a9bcac4638ae95c7ea7c4e9bb1939" />
 
-This mapping code modifies the incoming request URI.
+This mapping code takes the incoming request URI and modifies it to reference the correct `.html` file in our S3 bucket.
+
+<Gist id="2184f20bf0e94b8435957c0fbb933a55" />
+
+To actually create our CloudFront function, we use the `Function` construct. We also use the `FunctionCode` utility to correctly reference and upload the code we want to run.
 
 ## Creating a CloudFront Distribution
 
-Ok, we're finally at the point where we can start using all of these components to create our CloudFront Distribution.
-
-As you'd expect, we call a simple function that will create our CloudFront Distribution from our stack class `createDistribution`.
+Ok, we're finally at the point where we can create our CloudFront Distribution. Let's define an abstraction in our stack for this.
 
 <Gist id="d8345ac44d5f422d6b8389454c47c8a1" />
 
-Let's take a look at the implementation.
+Let's take a look at the implementation for `createDistribution`.
 
 <Gist id="97bb36a34d0677c1444963afaf619b91" />
 
@@ -353,7 +351,7 @@ To create our CloudFront distribution, we can use the `Distribution` construct. 
 
 First, we ensure we can access our distribution via our URL. To do this, we specify an alternate domain name with `domainName` and provide the issued `certificate` for the URL.
 
-Next, we need to define how our distribution behaves; we can do this with the `defaultBehavior` property. In our case, we want to serve static content from our bucket so we can define an `origin` that points to our S3 bucket. We also need to associate this behaviour with our CloudFront Function, which we only want to run what a user requests to view content.
+Next, we need to define how our distribution behaves; for our use case, we only need a single `defaultBehavior` to serve the static content from our S3 bucket. To do this, we'll want to define an `S3Origin` that points to our S3 bucket. We also want to associate the serving of this content with our CloudFront mapping function, which we only want to run when a user requests to view content.
 
 Finally, we want to specify our `defaultRootObject` and `errorResponses`. These will be configured to return the `index.html` and `404.html` files respectively.
 
