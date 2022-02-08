@@ -11,7 +11,7 @@ const Component = (props: Props): JSX.Element => {
   return (
     <div className="flex flex-col mx-auto max-w-5xl 2xl:my-6">
       <img
-          className={`my-6 px-1 w-full ${shadow ? 'shadow-md' : ''}`}
+          className={`my-6 w-full ${shadow ? 'shadow-md' : ''}`}
           src={source}
           alt={alt}
         />
