@@ -172,7 +172,7 @@ We need to ensure these paths are translated for the required requests to addres
 
 We can trigger this CloudFront Function on the required paths, mapping the incoming request to the correct related file within our S3 bucket.
 
-🎉 that should be everything! Our solution should now satisfy all of our original requirements.
+🎉 We should now have a serverless solution that's performant, scalable, reliable, secure, and cost-optimised.
 
 </ProseWidth>
 
@@ -375,8 +375,36 @@ Then our `createBucketDeployment` code looks like.
 
 This `BucketDeployment` construct grabs our built local Next.js static files and deploys them to our bucket.
 
+🎉 We've now created all of the resources required to build our Next.js serverless static site.
 
 </ProseWidth>
 
+</Section>
+
+<Section>
+
+<ProseWidth>
+
+## Infrastructure Testing
+
+As you've just seen with AWS CDK, the way we write our infrastructure code looks pretty similar to any other piece of code we'd write. One of the best things about this is that we can write our infrastructure code to be as testable as we'd like. This ultimately gives us confidence when delivering our infrastructure.
+
+But we'll dive much deeper into this topic in future blogs!
+
+</ProseWidth>
+
+</Section>
+
+<Section>
+
+<ProseWidth>
+
+## Conclusion
+
+Ok, well, that's it for today; thanks for checking out the blog!
+
+Hopefully, that was a good little walkthrough of how to build a Next.js serverless static site using AWS CDK.
+
+</ProseWidth>
 
 </Section>
