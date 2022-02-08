@@ -5,4 +5,5 @@ export interface PostMetaData {
   description: string
   date: string
   tags: string[]
+  headerImage: string
 }
