@@ -1,0 +1,382 @@
+---
+slug: building-a-nextjs-serverless-static-site-using-aws-cdk
+title: Building a Next.js Serverless Static Site using AWS CDK
+description: Designing and implementing a cloud native serverless solution using modern DevOps.
+date: '2021-09-04'
+tags:
+  - aws
+  - serverless
+  - cdk
+  - devops
+---
+
+<Section>
+
+<ProseWidth>
+
+In this blog, we'll explore how to host a Next.js static site on AWS. We'll design a fully serverless solution using AWS CloudFront, CloudFront Functions, and S3. We'll then take this serverless solution and leverage AWS CDK to define our infrastructure as code.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/headerHighQuality.jpg"
+  alt="A Next.js + AWS ☁️ story"
+  shadow={true}
+/>
+
+<ProseWidth>
+
+For this blog, we'll attempt to host a simple [Next.js](https://nextjs.org) static site I've implemented [nextjs-serverless-static-site.tylangesmith.com](https://nextjs-serverless-static-site.tylangesmith.com).
+
+Of course, if you want to jump straight to the code, you can by checking out the project [GitHub repository](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site)!
+
+</ProseWidth>
+
+</Section>
+
+<Section>
+
+<ProseWidth>
+
+## Designing our Solution
+
+Awesome! So we want to develop a hosting solution for our Next.js static site. Naturally, we want a solution that'll be performant,  scalable, reliable, secure, and cost-optimised. We also want to try and keep things relatively simple.
+
+Thankfully, since our website is static, we can meet all of these requirements without too much hassle.
+
+Before we dive straight in, it's also worth mentioning that these days there are some really excellent hosting alternatives like [Vercel](https://vercel.com/). These hosting solutions make deploying a Next.js project ridiculously easy, not to mention it provides a bunch of optimisations right out of the box. From a developer experience perspective, this is amazing and well worth consideration.
+
+However, to gain a deeper understanding, we will take a more hands-on approach. We'll implement our solution using [AWS](https://aws.amazon.com/). AWS is a cloud platform that provides hundreds of cloud services to solve a variety of problems.
+
+> If you're a beginner in this space, it can be pretty overwhelming at first. However, from experience, if you stick with it, you'll quickly be able to navigate the ecosystem with confidence.
+
+So with all of that in mind, we can implement a solution that looks like the following.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/highLevelSolutionArchitecture.png"
+  alt="High Level Solution Architecture"
+  label="High Level Solution Architecture"
+/>
+
+<ProseWidth>
+
+Hopefully, that doesn't look too scary - let's break each of these components down to better understand how they all fit together.
+
+### AWS Simple Storage Service (S3)
+
+When we build our Next.js project, we get a bunch of static files, also known as a static bundle; we need somewhere to store these files. For that, we can use [AWS S3](https://aws.amazon.com/s3/) (Simple Storage Service). As the name suggests, it provides a simple service that enables us to store objects.
+
+These objects are stored in what's known as a bucket. Once stored and configured with the correct permissions, objects within this bucket can be accessed via a few different methods, e.g. an object URL.
+
+> One of the most prominent data leakage vectors companies face is through misconfigured s3 buckets
+
+If we uploaded our static bundle to a bucket we've created named `mybucket` and wanted to grab the `index.html` file, we could do so via the object URL `https://s3.amazonaws.com/mybucket/index.html`.
+
+This gives us somewhere to store our objects, but just storing these objects and accessing them via the S3 REST APIs isn't quite enough to host a website.
+
+AWS S3 does have built-in [Static Website Hosting](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteHosting.html) functionality that will serve our static bundle, and this has a few key [differences](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html#WebsiteRestEndpointDiff) from that of the S3 REST APIs.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/s3StaticWebsiteHosting.png"
+  alt="S3 Static Website Hosting"
+  label="S3 Static Website Hosting"
+/>
+
+<ProseWidth>
+
+After configuring the index and custom error documents, the static site can be accessed via an S3 website endpoint. To access the index of our website, we can use something like `http://mybucket.s3-website-us-east-1.amazonaws.com`.
+
+This is a pretty decent initial solution, but we want to go a few steps further. Notably, the website is accessed via `HTTP`; we don't have a personalised URL, and our content is being served out of `us-east-1`, which isn't great for users across the other side of the world.
+
+So for our solution, we won't be using s3 static website hosting.
+
+### AWS CloudFront
+
+[AWS CloudFront](https://aws.amazon.com/cloudfront/) is a content delivery network ([CDN](https://en.wikipedia.org/wiki/Content_delivery_network)) that enables us to securely deliver our content to our users with low latency. CloudFront solves a few issues for us. One of the main selling points is that we can cache our content geographically close to our users via hundreds of edge locations.
+
+> Check out all of the [features](https://aws.amazon.com/cloudfront/features/) CloudFront offers
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontPropogation.png"
+  alt="CloudFront Content Propogation"
+  label="CloudFront Content Propogation"
+/>
+
+<ProseWidth>
+
+As we can see, the content in our s3 bucket is propagated across our CloudFront distribution and cached across many edge nodes. This reduces the distance the users' request for content has to travel, ultimately increasing delivery speed. The user now accesses our static content via the CloudFront distribution URL `xyz.cloudfront.net`.
+
+Next, we can put this CloudFront distribution URL behind a custom URL, `nextjs-serverless-static-site.tylangesmith.com`, with a simple [AWS Route53](https://aws.amazon.com/route53/) record. After that, we can generate an SSL certificate for the domain with [AWS ACM](https://aws.amazon.com/certificate-manager/) (Certificate Manager) and attach it to our CloudFront distribution enforcing `HTTPS`.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudFrontURLAndHttps.png"
+  alt="CloudFront Custom URL and HTTPS"
+  label="CloudFront Custom URL and HTTPS"
+/>
+
+<ProseWidth>
+
+### CloudFront Functions
+
+OK, one last thing we need to account for. When the user accesses our website via the URL `https://nextjs-serverless-static-site.tylangesmith.com`, the CloudFront distribution knows that we need to return our index document; once returned, the Next.js library is loaded. The user can click around and navigate to different pages from this initially loaded index document, e.g. `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog`.
+
+Since the Next.js library is loaded, the inbuilt router knows that when the users' browser navigates to the `blog/some-blog` path, we really want to send a request for the `blog/some-blog.html` HTML file.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterLoaded.png"
+  alt="Requests with Next.js Loaded"
+  label="Requests with Next.js Loaded"
+/>
+
+<ProseWidth>
+
+However, a problem arises when the user requests the `https://nextjs-serverless-static-site.tylangesmith.com/blog/some-blog` URL without the Next.js library first being loaded. e.g. when refreshing the page.
+
+The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which results in the `/blog/some-blog` path being requested instead.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/nextjsRouterNotLoaded.png"
+  alt="Requests without Next.js Loaded"
+  label="Requests without Next.js Loaded"
+/>
+
+<ProseWidth>
+
+As a result, the CloudFront distribution doesn't can't find a relating file in s3 to return, so it instead returns the configured error document.
+
+We need to ensure these paths are translated for the required requests to address this. We can achieve this by configuring a CloudFront behaviour to run a lightweight [CloudFront Function](https://aws.amazon.com/blogs/aws/introducing-cloudfront-functions-run-your-code-at-the-edge-with-low-latency-at-any-scale/).
+
+> A CloudFront Function is cheaper than Lambda@Edge.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/cloudfrontFunction.png"
+  alt="CloudFront with CloudFront Function"
+  label="CloudFront with CloudFront Function"
+/>
+
+<ProseWidth>
+
+We can trigger this CloudFront Function on the required paths, mapping the incoming request to the correct related file within our S3 bucket.
+
+🎉 that should be everything! Our solution should now satisfy all of our original requirements.
+
+</ProseWidth>
+
+</Section>
+
+<Section>
+
+<ProseWidth>
+
+## Infrastructure as Code
+
+We're now at the point where we can start defining our above infrastructure as code using [AWS CDK](https://aws.amazon.com/cdk/).
+
+Before AWS CDK, there were a few other ways to define our infrastructure as code. One of the main ways being with a [CloudFormation Template](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/gettingstarted.templatebasics.html#gettingstarted.templatebasics.what) which allowed for infrastructure to be defined in a `yaml` or `json` file. 
+
+This was an excellent win for DevOps as infrastructure could now be easily defined as code. However, complex infrastructure projects often required verbose CloudFormation Template definitions, quickly becoming hard to maintain and error-prone.
+
+Thankfully, with the introduction of AWS CDK, developers now had a way to define their cloud infrastructure as code using a familiar set of tools; high-level programming languages. 
+
+With this new set of tooling and high-level abstractions, developers can now quickly deliver quality cloud infrastructure.
+
+For our following example, we'll use the Typescript AWS CDK SDK. Let's get started and implement each of our components. Again our high-level solution architecture looks like the following:
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/highLevelSolutionArchitecture.png"
+  alt="High Level Solution Architecture"
+  label="High Level Solution Architecture"
+/>
+
+<ProseWidth>
+
+## Prerequisites
+
+In this example, I won't cover setting up a Typescript AWS CDK project. If you want to follow along, I recommend checking out the project [GitHub repository](https://github.com/tylangesmith-organisation/nextjs-serverless-static-site).
+
+## Creating a CloudFormation Stack
+
+Our infrastructure resources will be contained within a [CloudFromation Stack](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html). This allows us to manage this set of resources as a single unit, making creating, updating and deleting our application resources much more straightforward.
+
+Let's go ahead and define our stack class.
+
+<Gist id="ce1f7de6bad3ea4727f95bd139583fc6" />
+
+This defines our `StaticWebsiteStack` class which extends the base `Stack` CDK class and will contain all of our static website constructs.
+
+With that now defined, we need to instantiate the class - let's create an `index.ts` file as our main entrypoint.
+
+<Gist id="1b1d67247ae6ba7c11d6dc6c2796cf7e" />
+
+This file instantiates our stack with a few environment variables provided when running the file. To construct our stack correctly, we need to give it a few parameters.
+
+- `stackName`: The name of our CloudFormation Stack.
+
+- `url`: The URL we want to use for our site. e.g. `nextjs-serverless-static-site-my-feature.tylangesmith.com`.
+
+- `domainName`: The domain name for our project. e.g. `tylangesmith.com`.
+
+- `subDomainName`: The "branched subdomain" for our project. e.g. `nextjs-serverless-static-site-my-feature`.
+
+- `env`: A few extra variables to correctly enable route53 lookups to work.
+
+As you can probably see, we generate the `branchedSubDomainName`, `url` and `stackName` using a few different variables, notably our `BRANCH_NAME`. Why? Well, let's explore this.
+
+## Branched Infrastructure
+
+Continuous delivery strategies can vary between companies. In the early DevOps days, some companies implemented a simple approach, provisioning 3 or so main long-lived deployment environments.
+
+- Development (DEV)
+- User Acceptance Testing (UAT)
+- Production (PROD)
+
+In theory, each of these environments is configured to be identical. A software change can then be developed and verified within a set of environments (DEV and UAT) that are *"as identical to production as possible"*. This increases the confidence that the change will work as expected when it is finally promoted to the production environment.
+
+On paper, this sounds great; however, after using this workflow for a while, a few issues can arise. Mainly, these environments drift over time, decreasing their original similarity. Not to mention the logistical complexities of managing who's code is on what server - *"hey, are you finished with the DEV environment?"*
+
+Thankfully, with the flexibility of cloud computing and modern DevOps, we can avoid a lot of these issues. We can write our infrastructure code to deploy an entirely separate CloudFormation stack for each of our Git branches. This enables each branch to be verified in isolation, avoiding the environmental drift and bottlenecks introduced by using long-lived standalone environments.
+
+</ProseWidth>
+
+<Image
+  source="buildingAServerlessBlogUsingNextjsAndAwsCdk/gitBranchDeploy.png"
+  alt="Separate CloudFormation Stack Deployment"
+  label="Separate CloudFormation Stack Deployment"
+/>
+
+<ProseWidth>
+
+In this example, we have 2 developers, each developing different features on different branches. Each developer gets an entirely separate set of infrastructure for their branch, allowing them to validate their changes in isolation. Once their branch is merged into the default `master` branch, the deployment pipeline will deploy the latest code to the `master` stack, which is the production infrastructure.
+
+This all occurs within a single AWS account which is fine for our use case. However, we'll likely want to separate our testing infrastructure from our production infrastructure in an enterprise setting. This helps decrease the blast radius of any deployment branches impacting the production deployed infrastructure.
+
+To support branched infrastructure, we need to ensure that any resources that require a unique name are named - well, uniquely. We can achieve this relatively easily by including the GitHub repository and branch name in our name generation. 
+
+For example, let's take the above `stackName` example. A stack's name must be unique for the AWS account and AWS region. We generate the `stackName` with the following helper code.
+
+<Gist id="56ae1bdc10535560af2c53d5edd80aae" />
+
+This code should be relatively self-explanatory. In our case, our GitHub repository name breaks down to `nextjs-serverless-static-site`. 
+
+Given 2 branches `my-feature-1` and `master` we'd get the following stack names respectively:
+
+- `nextjs-serverless-static-site-my-feature-1`
+- `nextjs-serverless-static-site-master`
+
+Additionally, we have a similar pattern for generating our `branchedSubDomainName` and `url` variables.
+
+<Gist id="c7658f3ca07292082cdd46905921438f" />
+
+## Creating an S3 Bucket
+
+The first thing we can create in our stack is our S3 bucket. Let's define a simple function to abstract that for us.
+
+<Gist id="d65b5252912c43964197274f7cec1ed2" />
+
+To create our bucket, we need to provide a `bucketName`. As previously mentioned, S3 bucket names are required to be globally unique. For this, we should be ok with using the `url` as the bucket name. This also turns out to be pretty handy when trying to identify what bucket belongs to what stack. 
+
+<Gist id="83de43f4fad6a958195753221a44b3b0" />
+
+Here we use the `Bucket` construct. This bucket denies all public access by default. Since we will use a CloudFront distribution, we don't need to enable static website hosting. However, it is worth mentioning that we can enable static website hosting and put it behind a CloudFront distribution, but this has a few nuances that need to be considered when defining the AWS CDK code.
+
+One last thing to note here as well is we've set the `autoDeleteObjects` and `removalPolicy` to be pretty destructive when we delete the CloudFormation stack. This makes the cleanup of branches much easier; however, it might be worth turning this off for the production stack to ensure we don't easily delete our production bucket.
+
+## Creating an SSL Certificate
+
+Next, we need to create an SSL certificate for our `url`. This certificate will be used with our CloudFront distribution to secure our traffic.
+
+To create our certificate, we also need a reference to the Route53 hosted zone for the domain we're issuing the certificate against. Let's create these function abstractions in our stack.
+
+<Gist id="e4778832977e144d1658ced51e69591f" />
+
+Here the `getHostedZone` function grabs the Route53 hosted zone for our `domainName`. The `createCertificate` function then generates a certificate for our `hostedZone` and `url`.
+
+> To perform this Route53 hosted zone lookup, we are required to pass the `env` variables (`account` and `region`) to our stack constructor in our `index.ts` file.
+
+<Gist id="1661ac3b5aa733aaa5aa89d90f1eb2ca" />
+
+Here we use the `HostedZone` construct to lookup the hosted zone for our `domainName` in our current `account` and `region` (specified by the stack `env` variables).
+
+<Gist id="a71be2bc42ca0c97076166bd30970e0d" />
+
+To actually issue a certificate, AWS needs to ensure that we actually manage the Route53 hosted zone we're trying to issue for. In previous versions of AWS CDK, this validation step took forever! Thankfully these constructs have improved heaps over time, and this certificate creation is now super straightforward.
+
+To issue our certificate, we can use the `DnsValidatedCertificate` construct. This will also abstract away and handle all of the validation for us.
+
+## Creating a CloudFront Function
+
+Let's now create a CloudFront function to map any non-html translated Next.js URLs to their respective `.html` files. 
+
+Again let's define an abstraction that we can use in our stack.
+
+<Gist id="5b0e2a1e20448865cf05dc13b4542213" />
+
+This `createFunction` abstraction will create a new CloudFront function that will run our code defined at `./src/functions/mapperFunction.js`.
+
+<Gist id="2d4a9bcac4638ae95c7ea7c4e9bb1939" />
+
+This mapping code takes the incoming request URI and modifies it to reference the correct `.html` file in our S3 bucket.
+
+<Gist id="2184f20bf0e94b8435957c0fbb933a55" />
+
+To actually create our CloudFront function, we use the `Function` construct. We also use the `FunctionCode` utility to correctly reference and upload the code we want to run.
+
+## Creating a CloudFront Distribution
+
+Ok, we're finally at the point where we can create our CloudFront Distribution. Let's define an abstraction in our stack for this.
+
+<Gist id="d8345ac44d5f422d6b8389454c47c8a1" />
+
+Let's take a look at the implementation for `createDistribution`.
+
+<Gist id="97bb36a34d0677c1444963afaf619b91" />
+
+To create our CloudFront distribution, we can use the `Distribution` construct. We could have also used the `CloudFrontWebDistribution` construct; however, as previously mentioned, this comes with a few nuances.
+
+First, we ensure we can access our distribution via our URL. To do this, we specify an alternate domain name with `domainName` and provide the issued `certificate` for the URL.
+
+Next, we need to define how our distribution behaves; for our use case, we only need a single `defaultBehavior` to serve the static content from our S3 bucket. To do this, we'll want to define an `S3Origin` that points to our S3 bucket. We also want to associate the serving of this content with our CloudFront mapping function, which we only want to run when a user requests to view content.
+
+Finally, we want to specify our `defaultRootObject` and `errorResponses`. These will be configured to return the `index.html` and `404.html` files respectively.
+
+## The Last Little Bits
+
+Ok, we're nearly there! There are 2 final things we need to do. First, we need to create a DNS record in Route53 that points our URL to our CloudFront distribution URL. Then we need to deploy our static website files to our s3 bucket.
+
+Let's create both of these functions in our stack.
+
+<Gist id="01ca14a9c9b661c64fc1cf295136aee0" />
+
+Our `createARecordForDistribution` code looks like.
+
+<Gist id="258196127f6671159a294b3f155573e8" />
+
+This creates an `ARecord` in Route53 that points our branched URL to our CloudFront distribution URL e.g. `nextjs-serverless-static-site.tylangesmith.com` ==> `xyz.cloudfront.net`.
+
+Then our `createBucketDeployment` code looks like.
+
+<Gist id="3e0c1b69dd55ed8d655ab3e3242c342e" />
+
+This `BucketDeployment` construct grabs our built local Next.js static files and deploys them to our bucket.
+
+
+</ProseWidth>
+
+
+</Section>
