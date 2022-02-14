@@ -156,7 +156,7 @@ The `/blog/some-blog` path isn't translated into `blog/some-blog.html`. Which re
 
 <ProseWidth>
 
-As a result, the CloudFront distribution doesn't can't find a relating file in s3 to return, so it instead returns the configured error document.
+As a result, the CloudFront distribution can't find a relating file in s3 to return, so it instead returns the configured error document.
 
 We need to ensure these paths are translated for the required requests to address this. We can achieve this by configuring a CloudFront behaviour to run a lightweight [CloudFront Function](https://aws.amazon.com/blogs/aws/introducing-cloudfront-functions-run-your-code-at-the-edge-with-low-latency-at-any-scale/).
 
